@@ -1,16 +1,34 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import { Upload, X, Plus, ArrowLeft, Info } from "lucide-react";
-import { Input } from "@/Components/ui/input";
-import { Button } from "@/Components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
-import Link from "next/link";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
-// import { Editor } from "react-draft-wysiwyg";
-// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Card, CardContent } from "@/Components/ui/card";
-import { Separator } from "@/Components/ui/separator";
+"use client"
+import { useState, useRef } from "react"
+import {
+  Upload,
+  Plus,
+  ArrowLeft,
+  Save,
+  Trash2,
+  Sparkles,
+  Camera,
+  DollarSign,
+  Tag,
+  Package,
+  Percent,
+  Info,
+  Check,
+  AlertCircle,
+  Layers,
+  Star,
+} from "lucide-react"
+import { Input } from "@/Components/ui/input"
+import { Button } from "@/Components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select"
+import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/Components/ui/card"
+import { Separator } from "@/Components/ui/separator"
+import { Textarea } from "@/Components/ui/textarea"
+import { Switch } from "@/Components/ui/switch"
+import { Label } from "@/Components/ui/label"
+import { Badge } from "@/Components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 
 const categories = [
   { id: 1, name: "Spices & Masalas" },
@@ -18,9 +36,10 @@ const categories = [
   { id: 3, name: "Tea & Beverages" },
   { id: 4, name: "Organic Products" },
   { id: 5, name: "Snacks" },
-];
+]
 
 const AddNewProduct = () => {
+  // const { toast } = useToast()
   const [productData, setProductData] = useState({
     name: "",
     price: "",
@@ -29,493 +48,832 @@ const AddNewProduct = () => {
     isNew: false,
     isBestSeller: false,
     stock: "",
-    features: [""]
-  });
+    features: [""],
+  })
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [images, setImages] = useState([]);
-  const [activeTab, setActiveTab] = useState("basic");
-  
+  const [images, setImages] = useState([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [descriptionContent, setDescriptionContent] = useState("")
+  const [ingredientsContent, setIngredientsContent] = useState("")
+  const [activeTab, setActiveTab] = useState("basic")
+  const [isDragging, setIsDragging] = useState(false)
+  const fileInputRef = useRef(null)
+
   // Calculate discounted price based on percentage
-  const calculatedDiscountedPrice = productData.price && productData.discountPercentage
-    ? (productData.price - (productData.price * (parseFloat(productData.discountPercentage) / 100))).toFixed(2)
-    : "";
+  const calculatedDiscountedPrice =
+    productData.price && productData.discountPercentage
+      ? (productData.price - productData.price * (Number.parseFloat(productData.discountPercentage) / 100)).toFixed(2)
+      : ""
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     setProductData({
       ...productData,
       [name]: type === "checkbox" ? checked : value,
-    });
-  };
+    })
+  }
 
   const handleSelectChange = (name, value) => {
     setProductData({
       ...productData,
       [name]: value,
-    });
-  };
+    })
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = () => {
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setIsDragging(false)
+
+    const files = Array.from(e.dataTransfer.files).filter((file) => file.type.startsWith("image/"))
+
+    if (files.length > 0) {
+      processImageFiles(files)
+    } else {
+      // toast({
+      //   title: "Invalid files",
+      //   description: "Please drop image files only (JPG, PNG, GIF)",
+      //   variant: "destructive",
+      // })
+    }
+  }
+
+  const processImageFiles = (files) => {
+    if (files.length > 10) {
+      // toast({
+      //   title: "Too many files",
+      //   description: "You can upload a maximum of 10 images at once",
+      //   variant: "destructive",
+      // })
+      files = files.slice(0, 10)
+    }
+
+    const newImages = []
+    let loadedCount = 0
+
+    files.forEach((file) => {
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        // toast({
+        //   title: "File too large",
+        //   description: `${file.name} exceeds the 5MB limit`,
+        //   variant: "destructive",
+        // })
+        return
+      }
+
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        newImages.push({
+          id: Date.now() + Math.random().toString(36).substring(2, 9),
+          src: reader.result,
+          file: file,
+          name: file.name,
+          size: file.size,
+        })
+
+        loadedCount++
+        if (loadedCount === files.length) {
+          if (images.length + newImages.length > 20) {
+            // toast({
+            //   title: "Maximum images reached",
+            //   description: "You can upload a maximum of 20 images per product",
+            //   variant: "destructive",
+            // })
+            const allowedNewImages = newImages.slice(0, 20 - images.length)
+            setImages((prevImages) => [...prevImages, ...allowedNewImages])
+          } else {
+            setImages((prevImages) => [...prevImages, ...newImages])
+            // toast({
+            //   title: "Images uploaded",
+            //   description: `Successfully added ${newImages.length} image${newImages.length > 1 ? "s" : ""}`,
+            // })
+          }
+        }
+      }
+      reader.readAsDataURL(file)
+    })
+  }
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files)
     if (files.length > 0) {
-      const newImages = [];
-      
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          newImages.push({
-            id: Date.now() + Math.random().toString(36).substring(2, 9),
-            src: reader.result,
-            file: file
-          });
-          if (newImages.length === files.length) {
-            setImages(prevImages => [...prevImages, ...newImages]);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
+      processImageFiles(files)
     }
-  };
+  }
 
   const removeImage = (id) => {
-    setImages(images.filter(image => image.id !== id));
-  };
-  
+    setImages(images.filter((image) => image.id !== id))
+    // toast({
+    //   title: "Image removed",
+    //   description: "The image has been removed from your product",
+    // })
+  }
+
   // Handle product features
   const addFeature = () => {
     setProductData({
       ...productData,
-      features: [...productData.features, ""]
-    });
-  };
-  
+      features: [...productData.features, ""],
+    })
+  }
+
   const removeFeature = (index) => {
-    const updatedFeatures = [...productData.features];
-    updatedFeatures.splice(index, 1);
+    const updatedFeatures = [...productData.features]
+    updatedFeatures.splice(index, 1)
     setProductData({
       ...productData,
-      features: updatedFeatures
-    });
-  };
-  
+      features: updatedFeatures,
+    })
+  }
+
   const updateFeature = (index, value) => {
-    const updatedFeatures = [...productData.features];
-    updatedFeatures[index] = value;
+    const updatedFeatures = [...productData.features]
+    updatedFeatures[index] = value
     setProductData({
       ...productData,
-      features: updatedFeatures
-    });
-  };
-  
-  const handleEditorChange = (state) => {
-    setEditorState(state);
-  };
+      features: updatedFeatures,
+    })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Convert editor content to raw JSON format
-    const description = JSON.stringify(
-      convertToRaw(editorState.getCurrentContent())
-    );
-    
-    // Calculate the final price based on discount percentage
-    const finalPrice = calculatedDiscountedPrice || productData.price;
-    
-    // Here you would typically send the data to your API
-    console.log("Product data submitted:", {
-      ...productData,
-      description,
-      images,
-      finalPrice
-    });
-    // Reset form or redirect
-  };
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // Simulate API call
+    setTimeout(() => {
+      // Here you would typically send the data to your API
+      console.log("Product data submitted:", {
+        ...productData,
+        description: descriptionContent,
+        ingredients: ingredientsContent,
+        images,
+        finalPrice: calculatedDiscountedPrice || productData.price,
+      })
+
+      setIsSubmitting(false)
+      // toast({
+      //   title: "Product submitted",
+      //   description: "Your product has been successfully added",
+      // })
+      // Reset form or redirect
+    }, 1500)
+  }
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return bytes + " B"
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB"
+    else return (bytes / 1048576).toFixed(1) + " MB"
+  }
+
+  // Quill editor modules and formats
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ color: [] }, { background: [] }],
+      ["link", "image"],
+      ["clean"],
+    ],
+  }
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "list",
+    "bullet",
+    "color",
+    "background",
+    "link",
+    "image",
+  ]
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-0 overflow-hidden">
-      <div className="bg-gradient-to-r from-[#0055a4] to-[#39c4ff] p-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link href="/admin/products" className="text-white hover:text-white/80 bg-white/20 p-2 rounded-full transition-colors">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <h1 className="text-2xl font-bold text-white">Add New Product</h1>
-        </div>
-        <Image
-          src="/Arksh Food.png"
-          alt="Arksh Food Logo"
-          width={45}
-          height={45}
-          className="rounded-full bg-white p-1"
-        />
-      </div>
-      
-      <div className="flex border-b">
-        <button
-          type="button"
-          onClick={() => setActiveTab("basic")}
-          className={`px-6 py-3 font-medium text-sm transition-colors ${activeTab === "basic" ? "border-b-2 border-[#0055a4] text-[#0055a4]" : "text-gray-500 hover:text-[#0055a4]"}`}
-        >
-          Basic Information
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("description")}
-          className={`px-6 py-3 font-medium text-sm transition-colors ${activeTab === "description" ? "border-b-2 border-[#0055a4] text-[#0055a4]" : "text-gray-500 hover:text-[#0055a4]"}`}
-        >
-          Description
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("images")}
-          className={`px-6 py-3 font-medium text-sm transition-colors ${activeTab === "images" ? "border-b-2 border-[#0055a4] text-[#0055a4]" : "text-gray-500 hover:text-[#0055a4]"}`}
-        >
-          Images
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="p-6 space-y-6">
-        {activeTab === "basic" && (
-          <Card className="border-none shadow-none">
-            <CardContent className="p-0">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {/* Product Name */}
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Product Name <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={productData.name}
-                    onChange={handleInputChange}
-                    placeholder="Enter product name"
-                    className="border-gray-300 focus:border-[#0055a4] focus:ring-[#0055a4]"
-                    required
-                  />
-                </div>
-
-                {/* Category */}
-                <div className="space-y-2">
-                  <label htmlFor="category" className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Category <span className="text-red-500">*</span>
-                  </label>
-                  <Select
-                    value={productData.category}
-                    onValueChange={(value) => handleSelectChange("category", value)}
-                  >
-                    <SelectTrigger className="w-full border-gray-300 focus:border-[#0055a4] focus:ring-[#0055a4]">
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id.toString()}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Price */}
-                <div className="space-y-2">
-                  <label htmlFor="price" className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Price (NPR) <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="price"
-                    name="price"
-                    type="number"
-                    value={productData.price}
-                    onChange={handleInputChange}
-                    placeholder="0.00"
-                    min="0"
-                    step="0.01"
-                    className="border-gray-300 focus:border-[#0055a4] focus:ring-[#0055a4]"
-                    required
-                  />
-                </div>
-
-                {/* Discount Percentage */}
-                <div className="space-y-2">
-                  <label htmlFor="discountPercentage" className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Discount Percentage (%)
-                  </label>
-                  <div className="relative">
-                    <Input
-                      id="discountPercentage"
-                      name="discountPercentage"
-                      type="number"
-                      value={productData.discountPercentage}
-                      onChange={handleInputChange}
-                      placeholder="0"
-                      min="0"
-                      max="100"
-                      step="0.1"
-                      className="border-gray-300 focus:border-[#0055a4] focus:ring-[#0055a4] pr-12"
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <span className="text-gray-500">%</span>
-                    </div>
-                  </div>
-                  {productData.price && productData.discountPercentage ? (
-                    <div className="text-xs text-green-600 mt-1">
-                      Discounted price: NPR {calculatedDiscountedPrice}
-                    </div>
-                  ) : null}
-                </div>
-
-                {/* Stock */}
-                <div className="space-y-2">
-                  <label htmlFor="stock" className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Stock Quantity <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="stock"
-                    name="stock"
-                    type="number"
-                    value={productData.stock}
-                    onChange={handleInputChange}
-                    placeholder="0"
-                    min="0"
-                    className="border-gray-300 focus:border-[#0055a4] focus:ring-[#0055a4]"
-                    required
-                  />
-                </div>
-
-                {/* Product Flags */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Product Flags
-                  </label>
-                  <div className="flex items-center gap-6 mt-2 bg-gray-50 p-3 rounded-md">
-                    <div className="flex items-center">
-                      <input
-                        id="isNew"
-                        name="isNew"
-                        type="checkbox"
-                        checked={productData.isNew}
-                        onChange={handleInputChange}
-                        className="h-4 w-4 rounded border-gray-300 text-[#0055a4] focus:ring-[#0055a4]"
-                      />
-                      <label htmlFor="isNew" className="ml-2 text-sm text-gray-700">
-                        Mark as New
-                      </label>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        id="isBestSeller"
-                        name="isBestSeller"
-                        type="checkbox"
-                        checked={productData.isBestSeller}
-                        onChange={handleInputChange}
-                        className="h-4 w-4 rounded border-gray-300 text-[#0055a4] focus:ring-[#0055a4]"
-                      />
-                      <label htmlFor="isBestSeller" className="ml-2 text-sm text-gray-700">
-                        Best Seller
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {activeTab === "description" && (
-          <Card className="border-none shadow-none">
-            <CardContent className="p-0">
-              <div className="space-y-6">
-                {/* Rich Text Editor */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Product Description <span className="text-red-500">*</span>
-                    <div className="relative group">
-                      <Info className="h-4 w-4 text-gray-400 cursor-help" />
-                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10">
-                        Use the rich text editor to format your product description with headings, lists, and more.
-                      </div>
-                    </div>
-                  </label>
-                  <div className="border border-gray-300 rounded-md overflow-hidden">
-                    {/* <Editor
-                      editorState={editorState}
-                      onEditorStateChange={handleEditorChange}
-                      wrapperClassName="wrapper-class"
-                      editorClassName="editor-class p-4 min-h-[200px]"
-                      toolbarClassName="toolbar-class border-b border-gray-300 sticky top-0 z-10 bg-white"
-                      toolbar={{
-                        options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'image', 'remove', 'history'],
-                        inline: { inDropdown: false, options: ['bold', 'italic', 'underline', 'strikethrough'] },
-                        blockType: { inDropdown: true, options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Blockquote'] },
-                        fontSize: { options: [10, 12, 14, 16, 18, 24, 30, 36, 48] },
-                        textAlign: { inDropdown: false },
-                        list: { inDropdown: false, options: ['unordered', 'ordered'] },
-                        link: { inDropdown: false, options: ['link', 'unlink'] },
-                        image: { uploadCallback: file => {
-                          return new Promise((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.onload = () => {
-                              resolve({ data: { link: reader.result } });
-                            };
-                            reader.onerror = reject;
-                            reader.readAsDataURL(file);
-                          });
-                        }, alt: { present: true, mandatory: false } },
-                      }}
-                    /> */}
-                  </div>
-                </div>
-                
-                {/* Product Features */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                      Product Features
-                    </label>
-                    <Button 
-                      type="button" 
-                      onClick={addFeature} 
-                      variant="outline" 
-                      size="sm"
-                      className="text-[#0055a4] border-[#0055a4] hover:bg-[#0055a4]/10"
-                    >
-                      <Plus className="h-4 w-4 mr-1" /> Add Feature
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    {productData.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Input
-                          value={feature}
-                          onChange={(e) => updateFeature(index, e.target.value)}
-                          placeholder={`Feature ${index + 1}`}
-                          className="border-gray-300 focus:border-[#0055a4] focus:ring-[#0055a4]"
-                        />
-                        {productData.features.length > 1 && (
-                          <Button
-                            type="button"
-                            onClick={() => removeFeature(index)}
-                            variant="ghost"
-                            size="icon"
-                            className="h-9 w-9 text-red-500 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {activeTab === "images" && (
-          <Card className="border-none shadow-none">
-            <CardContent className="p-0">
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
-                    Product Images <span className="text-red-500">*</span>
-                  </label>
-                  <p className="text-xs text-gray-500 mt-1">Upload high-quality images of your product. First image will be used as the main product image.</p>
-                </div>
-                
-                {/* Image Upload Area */}
-                <div className="mt-1 rounded-lg border-2 border-dashed border-gray-300 p-6">
-                  <div className="space-y-2 text-center">
-                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                    <div className="flex flex-col text-sm text-gray-600">
-                      <label
-                        htmlFor="image-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-medium text-[#0055a4] focus-within:outline-none focus-within:ring-2 focus-within:ring-[#0055a4] focus-within:ring-offset-2 hover:text-[#004a8f] mx-auto mb-1"
-                      >
-                        <span>Upload files</span>
-                        <input
-                          id="image-upload"
-                          name="image"
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          className="sr-only"
-                          onChange={handleImageChange}
-                          required={images.length === 0}
-                        />
-                      </label>
-                      <p>or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB (Multiple images allowed)</p>
-                  </div>
-                </div>
-                
-                {/* Image Preview Grid */}
-                {images.length > 0 && (
-                  <div className="mt-4">
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Selected Images ({images.length})</h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                      {images.map((image) => (
-                        <div key={image.id} className="relative group rounded-md overflow-hidden border border-gray-200">
-                          <div className="aspect-square">
-                            <img
-                              src={image.src}
-                              alt="Product preview"
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center">
-                            <button
-                              type="button"
-                              onClick={() => removeImage(image.id)}
-                              className="opacity-0 group-hover:opacity-100 rounded-full bg-red-500 p-1.5 text-white hover:bg-red-600 shadow-sm transition-opacity"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                          {images.indexOf(image) === 0 && (
-                            <div className="absolute top-0 left-0 bg-[#0055a4] text-white text-xs px-2 py-1 rounded-br-md">
-                              Main
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Action Buttons */}
-        <div className="flex justify-between items-center border-t pt-6 mt-6">
-          <div className="text-sm text-gray-500 flex items-center gap-1">
-            <Info className="h-4 w-4" />
-            <span>All fields marked with <span className="text-red-500">*</span> are required</span>
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-12">
+      {/* Top Navigation Bar */}
+      <div className="bg-white sm:border-b">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div>
+              <h1 className="text-xl font-bold text-gray-800">New Product</h1>
+            </div>
           </div>
-          <div className="flex space-x-3">
-            <Button
-              type="button"
-              variant="outline"
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
-              onClick={() => window.history.back()}
-            >
-              Cancel
-            </Button>
+
+          <div className="flex items-center gap-3">
             <Button
               type="submit"
-              className="bg-[#0055a4] text-white hover:bg-[#004a8f] shadow-sm"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="bg-[#0055a4] hover:bg-[#004a8f] text-white"
             >
-              <Plus className="mr-1.5 h-4 w-4" />
-              Add Product
+              {isSubmitting ? (
+                <>
+                  <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                  Saving
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4" />
+                 <span>Add Product</span>
+                </>
+              )}
             </Button>
           </div>
         </div>
-      </form>
-    </div>
-  );
-};
+      </div>
 
-export default AddNewProduct;
+      <div className="py-6">
+        {/* Main Tabs Navigation */}
+        <Tabs defaultValue="basic" onValueChange={setActiveTab} className="w-full mb-8 md:gap-[110px] gap-[250px] grid">
+        <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2 bg-transparent p-0 w-full">
+            <TabsTrigger
+              value="basic"
+              className={`flex flex-col items-center justify-center p-4 rounded-lg border ${
+                activeTab === "basic"
+                  ? "border-[#0055a4] bg-[#0055a4]/5 text-[#0055a4]"
+                  : "border-gray-200 bg-white hover:bg-gray-50"
+              }`}
+            >
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                  activeTab === "basic" ? "bg-[#0055a4]/10 text-[#0055a4]" : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                <Tag className="h-5 w-5" />
+              </div>
+              <span className="font-medium">Basic Info</span>
+              <span className="text-xs mt-1 text-gray-500">Name, category, etc.</span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="media"
+              className={`flex flex-col items-center justify-center p-4 rounded-lg border ${
+                activeTab === "media"
+                  ? "border-[#0055a4] bg-[#0055a4]/5 text-[#0055a4]"
+                  : "border-gray-200 bg-white hover:bg-gray-50"
+              }`}
+            >
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                  activeTab === "media" ? "bg-[#0055a4]/10 text-[#0055a4]" : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                <Camera className="h-5 w-5" />
+              </div>
+              <span className="font-medium">Media</span>
+              <span className="text-xs mt-1 text-gray-500">Images & gallery</span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="details"
+              className={`flex flex-col items-center justify-center p-4 rounded-lg border ${
+                activeTab === "details"
+                  ? "border-[#0055a4] bg-[#0055a4]/5 text-[#0055a4]"
+                  : "border-gray-200 bg-white hover:bg-gray-50"
+              }`}
+            >
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                  activeTab === "details" ? "bg-[#0055a4]/10 text-[#0055a4]" : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                <Layers className="h-5 w-5" />
+              </div>
+              <span className="font-medium">Details</span>
+              <span className="text-xs mt-1 text-gray-500">Description & ingredients</span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="pricing"
+              className={`flex flex-col items-center justify-center p-4 rounded-lg border ${
+                activeTab === "pricing"
+                  ? "border-[#0055a4] bg-[#0055a4]/5 text-[#0055a4]"
+                  : "border-gray-200 bg-white hover:bg-gray-50"
+              }`}
+            >
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                  activeTab === "pricing" ? "bg-[#0055a4]/10 text-[#0055a4]" : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                <DollarSign className="h-5 w-5" />
+              </div>
+              <span className="font-medium">Pricing</span>
+              <span className="text-xs mt-1 text-gray-500">Price & inventory</span>
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Tab Contents */}
+          <TabsContent value="basic" className="mt-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2">
+                <Card className="overflow-hidden border-0 shadow-lg">
+                  <CardHeader className="bg-white px-6 py-5 border-b">
+                    <CardTitle className="text-lg font-semibold flex items-center">
+                      <Tag className="h-5 w-5 mr-2 text-[#0055a4]" />
+                      Basic Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 space-y-6">
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="name" className="text-gray-700 font-medium">
+                          Product Name <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={productData.name}
+                          onChange={handleInputChange}
+                          placeholder="Enter product name"
+                          className="mt-1.5 h-12 text-base"
+                        />
+                      </div>
+
+                      <div className="w-full">
+                        <Label htmlFor="category" className="text-gray-700 font-medium">
+                          Category <span className="text-red-500">*</span>
+                        </Label>
+                        <Select
+                          value={productData.category}
+                          onValueChange={(value) => handleSelectChange("category", value)}
+                        >
+                          <SelectTrigger id="category" className="mt-1.5 h-12 text-base w-full">
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {categories.map((category) => (
+                              <SelectItem key={category.id} value={category.name}>
+                                {category.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="shortDescription" className="text-gray-700 font-medium">
+                          Short Description
+                        </Label>
+                        <Textarea
+                          id="shortDescription"
+                          placeholder="Brief description of the product (appears in product listings)"
+                          className="mt-1.5 min-h-[100px] text-base"
+                          value={descriptionContent}
+                          onChange={(e) => setDescriptionContent(e.target.value)}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Keep it short and compelling. This appears in product listings.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Sidebar */}
+              <div className="space-y-6">
+                <Card className="overflow-hidden border-0 shadow-lg">
+                  <CardHeader className="bg-white px-6 py-5 border-b">
+                    <CardTitle className="text-lg font-semibold flex items-center">
+                      <Star className="h-5 w-5 mr-2 text-[#0055a4]" />
+                      Product Status
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label htmlFor="isNew" className="text-gray-700 font-medium">
+                            Mark as New
+                          </Label>
+                          <p className="text-gray-500 text-sm">Display a "New" badge</p>
+                        </div>
+                        <Switch
+                          id="isNew"
+                          name="isNew"
+                          checked={productData.isNew}
+                          onCheckedChange={(checked) => setProductData({ ...productData, isNew: checked })}
+                          className="data-[state=checked]:bg-[#0055a4]"
+                        />
+                      </div>
+
+                      <Separator />
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label htmlFor="isBestSeller" className="text-gray-700 font-medium">
+                            Best Seller
+                          </Label>
+                          <p className="text-gray-500 text-sm">Mark as a best seller</p>
+                        </div>
+                        <Switch
+                          id="isBestSeller"
+                          name="isBestSeller"
+                          checked={productData.isBestSeller}
+                          onCheckedChange={(checked) => setProductData({ ...productData, isBestSeller: checked })}
+                          className="data-[state=checked]:bg-[#0055a4]"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-[#0055a4]/5 to-[#39c4ff]/5">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-[#0055a4]/10 rounded-full p-3 text-[#0055a4]">
+                        <AlertCircle className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 mb-1">Tips for Success</h3>
+                        <p className="text-sm text-gray-600 mb-2">
+                          Products with complete information sell up to 80% better.
+                        </p>
+                        <ul className="text-sm text-gray-600 space-y-1">
+                          <li className="flex items-center">
+                            <Check className="h-4 w-4 text-green-500 mr-1.5" />
+                            Use high-quality images
+                          </li>
+                          <li className="flex items-center">
+                            <Check className="h-4 w-4 text-green-500 mr-1.5" />
+                            Write detailed descriptions
+                          </li>
+                          <li className="flex items-center">
+                            <Check className="h-4 w-4 text-green-500 mr-1.5" />
+                            Include all ingredients
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="media" className="mt-0">
+            <Card className="overflow-hidden border-0 shadow-lg">
+              <CardHeader className="bg-white px-6 py-5 border-b">
+                <CardTitle className="text-lg font-semibold flex items-center">
+                  <Camera className="h-5 w-5 mr-2 text-[#0055a4]" />
+                  Product Images
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 gap-6">
+                  <div
+                    className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-colors ${
+                      isDragging ? "border-[#0055a4] bg-[#0055a4]/5" : "border-[#0055a4]/20 hover:bg-[#0055a4]/5"
+                    }`}
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                  >
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageChange}
+                      multiple
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    <div className="mx-auto w-20 h-20 rounded-full bg-[#0055a4]/10 flex items-center justify-center mb-4">
+                      <Upload className="h-10 w-10 text-[#0055a4]" />
+                    </div>
+                    <h3 className="text-gray-800 font-semibold text-lg mb-2">Upload Product Images</h3>
+                    <p className="text-gray-600 mb-4 max-w-md mx-auto">
+                      Drag and drop your images here, or click to browse. We recommend using at least 3 high-quality
+                      images.
+                    </p>
+                    <Button type="button" className="bg-[#0055a4] hover:bg-[#004a8f] text-white">
+                      <Upload className="h-4 w-4 mr-2" />
+                      Select Images
+                    </Button>
+                    <p className="text-xs text-gray-500 mt-4">
+                      Supported formats: JPG, PNG, WEBP. Max size: 5MB per image.
+                    </p>
+                  </div>
+
+                  {images.length > 0 && (
+                    <div>
+                      <h3 className="font-medium text-gray-700 mb-4 flex items-center">
+                        <Check className="h-5 w-5 text-green-500 mr-2" />
+                        {images.length} {images.length === 1 ? "Image" : "Images"} Uploaded
+                      </h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {images.map((image, index) => (
+                          <div
+                            key={image.id}
+                            className="relative group rounded-lg overflow-hidden border border-gray-200 bg-white shadow-sm"
+                          >
+                            <div className="aspect-square relative">
+                              <img
+                                src={image.src || "/placeholder.svg"}
+                                alt={`Product image ${index + 1}`}
+                                className="object-cover w-full h-full"
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <button
+                                type="button"
+                                onClick={() => removeImage(image.id)}
+                                className="bg-red-500 text-white p-2 rounded-full"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                            {index === 0 && <Badge className="absolute top-2 left-2 bg-[#0055a4]">Main</Badge>}
+                            <div className="p-2 text-xs">
+                              <p className="truncate text-gray-700">{image.name || `Image ${index + 1}`}</p>
+                              <p className="text-gray-500">{formatFileSize(image.size || 0)}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+              <CardFooter className="bg-gray-50 px-6 py-4 border-t">
+                <div className="flex items-center text-sm text-gray-600">
+                  <Info className="h-4 w-4 mr-2 text-[#0055a4]" />
+                  The first image will be used as the main product image in listings.
+                </div>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="details" className="mt-0">
+            <Card className="overflow-hidden border-0 shadow-lg">
+              <CardHeader className="bg-white px-6 py-5 border-b">
+                <CardTitle className="text-lg font-semibold flex items-center">
+                  <Layers className="h-5 w-5 mr-2 text-[#0055a4]" />
+                  Product Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <Tabs defaultValue="description" className="w-full">
+                  <TabsList className="mb-6 bg-gray-100 p-1 rounded-lg">
+                    <TabsTrigger
+                      value="description"
+                      className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#0055a4]"
+                    >
+                      Description
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="ingredients"
+                      className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#0055a4]"
+                    >
+                      Ingredients
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="features"
+                      className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#0055a4]"
+                    >
+                      Features
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="description" className="mt-0">
+                    <div className="space-y-3 mb-4">
+                      <Label className="text-gray-700 font-medium">Detailed Description</Label>
+                      <p className="text-sm text-gray-600">
+                        Provide a comprehensive description of your product, including its benefits and uses.
+                      </p>
+                    </div>
+                    <div className="min-h-[300px] border rounded-md">
+                      {/* <ReactQuill
+                        theme="snow"
+                        value={descriptionContent}
+                        onChange={setDescriptionContent}
+                        modules={modules}
+                        formats={formats}
+                        className="h-64"
+                        placeholder="Start writing your product description..."
+                      /> */}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="ingredients" className="mt-0">
+                    <div className="space-y-3 mb-4">
+                      <Label className="text-gray-700 font-medium">Ingredients List</Label>
+                      <p className="text-sm text-gray-600">
+                        List all ingredients in your product. Be transparent about allergens and nutritional
+                        information.
+                      </p>
+                    </div>
+                    <div className="min-h-[300px] border rounded-md">
+                      {/* <ReactQuill
+                        theme="snow"
+                        value={ingredientsContent}
+                        onChange={setIngredientsContent}
+                        modules={modules}
+                        formats={formats}
+                        className="h-64"
+                        placeholder="List your product ingredients here..."
+                      /> */}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="features" className="mt-0">
+                    <div className="space-y-3 mb-4">
+                      <Label className="text-gray-700 font-medium">Product Features</Label>
+                      <p className="text-sm text-gray-600">Add key features that make your product stand out.</p>
+                    </div>
+
+                    <div className="space-y-3">
+                      {productData.features.map((feature, index) => (
+                        <div key={index} className="flex items-center gap-2 group">
+                          <div className="w-8 h-8 rounded-full bg-[#0055a4]/10 flex items-center justify-center shrink-0 text-[#0055a4] font-medium">
+                            {index + 1}
+                          </div>
+                          <Input
+                            value={feature}
+                            onChange={(e) => updateFeature(index, e.target.value)}
+                            placeholder={`Feature ${index + 1}`}
+                            className="flex-1 border-gray-300 focus:border-[#0055a4] focus:ring focus:ring-[#0055a4]/20 focus:ring-opacity-50"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeFeature(index)}
+                            disabled={productData.features.length === 1}
+                            className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={addFeature}
+                        className="mt-2 border-[#0055a4]/30 text-[#0055a4] hover:bg-[#0055a4]/5"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Feature
+                      </Button>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="pricing" className="mt-0">
+            <Card className="overflow-hidden border-0 shadow-lg">
+              <CardHeader className="bg-white px-6 py-5 border-b">
+                <CardTitle className="text-lg font-semibold flex items-center">
+                  <DollarSign className="h-5 w-5 mr-2 text-[#0055a4]" />
+                  Pricing & Inventory
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="price" className="text-gray-700 font-medium">
+                        Price (NPR) <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="mt-1.5 relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <DollarSign className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          type="number"
+                          id="price"
+                          name="price"
+                          placeholder="0.00"
+                          value={productData.price}
+                          onChange={handleInputChange}
+                          className="pl-10 h-12 text-base"
+                          min="0"
+                          step="0.01"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="discountPercentage" className="text-gray-700 font-medium">
+                        Discount Percentage
+                      </Label>
+                      <div className="mt-1.5 relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Percent className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          type="number"
+                          id="discountPercentage"
+                          name="discountPercentage"
+                          placeholder="0"
+                          value={productData.discountPercentage}
+                          onChange={handleInputChange}
+                          className="pl-10 h-12 text-base"
+                          min="0"
+                          max="100"
+                        />
+                      </div>
+                      {productData.price && productData.discountPercentage ? (
+                        <div className="mt-2 p-3 bg-[#0055a4]/5 rounded-md">
+                          <p className="text-sm font-medium text-[#0055a4]">
+                            Final price: NPR {calculatedDiscountedPrice}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Customers save: NPR {(productData.price - calculatedDiscountedPrice).toFixed(2)}
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="stock" className="text-gray-700 font-medium">
+                        Stock Quantity <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="mt-1.5 relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Package className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          type="number"
+                          id="stock"
+                          name="stock"
+                          placeholder="0"
+                          value={productData.stock}
+                          onChange={handleInputChange}
+                          className="pl-10 h-12 text-base"
+                          min="0"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-[#39c4ff]/10 rounded-lg border border-[#39c4ff]/20">
+                      <h3 className="font-medium text-gray-800 mb-2 flex items-center">
+                        <Sparkles className="h-5 w-5 mr-2 text-[#39c4ff]" />
+                        Pricing Tips
+                      </h3>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li className="flex items-start">
+                          <Check className="h-4 w-4 text-[#0055a4] mt-0.5 mr-2" />
+                          <span>Research competitor pricing for similar products</span>
+                        </li>
+                        <li className="flex items-start">
+                          <Check className="h-4 w-4 text-[#0055a4] mt-0.5 mr-2" />
+                          <span>Consider offering bundle discounts for multiple purchases</span>
+                        </li>
+                        <li className="flex items-start">
+                          <Check className="h-4 w-4 text-[#0055a4] mt-0.5 mr-2" />
+                          <span>Set up low stock alerts to manage inventory efficiently</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="bg-gray-50 px-6 py-4 border-t flex justify-end">
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="bg-[#0055a4] hover:bg-[#004a8f] text-white"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Saving
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4 mr-2" />
+                      Save Product
+                    </>
+                  )}
+                </Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}
+
+export default AddNewProduct

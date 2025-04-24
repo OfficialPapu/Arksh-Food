@@ -33,7 +33,7 @@ export function AdminHeader() {
               height={36}
               className="rounded-full"
             />
-            <span className="font-bold text-[#0057b7] md:inline-block">ARKSH Admin</span>
+            <span className="font-bold text-[#0057b7] md:inline-block">Admin</span>
           </Link>
         </div>
 

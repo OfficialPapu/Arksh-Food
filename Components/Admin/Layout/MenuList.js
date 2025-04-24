@@ -33,10 +33,21 @@ const navItems = [
         href: "/admin/categories",
         icon: <Tag className="h-3.5 w-3.5" />,
       },
+    ],
+  },
+  {
+    title: "Categories",
+    icon: <Package className="h-4 w-4" />,
+    submenu: [
       {
-        title: "Inventory",
-        href: "/admin/inventory",
+        title: "All Categories",
+        href: "/admin/categories",
         icon: <Package className="h-3.5 w-3.5" />,
+      },
+      {
+        title: "Add Category",
+        href: "/admin/categories/new",
+        icon: <Tag className="h-3.5 w-3.5" />,
       },
     ],
   },
