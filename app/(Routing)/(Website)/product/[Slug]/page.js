@@ -1,14 +1,12 @@
-"use client"
-import { useParams } from 'next/navigation'
+import ProductDetails from '@/Components/Website/Product/ProductDetails'
 import React from 'react'
 
-export default function page() {
-  const {Slug} = useParams();
-  console.log(Slug);
-  
+const page = () => {
   return (
     <div>
-      This is your slug: {Slug}
+      <ProductDetails />
     </div>
   )
 }
+
+export default page

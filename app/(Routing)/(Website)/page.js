@@ -7,10 +7,10 @@ import Testimonials from '@/Components/Website/Home/Testimonials'
 const page = () => {
   return (
     <div>
-      <HeroSection/>
-      <FeaturedProducts/>
-      <Categories/>
-      <Testimonials/>
+      <HeroSection />
+      <FeaturedProducts />
+      <Categories />
+      <Testimonials />
     </div>
   )
 }

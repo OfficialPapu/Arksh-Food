@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import { useSelector } from "react-redux"
 
 // Constants
 const CATEGORIES = [
@@ -82,13 +83,13 @@ const NavIconButton = memo(({ Icon, onClick, badgeCount, className }) => (
 ))
 
 export default function Navbar() {
+  const isAuth = useSelector((state) => state.Login.isAuth);
   const [isOpen, setIsOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState(null)
   const [searchValue, setSearchValue] = useState("")
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchInputRef = useRef(null)
 
-  // Close menu when clicking outside
   const handleClickOutside = useCallback((event) => {
     if (isOpen && !event.target.closest(".navbar-container")) {
       setIsOpen(false)
@@ -100,7 +101,6 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [handleClickOutside])
 
-  // Focus search input when opened
   useEffect(() => {
     if (isSearchOpen && searchInputRef.current) {
       searchInputRef.current.focus()
@@ -142,7 +142,7 @@ export default function Navbar() {
                 onClick={toggleSearch}
                 className="hidden md:flex cursor-pointer"
               />
-              <Link href="/auth/login" passHref>
+              <Link href={isAuth ? "/account" : "/auth/login"} passHref>
                 <NavIconButton Icon={User2} className="cursor-pointer" />
               </Link>
               <Link href="/account/cart" passHref className="rounded-full hover:bg-gray-100 relative">

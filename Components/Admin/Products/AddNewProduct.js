@@ -7,8 +7,8 @@ import { Button } from "@/Components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import Link from "next/link";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+// import { Editor } from "react-draft-wysiwyg";
+// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Separator } from "@/Components/ui/separator";
 
@@ -338,7 +338,7 @@ const AddNewProduct = () => {
                     </div>
                   </label>
                   <div className="border border-gray-300 rounded-md overflow-hidden">
-                    <Editor
+                    {/* <Editor
                       editorState={editorState}
                       onEditorStateChange={handleEditorChange}
                       wrapperClassName="wrapper-class"
@@ -363,7 +363,7 @@ const AddNewProduct = () => {
                           });
                         }, alt: { present: true, mandatory: false } },
                       }}
-                    />
+                    /> */}
                   </div>
                 </div>
                 

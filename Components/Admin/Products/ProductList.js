@@ -89,15 +89,15 @@ const sampleProducts = [
 const ProductList = () => {
   const [products, setProducts] = useState(sampleProducts);
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all-categories');
-  const [statusFilter, setStatusFilter] = useState('all-status');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'ascending' });
 
   // Filter products based on search term and filters
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all-categories' || product.category === categoryFilter;
-    const matchesStatus = statusFilter === 'all-status' || product.status === statusFilter;
+    const matchesCategory = categoryFilter === '' || product.category === categoryFilter;
+    const matchesStatus = statusFilter === '' || product.status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -322,10 +322,9 @@ const ProductList = () => {
               <p className="text-gray-500 mb-6">Try adjusting your search or filter to find what you're looking for.</p>
               <Button onClick={() => {
                 setSearchTerm('');
-                setCategoryFilter('all-categories');
-                setStatusFilter('all-status');
+                setCategoryFilter('');
+                setStatusFilter('');
               }}>
-
                 Clear filters
               </Button>
             </div>
