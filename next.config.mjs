@@ -6,6 +6,7 @@ const nextConfig = {
             { hostname: 'img.drz.lazcdn.com' },
             { hostname: 'www.dreamskinnepal.com' },
             { hostname: 'www.arkshgroup.com' },
+            { hostname: 'localhost' },
         ],
     }
 };
