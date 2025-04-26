@@ -1,7 +1,7 @@
 import ConnectDB from "@/lib/MongoDB";
 import UserSchema from "@/Models/UserModel";
 import { NextResponse } from "next/server";
-import { CountryInfo } from "@/lib/CountryInfo";
+import { CountryInfo } from "@/lib/BaseConfig";
 
 export const POST = async (req) => {
     try {

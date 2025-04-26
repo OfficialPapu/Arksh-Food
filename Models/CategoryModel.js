@@ -8,6 +8,9 @@ let CategoriesSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    Description: {
+        type: String,
+    },
     Image: {
         type: String,
         required: true
