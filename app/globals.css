@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+*::-webkit-scrollbar {
+  display: none;
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -174,3 +176,80 @@
 
 /* Product Detail Page End*/
 
+/* Tip Tap JS */
+
+
+
+h1 {
+  font-size: 32px;
+  margin: 0 !important;
+}
+
+h2 {
+  font-size: 28px;
+  margin: 0 !important;
+}
+
+h3 {
+  font-size: 24px;
+  margin: 0 !important;
+}
+
+h4 {
+  font-size: 20px;
+  margin: 0 !important;
+}
+
+h5 {
+  font-size: 16px;
+  margin: 0 !important;
+}
+
+h6 {
+  font-size: 14px;
+  margin: 0 !important;
+}
+
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-left: 10px;
+  margin: 0 !important;
+}
+
+footer ul {
+  list-style-type: none;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin-left: 10px;
+  margin: 0 !important;
+}
+
+
+blockquote {
+  font-style: italic;
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  margin: 0 !important;
+}
+
+img {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+
+.TipTapEditor .tiptap {
+  min-height: 300px;
+  outline: none;
+  padding: 10px;
+}
+
+.prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin: 0 !important;
+}

@@ -1,5 +1,5 @@
 import React from 'react'
-import AddNewProduct from '@/Components/Admin/Products/AddNewProduct'
+import AddNewProduct from '@/Components/Admin/Products/New/AddNewProduct'
 
 const page = () => {
   return (
