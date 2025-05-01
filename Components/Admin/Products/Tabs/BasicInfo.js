@@ -7,14 +7,13 @@ import { Separator } from "@/Components/ui/separator";
 import { Textarea } from "@/Components/ui/textarea";
 import { Switch } from "@/Components/ui/switch";
 import { Label } from "@/Components/ui/label";
-import {useProductContext} from "../Context/ProductContext";
+import { useProductContext } from "../Context/ProductContext";
 
 const BasicInfo = () => {
-    const { categories, productData, setProductData, handleInputChange, handleSelectChange } = useProductContext();
+    const { categories, productData, setProductData, handleInputChange, handleSelectChange, handlemetaChange } = useProductContext();
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
                 <Card className="overflow-hidden border-0 shadow-lg">
                     <CardHeader className="bg-white px-6 py-5 border-b">
                         <CardTitle className="text-lg font-semibold flex items-center">
@@ -91,6 +90,79 @@ const BasicInfo = () => {
                                 <p className="text-xs text-gray-500 mt-1">
                                     Keep it short and compelling. This appears in product
                                     listings.
+                                </p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* SEO Information Card */}
+                <Card className="overflow-hidden border-0 shadow-lg">
+                    <CardHeader className="bg-white px-6 py-5 border-b">
+                        <CardTitle className="text-lg font-semibold flex items-center">
+                            <Star className="h-5 w-5 mr-2 text-[#0055a4]" />
+                            SEO Information
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 space-y-6">
+                        <div className="space-y-4">
+                            <div>
+                                <Label
+                                    htmlFor="title"
+                                    className="text-gray-700 font-medium"
+                                >
+                                    Meta Title
+                                </Label>
+                                <Input
+                                    id="title"
+                                    name="title"
+                                    value={productData.SEO.title}
+                                    onChange={handlemetaChange}
+                                    placeholder="Enter SEO title"
+                                    className="mt-1.5 h-12 text-base"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Recommended length: 50-60 characters
+                                </p>
+                            </div>
+
+                            <div>
+                                <Label
+                                    htmlFor="description"
+                                    className="text-gray-700 font-medium"
+                                >
+                                    Meta Description
+                                </Label>
+                                <Textarea
+                                    id="description"
+                                    name="description"
+                                    value={productData.SEO.description}
+                                    onChange={handlemetaChange}
+                                    placeholder="Enter SEO description"
+                                    className="mt-1.5 min-h-[100px] text-base"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Recommended length: 150-160 characters
+                                </p>
+                            </div>
+
+                            <div>
+                                <Label
+                                    htmlFor="keywords"
+                                    className="text-gray-700 font-medium"
+                                >
+                                    Meta Keywords
+                                </Label>
+                                <Input
+                                    id="keywords"
+                                    name="keywords"
+                                    value={productData.SEO.keywords}
+                                    onChange={handlemetaChange}
+                                    placeholder="Enter keywords separated by commas"
+                                    className="mt-1.5 h-12 text-base"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Example: food, organic, healthy, fresh
                                 </p>
                             </div>
                         </div>

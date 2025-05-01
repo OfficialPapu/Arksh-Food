@@ -62,6 +62,12 @@ export const ProductProvider = ({ children }) => {
       isNew: false,
       isBestSeller: false,
       stock: "",
+      excerpt: "",
+      SEO: {
+        title: "",
+        description: "",
+        keywords: "",
+      },
     });
     setImages([]);
     DescEditor.commands.clearContent();
@@ -157,6 +163,7 @@ export const ProductProvider = ({ children }) => {
     };
     fetchCategories();
   }, []);
+
   const [productData, setProductData] = useState({
     name: "",
     excerpt: "",
@@ -166,15 +173,62 @@ export const ProductProvider = ({ children }) => {
     isNew: false,
     isBestSeller: false,
     stock: "",
+    SEO: {
+      title: "",
+      description: "",
+      keywords: "",
+    },
   });
 
+  const validateForm = () => {
+    const { name, price, category, stock } = productData;
+  
+    if (!name.trim()) {
+      toast.error("Product name is required.");
+      return false;
+    }
+  
+    if (!price || isNaN(price) || Number(price) <= 0) {
+      toast.error("Valid price is required.");
+      return false;
+    }
+  
+    if (!category) {
+      toast.error("Product category is required.");
+      return false;
+    }
+  
+    if (stock && (isNaN(stock) || Number(stock) < 0)) {
+      toast.error("Stock must be a non-negative number.");
+      return false;
+    }
+  
+    if (images.length === 0) {
+      toast.error("At least one product image is required.");
+      return false;
+    }
+  
+    return true;
+  };
+
+  
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setProductData({
       ...productData,
       [name]: type === "checkbox" ? checked : value,
     });
+  };
 
+  const handlemetaChange = (e) => {
+    const { name, value } = e.target;
+    setProductData((prevData) => ({
+      ...prevData,
+      SEO: {
+        ...prevData.SEO,
+        [name]: value,
+      },
+    }));
   };
 
   const handleSelectChange = (name, value) => {
@@ -188,6 +242,7 @@ export const ProductProvider = ({ children }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setIsSubmitting(true);
     let formData = new FormData();
     let uploadedImages = [];
@@ -228,7 +283,6 @@ export const ProductProvider = ({ children }) => {
         });
 
         if (response.data.success) {
-          // Replace placeholders in both editors
           uploadedImages.forEach((img, idx) => {
             const newUrl = response.data.urls[idx];
 
@@ -257,16 +311,17 @@ export const ProductProvider = ({ children }) => {
 
     formData.append("Description", DescEditor.getHTML());
     formData.append("Ingredients", IngredientsEditor.getHTML());
-    convertObjectToFormData(productData, formData);    
+    convertObjectToFormData(productData, formData);
     images.forEach((image) => {
       formData.append("Images", image.file);
     });
+
     try {
       const response = await axios.post(`api/admin/product/new`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.data.success) {
-        // resetForm();
+        resetForm();
         toast.success("Product created successfully!");
       } else {
         toast.error("Failed to create product.");
@@ -301,12 +356,13 @@ export const ProductProvider = ({ children }) => {
         setProductData,
         handleInputChange,
         handleSelectChange,
+        handlemetaChange,
       }}
     >
       {children}
     </ProductContext.Provider>
   );
-  
+
 };
 
 export const useProductContext = () => useContext(ProductContext);

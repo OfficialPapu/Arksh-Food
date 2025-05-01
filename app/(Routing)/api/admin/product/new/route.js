@@ -26,42 +26,40 @@ export async function POST(req) {
         const Description = formData.get('Description');
         const Ingredients = formData.get('Ingredients');
         const Slug = createSlug(Name);
+        const meta = {
+            Title: formData.get('SEO[title]'),
+            Description: formData.get('SEO[description]'),
+            Keywords: formData.get('SEO[keywords]'),
+        };
 
-        // const imagePaths = [];
-        // for (const file of images) {
-        //     let { filePath, filename, year, month } = await GenerateFileName(file);
-        //     const buffer = Buffer.from(await file.arrayBuffer());
-        //     await fs.writeFile(filePath, buffer);
-        //     const storedPath = `${year}/${month}/${filename}`;
-        //     imagePaths.push(storedPath);
-        // }
+        const imagePaths = [];
+        for (const file of images) {
+            let { filePath, filename, year, month } = await GenerateFileName(file);
+            const buffer = Buffer.from(await file.arrayBuffer());
+            await fs.writeFile(filePath, buffer);
+            imagePaths.push(`${year}/${month}/${filename}`);
+        }
+        if (imagePaths.length === 0) {
+            return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
+        }
 
-        // console.log(Name, Price, Excerpt, Discount, Category, Stock, isNew, isBestSeller, Slug);
+        const newProduct = new ProductSchema({
+            Name,
+            Slug,
+            Excerpt,
+            Description,
+            Ingredients,
+            Category,
+            isNewArrival: isNew,
+            isBestSeller,
+            Price,
+            Discount,
+            Quantity: Stock,
+            Media: imagePaths,
+            SEO: meta,
+        });
 
-
-
-        // if (imagePaths.length === 0) {
-        //     return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
-        // }
-
-        // const newProduct = new ProductSchema({
-        //     Name,
-        //     Slug,
-        //     Excerpt,
-        //     Description,
-        //     Ingredients,
-        //     Category,
-        //     isNewArrival: isNew,
-        //     isBestSeller,
-        //     Price,
-        //     Discount,
-        //     Stock,
-        //     Media: {
-        //         Images: imagePaths,
-        //     }
-        // });
-
-        // await newProduct.save();
+        await newProduct.save();
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (err) {
         console.log(err);

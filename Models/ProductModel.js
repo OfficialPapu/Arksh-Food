@@ -1,22 +1,20 @@
 const mongoose = require('mongoose');
 
 let ProductSchema = new mongoose.Schema({
-    Name: { type: String, required: true, trim: true },
-    Slug: { type: String, required: true, unique: true },
+    Name: { type: String, required: true },
+    Slug: { type: String, required: true },
     Excerpt: { type: String, required: true },
     Description: { type: String },
     Ingredients: { type: String },
-    Category: { type: mongoose.Schema.Types.ObjectId, ref: "Categories", required: true },
+    Category: { type: mongoose.Schema.Types.ObjectId, ref: "Categories" },
     isNewArrival: { type: Boolean, default: false },
     isBestSeller: { type: Boolean, default: false },
     Price: { type: Number, required: true },
     Discount: {
         Percentage: { type: Number, default: 0 },
     },
-    Stock: {
-        Quantity: { type: Number, required: true },
-    },
-    Media: { Images: { type: String} },
+    Quantity: { type: Number, required: true },
+    Media: { Images: { type: String } },
     SEO: {
         Title: { type: String },
         Description: { type: String },
