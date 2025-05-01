@@ -1,6 +1,9 @@
+"use client";
+import Image from "next/image";
 import { Star, ArrowRight } from "lucide-react";
 import { ProductCard } from "@/Components/ui/ProductCard";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import axios from "@/lib/axios";
 
 const Products = [
   {
@@ -9,7 +12,7 @@ const Products = [
     Price: 350,
     DiscountedPrice: 297,
     ImageUrl: "https://img.drz.lazcdn.com/static/np/p/d3855852984beb492053962461a4e00f.png_400x400q75.png_.webp",
-    Slug:"loream-ipsum-nice-hello-hi",
+    Slug: "loream-ipsum-nice-hello-hi",
     isNew: false,
     isBestSeller: true,
   },
@@ -19,7 +22,7 @@ const Products = [
     Price: 280,
     DiscountedPrice: null,
     ImageUrl: "https://img.drz.lazcdn.com/static/np/p/da0079aa351e900dd15a765a37425d42.jpg_400x400q75.jpg_.webp",
-    Slug:"loream-ipsum-nice-hello-hi",
+    Slug: "loream-ipsum-nice-hello-hi",
     isNew: false,
     isBestSeller: false,
   },
@@ -29,7 +32,7 @@ const Products = [
     Price: 420,
     DiscountedPrice: 378,
     ImageUrl: "https://img.drz.lazcdn.com/static/np/p/e983ad3dd92378e03e4a5cbd4585b93d.png_400x400q75.png_.webp",
-    Slug:"loream-ipsum-nice-hello-hi",
+    Slug: "loream-ipsum-nice-hello-hi",
     isNew: true,
     isBestSeller: false,
   },
@@ -39,13 +42,24 @@ const Products = [
     Price: 550,
     DiscountedPrice: null,
     ImageUrl: "https://img.drz.lazcdn.com/static/np/p/49df54f7124c966bbcd4c3ae5232e498.png_400x400q75.png_.webp",
-    Slug:"loream-ipsum-nice-hello-hi",
+    Slug: "loream-ipsum-nice-hello-hi",
     isNew: false,
     isBestSeller: false,
   },
 ];
 
 export default function FeaturedProducts() {
+
+  const [Products, setProducts] = useState([]);
+  async function GetAllProducts() {
+    const response = await axios.get('api/admin/product');
+    setProducts(response.data);
+  }
+
+  useEffect(() => {
+    GetAllProducts();
+  }, [])
+
   return (
     <section className="bg-gray-50 py-12 md:py-16">
       <div className="container mx-auto px-4">
@@ -87,7 +101,7 @@ export default function FeaturedProducts() {
           </div>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
             {Products.map((Product) => (
-              <ProductCard key={Product.ID} Product={Product} />
+              <ProductCard key={Product._id} Product={Product} />
             ))}
           </div>
         </div>
@@ -101,7 +115,7 @@ export default function FeaturedProducts() {
           </div>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
             {Products.map((Product) => (
-              <ProductCard key={Product.ID} Product={Product} />
+              <ProductCard key={Product._id} Product={Product} />
             ))}
           </div>
         </div>
@@ -115,7 +129,7 @@ export default function FeaturedProducts() {
           </div>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
             {Products.map((Product) => (
-              <ProductCard key={Product.ID} Product={Product} />
+              <ProductCard key={Product._id} Product={Product} />
             ))}
           </div>
         </div>

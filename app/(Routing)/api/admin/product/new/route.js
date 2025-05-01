@@ -32,14 +32,14 @@ export async function POST(req) {
             Keywords: formData.get('SEO[keywords]'),
         };
 
-        const imagePaths = [];
+        const Images = [];
         for (const file of images) {
             let { filePath, filename, year, month } = await GenerateFileName(file);
             const buffer = Buffer.from(await file.arrayBuffer());
             await fs.writeFile(filePath, buffer);
-            imagePaths.push(`${year}/${month}/${filename}`);
+            Images.push(`${year}/${month}/${filename}`);
         }
-        if (imagePaths.length === 0) {
+        if (Images.length === 0) {
             return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
         }
 
@@ -53,17 +53,15 @@ export async function POST(req) {
             isNewArrival: isNew,
             isBestSeller,
             Price,
-            Discount,
+            Discount: { Percentage: Discount },
             Quantity: Stock,
-            Media: imagePaths,
+            Media: { Images },
             SEO: meta,
         });
 
         await newProduct.save();
         return NextResponse.json({ success: true }, { status: 200 });
     } catch (err) {
-        console.log(err);
-
         return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });
     }
 }

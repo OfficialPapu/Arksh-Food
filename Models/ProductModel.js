@@ -14,11 +14,17 @@ let ProductSchema = new mongoose.Schema({
         Percentage: { type: Number, default: 0 },
     },
     Quantity: { type: Number, required: true },
-    Media: { Images: { type: String } },
+    Media: { Images: [{ type: String }] },
     SEO: {
         Title: { type: String },
         Description: { type: String },
         Keywords: { type: String },
+    },
+    Review: {
+        User: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+        Comment: { type: String },
+        Rating: { type: Number, min: 1, max: 5 },
+        CreatedAt: { type: Date, default: Date.now }
     },
     Status: { type: String, enum: ['Active', 'Inactive', 'Discontinued'], default: 'Active' }
 }, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdateAt' } });

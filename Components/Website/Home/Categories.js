@@ -1,42 +1,21 @@
+"use client"
+import axios from "@/lib/axios";
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
-
-const ProductCategories = [
-  {
-    ID: 1,
-    Name: "Biscuit",
-    Description: "Traditional Nepali spice blends",
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/45b57e3285c849015cf9f270205e06f8.png_400x400q75.png_.webp",
-    Slug: "biscuit-products",
-    Count: "24 Products",
-  },
-  {
-    ID: 2,
-    Name: "Coffee",
-    Description: "Authentic homemade flavors",
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/a3b36248209b5e0ae53b159db3017902.png_400x400q75.png_.webp",
-    Slug: "biscuit-products",
-    Count: "18 Products",
-  },
-  {
-    ID: 3,
-    Name: "Chocolate",
-    Description: "Himalayan organic teas",
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/f21c964428adcd0b93aecf66729c9a88.png_400x400q75.png_.webp",
-    Slug: "biscuit-products",
-    Count: "12 Products",
-  },
-  {
-    ID: 4,
-    Name: "Skin care",
-    Description: "Natural Himalayan beauty products",
-    ImageUrl: "https://www.dreamskinnepal.com/Assets/Product/Media/Images/Slider%20Images/early%20bird%20discount%20new.jpg",
-    Slug: "biscuit-products",
-    Count: "15 Products",
-  },
-]
+import { useEffect, useState } from "react";
 
 export default function Categories() {
+  const [ProductCategories, setProductCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("/api/categories");
+        setProductCategories(response.data);
+      } catch (error) { }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <section className="py-12 md:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -48,26 +27,30 @@ export default function Categories() {
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:grid-cols-4">
-          {ProductCategories.map((Category) => (
+          {ProductCategories.slice(0, 4).map((Category) => (
             <div
-              key={Category.ID}
+              key={Category._id}
               className="group relative overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="aspect-square w-full overflow-hidden">
                 <Image
-                  src={Category.ImageUrl || "/placeholder.svg"}
-                  alt={Category.Name}
                   width={400}
                   height={400}
+                  src={
+                    process.env.NEXT_PUBLIC_IMAGE_URL +
+                    Category.Image || "/Arksh Food.png"
+                  }
+                  alt={`${Category.Category || "Category"} image`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
               </div>
               <div className="absolute bottom-0 left-0 w-full p-3 sm:p-4 md:p-6 flex sm:items-end items-start justify-center sm:flex-row flex-col">
                 <div>
-                  <h3 className="mb-0.5 md:mb-1 text-base sm:text-lg md:text-xl font-bold text-white">{Category.Name}</h3>
-                  <p className="mb-1 md:mb-2 text-xs md:text-sm text-white/90 line-clamp-2">{Category.Description}</p>
-                  <span className="mb-2 md:mb-3 inline-block text-xs font-medium text-white/80">{Category.Count}</span>
+                  <h3 className="mb-0.5 md:mb-1 text-base sm:text-lg md:text-xl font-bold text-white">{Category.Category}</h3>
+                  <p className="mb-1 md:mb-2 text-xs md:text-sm text-white/90 line-clamp-3">{Category.Description}</p>
+                  <span className="mb-2 md:mb-3 inline-block text-xs font-medium text-white/80">{"10 Products"}</span>
                 </div>
 
                 <div className="sm:w-full sm:text-end">
@@ -75,7 +58,7 @@ export default function Categories() {
                     href={`/category/${Category.Slug}`}
                     className="group/btn inline-flex items-center text-xs md:text-sm font-medium text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-all"
                   >
-                    Shop Now
+                    Shop
                     <ArrowRight className="mt-1 ml-1 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1" />
                   </a>
                 </div>

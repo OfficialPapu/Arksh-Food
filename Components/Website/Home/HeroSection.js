@@ -79,7 +79,7 @@ export default function HeroSection() {
             <div className="relative mx-auto h-[300px] w-full max-w-sm md:h-[400px] md:max-w-lg">
               <div className="absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-8 border-white shadow-xl md:h-64 md:w-64">
                 <Image
-                  src="https://www.arkshgroup.com/wp-content/uploads/2025/01/tafeli-choclate-copy-1-2048x768.jpg"
+                  src="https://www.backup.arkshgroup.com/wp-content/uploads/2025/01/tafeli-choclate-copy-1-2048x768.jpg"
                   alt="Featured Product"
                   width={400}
                   height={400}

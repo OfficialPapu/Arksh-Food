@@ -3,26 +3,26 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
 import LoginSlice from "./Slices/LoginSlice";
-// import CartSlice from "./Slices/CartSlice";
+import CartSlice from "./Slices/CartSlice";
 // import CheckoutSlice from "./Slices/CheckoutSlice";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 const persistConfig = {
     key: "ArkshFood",
-    storage,
-    // transforms: [
-    //     encryptTransform({
-    //         secretKey: process.env.NEXT_PUBLIC_PERSIST_ENCRYPT_KEY,
-    //         onError: function (error) {
-    //             localStorage.clear(); 
-    //             window.location.href = "/";
-    //         },
-    //     }),
-    // ],
+    storage,    
+    transforms: [
+        // encryptTransform({
+        //     secretKey: process.env.NEXT_PUBLIC_PERSIST_ENCRYPT_KEY,
+        //     onError: function (error) {
+        //         localStorage.clear(); 
+        //         window.location.href = "/";
+        //     },
+        // }),
+    ],
 };
 
 const rootReducer = combineReducers({
     Login: LoginSlice,
-    // Cart: CartSlice,
+    Cart: CartSlice,
     // Checkout: CheckoutSlice,
 });
 

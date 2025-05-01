@@ -180,7 +180,7 @@ const CategoryDashboard = () => {
                   height={56}
                   src="/Arksh Food.png"
                   alt="ARKSH Logo"
-                  className="w-16 h-16 object-contain"
+                  className="w-16 h-16 object-contain !m-0"
                 />
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-3">

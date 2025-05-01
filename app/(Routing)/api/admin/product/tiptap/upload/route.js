@@ -31,7 +31,7 @@ export async function POST(request) {
       await fs.writeFile(filePath, buffer);
 
       const storedPath = `${year}/${month}/${filename}`;
-      uploadedPaths.push(process.env.BASE_IMAGES_PATH + storedPath);
+      uploadedPaths.push(process.env.NEXT_PUBLIC_IMAGE_URL + storedPath);
     }
 
     return NextResponse.json({ success: true, urls: uploadedPaths }, { status: 201 });

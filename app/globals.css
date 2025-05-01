@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 *::-webkit-scrollbar {
   display: none;
 }
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -211,12 +213,12 @@ h6 {
 }
 
 
-ul {
-  list-style-type: disc;
-  padding-left: 20px;
-  margin-left: 10px;
-  margin: 0 !important;
-}
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-left: 10px;
+    margin: 0 !important;
+  }
 
 footer ul {
   list-style-type: none;
@@ -235,12 +237,6 @@ blockquote {
   margin: 1.5rem 0;
   padding-left: 1rem;
   margin: 0 !important;
-}
-
-img {
-  float: left;
-  margin-right: 10px;
-  margin-bottom: 10px;
 }
 
 

@@ -1,10 +1,10 @@
 import React from 'react'
-import ProductList from '@/Components/Admin/Products/ProductList'
+import Products from '@/Components/Admin/Products/Products'
 
 const page = () => {
   return (
     <div className="container mx-auto px-4 py-6">
-      <ProductList />
+      <Products />
     </div>
   )
 }
