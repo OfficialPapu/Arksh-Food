@@ -10,7 +10,7 @@ import ReviewTab from "./ReviewTab"
 const ProductDetails = () => {
     const { descriptionContent, ingredientsContent, howToUseContent, BreadcrumbItems } = UseProductDetails();
     return (
-        <div className="min-h-screen bg-gradient-to-b from-white to-blue-50/30 sm:px-24 px-2">
+        <div className="min-h-screen bg-gradient-to-b from-white to-blue-50/30 sm:px-24 px-2 ProductPage">
             <Breadcrumb className="pt-4 pb-5">
                 <BreadcrumbList>
                     {BreadcrumbItems.map((item, index) => (

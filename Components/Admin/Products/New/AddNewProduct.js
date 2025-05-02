@@ -26,7 +26,7 @@ export default function AddNewProduct() {
 function NewProductForm() {
   const { handleSubmit, isSubmitting, activeTab, setActiveTab } = useProductContext();
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-12">
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-12 ProductPage">
        <Toaster toastOptions={{ duration: 2000 }} />
       <div className="bg-white sm:border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">

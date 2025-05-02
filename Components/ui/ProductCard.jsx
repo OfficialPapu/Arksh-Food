@@ -32,7 +32,7 @@ export function ProductCard({ Product }) {
           </div>
 
           {PriceAfterDiscount && (
-            <div className="absolute right-0 top-2 z-10 bg-red-500 px-2 py-0.5 text-[10px] font-bold text-white sm:top-3 sm:px-2.5 sm:py-1">
+            <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-bl-md z-10">
               {Product.Discount.Percentage}% OFF
             </div>
           )}

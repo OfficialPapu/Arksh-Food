@@ -19,10 +19,6 @@ const CartSchemaDef = new mongoose.Schema({
   CartItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "CartItems" }],
   Total: { type: Number, default: 0 },
   Discount: { type: Number, default: 0 },
-  ShippingMethod: {
-    Method: { type: String, default: null },
-    Cost: { type: Number, default: 0 }
-  }
 }, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdateAt' } });
 
 const CartSchema = mongoose.models.Carts || mongoose.model("Carts", CartSchemaDef, "Carts");

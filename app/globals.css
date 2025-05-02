@@ -213,7 +213,7 @@ h6 {
 }
 
 
-  ul {
+ .ProductPage ul {
     list-style-type: disc;
     padding-left: 20px;
     margin-left: 10px;
@@ -224,7 +224,7 @@ footer ul {
   list-style-type: none;
 }
 
-ol {
+.ProductPage ol {
   list-style-type: decimal;
   padding-left: 20px;
   margin-left: 10px;

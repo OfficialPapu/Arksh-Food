@@ -3,7 +3,7 @@ import { AddToCart, RemoveFromCart, UpdateQuantity, ClearCart, UpdatePickup } fr
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import { useEffect, useState } from "react";
-import { Store, Truck, Zap } from "lucide-react";
+import { MapPin, Store, Truck, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 
 const useCartActions = () => {
@@ -11,22 +11,14 @@ const useCartActions = () => {
     const CartItems = useSelector((state) => state.Cart.CartItems);
     const isAuth = useSelector((state) => state.Login.isAuth);
     const UserID = useSelector((state) => state.Login?.UserDetails?.UserID);
-    const BASE_IMAGES_PATH = process.env.NEXT_PUBLIC_BASE_IMAGES_PATH;
+    const BASE_IMAGES_PATH = process.env.NEXT_PUBLIC_IMAGE_URL;
     const PickupOptions = [
-        {
-            ID: "Instant-Delivery",
-            Value: "Instant Delivery",
-            Name: "Instant Delivery",
-            Price: 0,
-            Icon: <Zap className="h-4 w-4" />,
-            Description: "Shipping cost payable by you",
-        },
         {
             ID: "Inside-Valley",
             Value: "Inside Valley",
             Name: "Inside Valley",
             Price: 100,
-            Icon: <Truck className="h-4 w-4" />,
+            Icon: <MapPin className="h-4 w-4" />,
             Description: "Delivery within 24 hours",
         },
         {
@@ -45,6 +37,14 @@ const useCartActions = () => {
             Icon: <Store className="h-4 w-4" />,
             Description: "Pick up from our store",
         },
+        {
+            ID: "Instant-Delivery",
+            Value: "Instant Delivery",
+            Name: "Instant Delivery",
+            Price: 0,
+            Icon: <Zap className="h-4 w-4" />,
+            Description: "Shipping cost payable by you",
+        },
     ]
 
     const [selectedPickupOption, setSelectedPickupOption] = useState(null)
@@ -53,12 +53,12 @@ const useCartActions = () => {
     const router = useRouter();
 
     const StoreItemInDB = async (Product, UserID) => { return (await axios.post("api/cart/add", { Product, UserID })).status }
-    const RemoveFromDB = async (CartItemID, UserID) => {
-        return (await axios.delete(`api/cart/remove/${CartItemID}`, { params: { UserID } })).status
+    const RemoveFromDB = async (CartItemID) => {
+        return (await axios.delete(`api/cart/remove/${CartItemID}`)).status
     }
-    const UpdateQuantityDB = async (ProductID, CartItemID, UserID, Quantity) => {
+    const UpdateQuantityDB = async (ProductID, CartItemID, Quantity) => {
         try {
-            return (await axios.put(`api/cart/update/${CartItemID}`, { ProductID, UserID, Quantity })).status
+            return (await axios.put(`api/cart/update/${CartItemID}`, { ProductID, Quantity })).status
         } catch (error) {
             return error.status;
         }
@@ -74,17 +74,19 @@ const useCartActions = () => {
             toast.error('Oops! Already in your cart');
             return;
         }
+        console.log("Product", Product);
+
         const StatusCode = !ReAddingItem ? await StoreItemInDB(Product, UserID) : 201;
         if (StatusCode == 201) {
             dispatch(AddToCart({
-                ProductID: Product._id,
+                ProductID: ReAddingItem ? Product.ID : Product._id,
                 CartItemID: ReAddingItem ? Product.CartItemID : null,
-                Name: Product.Name,
+                Name: ReAddingItem ? Product.Title : Product.Name,
                 Price: Product.Price,
-                Discount: Product.Discount.Percentage,
-                Image: Product.Image,
+                Discount: ReAddingItem ? Product.Discount : Product.Discount.Percentage,
+                Image: ReAddingItem ? Product.ImageUrl : BASE_IMAGES_PATH + Product.Media.Images[0],
                 Quantity: Product.Quantity,
-                SlugUrl: Product.Slug,
+                SlugUrl: ReAddingItem ? Product.SlugUrl : Product.Slug,
             }));
             !ReAddingItem ? toast.success('Success! Item added to cart') : "";
         } else {
@@ -93,7 +95,7 @@ const useCartActions = () => {
     }
 
     const HandelRemoveFromCart = async (ProductID, CartItemID) => {
-        const StatusCode = await RemoveFromDB(CartItemID, UserID);
+        const StatusCode = await RemoveFromDB(CartItemID);
         if (StatusCode == 200) {
             dispatch(RemoveFromCart({ ProductID }));
         } else {
@@ -105,13 +107,13 @@ const useCartActions = () => {
         if (Quantity <= 0) {
             return;
         }
-        const StatusCode = await UpdateQuantityDB(ProductID, CartItemID, UserID, Quantity);
+        const StatusCode = await UpdateQuantityDB(ProductID, CartItemID, Quantity);
         if (StatusCode == 200) {
             dispatch(UpdateQuantity({ ProductID, Quantity }));
         } else if (StatusCode == 450) {
-            ShowNotification('Low in stock', { variant: 'error' });
+            toast.error('Low in stock');
         } else {
-            ShowNotification('Unable to update', { variant: 'error' });
+            toast.error('Unable to update');
         }
     }
 
@@ -121,23 +123,27 @@ const useCartActions = () => {
 
     const GetCartItems = async () => {
         dispatch(ClearCart());
-        const response = await axios.get(`api/cart/items/${UserID}`);
-        if (response.status == 200) {
-            Object.keys(response.data).forEach(key => {
-                const Product = {
-                    ID: response.data[key].ProductID._id,
-                    CartItemID: response.data[key]._id,
-                    Title: response.data[key].ProductID.Name,
-                    Price: response.data[key].ProductID.Price,
-                    Discount: response.data[key].ProductID.Discount.Percentage,
-                    ImageUrl: BASE_IMAGES_PATH + response.data[key].ProductID.Media.Images[0].Url,
-                    Quantity: response.data[key].Quantity,
-                    SlugUrl: response.data[key].ProductID.Slug,
-                };
-                HandleAddToCart(Product, true);
-            });
-        } else {
-            toast.error('Something went wrong', { variant: 'error' });
+        try {
+            const response = await axios.get(`api/cart/items/${UserID}`);
+            if (response.status == 200) {
+                Object.keys(response.data).forEach(key => {
+                    const Product = {
+                        ID: response.data[key].ProductID._id,
+                        CartItemID: response.data[key]._id,
+                        Title: response.data[key].ProductID.Name,
+                        Price: response.data[key].ProductID.Price,
+                        Discount: response.data[key].ProductID.Discount.Percentage,
+                        ImageUrl: BASE_IMAGES_PATH + response.data[key].ProductID.Media.Images[0],
+                        Quantity: response.data[key].Quantity,
+                        SlugUrl: response.data[key].ProductID.Slug,
+                    };
+                    HandleAddToCart(Product, true);
+                });
+            } else {
+                toast.error('Something went wrong');
+            }
+        } catch (error) {
+
         }
     }
 
@@ -149,6 +155,9 @@ const useCartActions = () => {
     const HandelCheckout = () => {
         if (selectedPickupOption) {
             router.push("/account/checkout")
+        }else{
+            toast.error("Please select a pickup option")
+            return;
         }
     }
 
