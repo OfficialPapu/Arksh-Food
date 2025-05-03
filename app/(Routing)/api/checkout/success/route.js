@@ -1,8 +1,10 @@
+import SendEmail from "@/lib/EmailService";
 import ConnectDB from "@/lib/MongoDB";
 import { CartItemSchema } from "@/Models/CartModel";
 import { OrderItemsSchema, OrderSchema } from "@/Models/OrderModel";
 import ProductSchema from "@/Models/ProductModel";
 import UserSchema from "@/Models/UserModel";
+import orderConfirmationTemplate from "@/Views/Emails/welcomeEmail";
 import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
@@ -63,8 +65,8 @@ export async function POST(request, { params }) {
 
 
         const OrderData = await OrderSchema.findById(NewOrder._id).populate({ path: 'OrderItemsID', populate: { path: 'ProductID', select: 'Name Price' } }).populate('UserID', 'Name Email').populate('Shipping.Address', 'Name Phone Address City PostalCode');
-        // await UserNotify(OrderData);
-        // await AdminNotify(OrderData);
+        await UserNotify(OrderData);
+        await AdminNotify(OrderData);
         return NextResponse.json({ OrderID: OrderID }, { status: 201 })
     } catch (error) {
         console.log(error);
@@ -79,4 +81,27 @@ function generateShipmentID() {
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const timePart = String(now.getMinutes()).padStart(2, '0') + String(now.getSeconds()).padStart(2, '0');
     return `AF${year}${month}${timePart}`;
+}
+
+
+const AdminNotify = async (OrderData) => {
+    try {
+        const to = process.env.EMAIL;
+        const subject = 'New Order Notification';
+        const html = orderConfirmationTemplate();
+        const info = await SendEmail(to, subject, html);
+    } catch (error) {
+        NextResponse.json({ status: 500 });
+    }
+}
+
+const UserNotify = async (OrderData) => {
+    try {
+        const to = OrderData.UserID.Email;
+        const subject = 'Order placed successfully - Arksh Food';
+        const html = orderConfirmationTemplate();
+        const info = await SendEmail(to, subject, html);
+    } catch (error) {
+        NextResponse.json({ status: 500 });
+    }
 }
