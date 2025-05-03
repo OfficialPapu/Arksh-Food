@@ -1,12 +1,19 @@
 "use client"
+import { format } from "date-fns";
 
-import { useState } from "react"
-import { ArrowLeft, Check, ChevronRight, Clock, MapPin, Phone, Printer, Share } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { ArrowLeft, Check, ChevronRight, Clock, MapPin, Printer, Share } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-
+import Ordersummary from "@/Components/Website/Account/Checkout/OrderSummary"
+import { ConvertCartToCheckout, HandelOrderPlace } from "@/Components/Redux/Slices/CheckoutSlice"
+import { ClearCart } from "@/Components/Redux/Slices/CartSlice"
+import { useRouter } from "next/navigation"
+import useCartActions from "@/Components/Hooks/Cart"
+import useCheckoutActions from "@/Components/Hooks/Checkout"
+import axios from "@/lib/axios"
+import { useSelector } from "react-redux"
 // Sample order details
 const orderDetails = {
   orderId: "ORD-2023-48756",
@@ -49,221 +56,173 @@ const orderDetails = {
   status: "confirmed", // confirmed, preparing, on-the-way, delivered
 }
 
-export default function OrderConfirmation() {
-  const [showDetails, setShowDetails] = useState(false)
 
-  const getStatusStep = () => {
-    switch (orderDetails.status) {
-      case "confirmed":
-        return 1
-      case "preparing":
-        return 2
-      case "on-the-way":
-        return 3
-      case "delivered":
-        return 4
-      default:
-        return 1
+
+const PlaceOrder = async (CartItems, PaymentMethod, AddressID, PickupCost, PickupLocation, Total, Subtotal, Discount, UserID, dispatch) => {
+  const orderData = { CartItems, PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID };
+  try {
+    const response = await axios.post("api/checkout/success", orderData);
+    console.log(response);
+
+    if (response.status == 201) {
+      const OrderData = { OrderID: response.data.OrderID, Total, Subtotal, Discount };
+      dispatch(HandelOrderPlace(OrderData));
+      dispatch(ConvertCartToCheckout());
+      dispatch(ClearCart());
     }
+  } catch (error) {
+    console.log(error);
+
   }
+}
 
-  const statusStep = getStatusStep()
+
+export default function OrderConfirmation() {
+  const OrderID = useSelector((state) => state.Checkout.OrderID);
+  const TodayDate = format(new Date(), "d MMM yyyy");
+
+  const router = useRouter();
+  let { Total, Subtotal, Discount, CartItems, PickupCost, PickupLocation, UserID } = useCartActions();
+  const { AddressID, PaymentMethod, dispatch, CheckoutItems, Address } = useCheckoutActions();
+
+  console.log(Address);
+  
+  const hasPlacedOrder = useRef(false);
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
+  useEffect(() => {
+    if (!AddressID || !PaymentMethod) router.push('/account/cart');
+    if (!CartItems?.length || hasPlacedOrder.current || isOrderPlaced) return;
+    hasPlacedOrder.current = true;
+    setIsOrderPlaced(true);
+    const placeOrder = async () => { await PlaceOrder(CartItems, PaymentMethod, AddressID, PickupCost, PickupLocation, Total, Subtotal, Discount, UserID, dispatch) };
+    placeOrder();
+  }, []);
+  const [showDetails, setShowDetails] = useState(true)
 
   return (
-    <div className="bg-gradient-to-b from-white to-blue-50 min-h-screen">
-      <div className="max-w-3xl mx-auto p-4 lg:p-6">
-        <header className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 lg:mb-10">
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-[#0055a4]">Order Confirmation</h1>
-            <div className="flex items-center text-sm text-gray-500 mt-1">
-              <Button variant="link" className="p-0 h-auto text-sm text-gray-500 font-normal" href="/">
-                <ArrowLeft className="h-3.5 w-3.5 mr-1" />
-                Back to Home
-              </Button>
-              <ChevronRight className="h-3.5 w-3.5 mx-1" />
-              <span className="text-[#0055a4] font-medium">Order Confirmation</span>
-            </div>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-5xl mx-auto px-4 ">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-12 relative overflow-hidden">
+          {/* Star decorative elements */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 text-[#39b0e5]/10">
+            <LargeStar />
           </div>
-        </header>
-
-        {/* Success Message */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-          <div className="p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="h-8 w-8 text-green-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You for Your Order!</h2>
-            <p className="text-gray-600 mb-6">Your order has been received and is now being processed.</p>
-            <div className="inline-block bg-blue-50 rounded-lg px-4 py-2 text-[#0055a4] font-medium">
-              Order ID: {orderDetails.orderId}
-            </div>
-          </div>
-        </div>
-
-        {/* Order Status */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-          <div className="p-5 lg:p-6 border-b border-gray-100">
-            <h2 className="text-xl font-semibold text-[#0055a4]">Order Status</h2>
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 text-[#0a4d8c]/10 transform rotate-45">
+            <LargeStar />
           </div>
 
-          <div className="p-5 lg:p-6">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center text-sm text-gray-600">
-                <Clock className="h-4 w-4 mr-2 text-gray-400" />
-                <span>Estimated delivery: {orderDetails.estimatedDelivery}</span>
+          {/* Header */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-10 relative z-10">
+            <div className="mb-4 md:mb-0 text-center md:text-left">
+              <h1 className="text-3xl font-bold text-[#0a4d8c]">Order Confirmation</h1>
+              <p className="text-[#39b0e5] mt-1">Thank you for choosing Arksh Food</p>
+            </div>
+          </div>
+
+          {/* Success Message */}
+          <div className="flex flex-col md:flex-row items-center bg-gradient-to-r from-[#f0f7ff] to-[#e6f7ff] rounded-2xl p-6 mb-10 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#0a4d8c] to-[#39b0e5]"></div>
+            <div className="absolute -right-4 -bottom-4 text-[#39b0e5]/10 w-24 h-24">
+              <LargeStar />
+            </div>
+
+            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-4 md:mb-0 md:mr-6 shadow-md border-4 border-white">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0a4d8c] to-[#39b0e5] flex items-center justify-center">
+                <Check className="h-8 w-8 text-white" />
               </div>
-              <Button variant="outline" size="sm" className="text-[#0055a4] border-[#0055a4]">
-                Track Order
-              </Button>
             </div>
 
-            <div className="relative">
-              {/* Progress bar */}
-              <div className="absolute top-4 left-0 right-0 h-1 bg-gray-200">
-                <div className="h-1 bg-[#0055a4]" style={{ width: `${(statusStep - 1) * 33.33}%` }} />
-              </div>
-
-              {/* Status steps */}
-              <div className="flex justify-between relative">
-                <StatusStep title="Confirmed" isActive={statusStep >= 1} isCompleted={statusStep > 1} />
-                <StatusStep title="Preparing" isActive={statusStep >= 2} isCompleted={statusStep > 2} />
-                <StatusStep title="On the Way" isActive={statusStep >= 3} isCompleted={statusStep > 3} />
-                <StatusStep title="Delivered" isActive={statusStep >= 4} isCompleted={statusStep > 4} />
+            <div className="text-center md:text-left">
+              <h2 className="text-xl font-bold text-[#0a4d8c] mb-1">Order Successfully Placed!</h2>
+              <p className="text-slate-600 mb-2">Your order has been received and is now being processed.</p>
+              <div className="inline-flex items-center bg-white rounded-full px-4 py-1.5 text-[#0a4d8c] font-medium border border-[#e6f0fa] shadow-sm">
+                <span className="text-[#39b0e5] mr-2">Order ID:</span> {OrderID}
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Order Details */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-          <div className="p-5 lg:p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-[#0055a4]">Order Details</h2>
-            <button className="flex items-center text-sm text-gray-500" onClick={() => setShowDetails(!showDetails)}>
-              {showDetails ? "Hide" : "Show"} Details
-              <ChevronRight
-                className={cn("h-4 w-4 ml-1 transition-transform", showDetails ? "transform rotate-90" : "")}
-              />
-            </button>
-          </div>
 
-          <div
-            className={cn("transition-all duration-300 overflow-hidden", showDetails ? "max-h-[1000px]" : "max-h-0")}
-          >
-            <div className="p-5 lg:p-6 border-b border-gray-100">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Order Information</h3>
-                  <ul className="space-y-2">
-                    <li className="flex justify-between">
-                      <span className="text-gray-600">Order ID:</span>
-                      <span className="font-medium">{orderDetails.orderId}</span>
+          {/* Order Details */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-[#0a4d8c] flex items-center justify-center mr-3">
+                  <SmallStar className="h-4 w-4 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-[#0a4d8c]">Order Details</h2>
+              </div>
+              <button
+                className="flex items-center text-sm font-medium text-[#39b0e5] hover:text-[#0a4d8c] transition-colors"
+                onClick={() => setShowDetails(!showDetails)}
+              >
+                {showDetails ? "Hide" : "Show"} Details
+                <ChevronRight
+                  className={cn("h-4 w-4 ml-1 transition-transform", showDetails ? "transform rotate-90" : "")}
+                />
+              </button>
+            </div>
+
+            <div
+              className={cn("transition-all duration-300 overflow-hidden", showDetails ? "max-h-[1000px]" : "max-h-0")}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-[#f8fafd] rounded-2xl p-5 border border-[#e6f0fa]">
+                  <h3 className="text-sm font-medium text-[#0a4d8c] mb-4 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-[#39b0e5] flex items-center justify-center mr-2">
+                      <InfoIcon className="h-3 w-3 text-white" />
+                    </div>
+                    Order Information
+                  </h3>
+                  <ul className="space-y-3 mt-2">
+                    <li className="flex justify-between text-sm">
+                      <span className="text-slate-500">Order Date:</span>
+                      <span className="font-medium text-slate-700">{TodayDate}</span>
                     </li>
-                    <li className="flex justify-between">
-                      <span className="text-gray-600">Date:</span>
-                      <span className="font-medium">{orderDetails.orderDate}</span>
-                    </li>
-                    <li className="flex justify-between">
-                      <span className="text-gray-600">Time:</span>
-                      <span className="font-medium">{orderDetails.orderTime}</span>
-                    </li>
-                    <li className="flex justify-between">
-                      <span className="text-gray-600">Payment Method:</span>
-                      <span className="font-medium">{orderDetails.paymentMethod}</span>
+                    <li className="flex justify-between text-sm">
+                      <span className="text-slate-500">Payment Method:</span>
+                      <span className="font-medium text-slate-700">{PaymentMethod}</span>
                     </li>
                   </ul>
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-2">Delivery Information</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-gray-400 mt-0.5 shrink-0" />
-                      <span className="text-gray-600">{orderDetails.deliveryAddress}</span>
+                <div className="bg-[#f8fafd] rounded-2xl p-5 border border-[#e6f0fa]">
+                  <h3 className="text-sm font-medium text-[#0a4d8c] mb-4 flex items-center">
+                    <div className="w-5 h-5 rounded-full bg-[#39b0e5] flex items-center justify-center mr-2">
+                      <MapPin className="h-3 w-3 text-white" />
+                    </div>
+                    Delivery Information
+                  </h3>
+                  <ul className="space-y-3 mt-2">
+                    <li className="flex items-start gap-2 text-sm">
+                      <span className="text-slate-500 w-20">Address:</span>
+                      <span className="font-medium text-slate-700">{orderDetails.deliveryAddress}</span>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-gray-400 shrink-0" />
-                      <span className="text-gray-600">{orderDetails.contactNumber}</span>
+                    <li className="flex items-center gap-2 text-sm">
+                      <span className="text-slate-500 w-20">Phone:</span>
+                      <span className="font-medium text-slate-700">{orderDetails.contactNumber}</span>
                     </li>
                   </ul>
                 </div>
               </div>
-            </div>
 
-            <div className="p-5 lg:p-6 border-b border-gray-100">
-              <h3 className="text-sm font-medium text-gray-500 mb-4">Order Items</h3>
-              <div className="space-y-4">
-                {orderDetails.items.map((item) => (
-                  <div key={item.id} className="flex gap-3">
-                    <div className="relative w-12 h-12 rounded-md overflow-hidden bg-blue-50 flex-shrink-0">
-                      <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
-                      {item.quantity > 1 && (
-                        <div className="absolute -top-1 -right-1 bg-[#0055a4] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                          {item.quantity}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-sm font-medium text-gray-900">{item.name}</h3>
-                      <div className="flex items-center justify-between mt-1">
-                        <div className="text-sm text-gray-500">
-                          {item.discountPercentage > 0 ? (
-                            <span className="text-red-500">
-                              Rs. {(item.price - (item.price * item.discountPercentage) / 100).toFixed(0)}
-                            </span>
-                          ) : (
-                            <span>Rs. {item.price}</span>
-                          )}
-                          {item.quantity > 1 && <span> × {item.quantity}</span>}
-                        </div>
-                        <div className="text-sm font-medium">
-                          Rs. {((item.price - (item.price * item.discountPercentage) / 100) * item.quantity).toFixed(0)}
-                        </div>
-                      </div>
-                    </div>
+              <div className="bg-[#f8fafd] rounded-2xl p-5 border border-[#e6f0fa] mb-6">
+                <h3 className="text-sm font-medium text-[#0a4d8c] mb-4 flex items-center">
+                  <div className="w-5 h-5 rounded-full bg-[#39b0e5] flex items-center justify-center mr-2">
+                    <ShoppingBagIcon className="h-3 w-3 text-white" />
                   </div>
-                ))}
+                  Order Items
+                </h3>
+                <Ordersummary />
               </div>
             </div>
 
-            <div className="p-5 lg:p-6">
-              <div className="space-y-3">
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal</span>
-                  <span>Rs. {orderDetails.subtotal.toFixed(0)}</span>
-                </div>
-
-                <div className="flex justify-between text-gray-600">
-                  <span>Delivery</span>
-                  <span>{orderDetails.deliveryCharge === 0 ? "Free" : `Rs. ${orderDetails.deliveryCharge}`}</span>
-                </div>
-
-                <div className="flex justify-between text-green-600">
-                  <span>Discount</span>
-                  <span>- Rs. {orderDetails.discount.toFixed(1)}</span>
-                </div>
-
-                <Separator />
-
-                <div className="flex justify-between text-lg font-semibold">
-                  <span>Total</span>
-                  <span className="text-[#0055a4]">Rs. {orderDetails.total.toFixed(1)}</span>
-                </div>
+            <div className="flex justify-between items-center rounded-2xl p-5">
+              <span className="text-lg font-medium">Total Amount:</span>
+              <div>
+                <p className="text-2xl text-[#0055a4] font-bold">Rs. {1000}</p>
+                <p className="text-xs text-gray-500 mt-1 text-right">Including all taxes</p>
               </div>
             </div>
-          </div>
-
-          <div className="p-5 lg:p-6 bg-gray-50 flex flex-wrap gap-3 justify-center">
-            <Button variant="outline" size="sm" className="text-gray-600">
-              <Printer className="h-4 w-4 mr-2" />
-              Print Receipt
-            </Button>
-            <Button variant="outline" size="sm" className="text-gray-600">
-              <Share className="h-4 w-4 mr-2" />
-              Share Order
-            </Button>
-            <Button size="sm" className="bg-[#0055a4]">
-              Need Help?
-            </Button>
           </div>
         </div>
       </div>
@@ -272,21 +231,56 @@ export default function OrderConfirmation() {
 }
 
 
-function StatusStep({ title, isActive, isCompleted }) {
+// Custom star icon that matches the logo
+function SmallStar(props) {
   return (
-    <div className="flex flex-col items-center">
-      <div
-        className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center relative z-10",
-          isCompleted ? "bg-[#0055a4] text-white" : isActive ? "bg-[#0055a4] text-white" : "bg-gray-200 text-gray-500",
-        )}
-      >
-        {isCompleted ? <Check className="h-4 w-4" /> : <span className="text-xs">{title.charAt(0)}</span>}
-      </div>
-      <span className={cn("text-xs mt-2", isActive || isCompleted ? "font-medium text-[#0055a4]" : "text-gray-500")}>
-        {title}
-      </span>
-    </div>
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+    </svg>
   )
 }
 
+// Large decorative star
+function LargeStar(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+    </svg>
+  )
+}
+
+function InfoIcon(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+  )
+}
+
+function ShoppingBagIcon(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  )
+}
