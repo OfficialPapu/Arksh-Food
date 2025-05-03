@@ -95,8 +95,6 @@ const useCheckoutActions = () => {
         if (response.status === 200) {
             const newAddresses = Object.values(response.data);
             setAddresses(newAddresses);
-            console.log(newAddresses);
-
         } else {
             ShowNotification('Something went wrong', { variant: 'error' });
         }
@@ -110,15 +108,20 @@ const useCheckoutActions = () => {
 
 
     const HandelCheckout = () => {
-        // setIsSubmitting(true);
-        if (PaymentMethod && AddressID) {
-            // router.push("/account/checkout/success");
-        } else {
-            toast.error('Select payment & address!');
+        if ((PaymentMethod === "Bank" || PaymentMethod === "eSewa") && !filePreview) {
+            toast.error("Upload screenshot!");
+            return;
         }
-        console.log(PaymentMethod, AddressID);
 
-    }
+        if (!PaymentMethod || !AddressID) {
+            toast.error("Select payment & address!");
+            return;
+        }
+
+        setIsSubmitting(true);
+        router.push("/account/checkout/success");
+    };
+
     return {
         PaymentMethod, showAllProducts, setShowAllProducts, hasMoreProducts, visibleProducts, handleAddressSubmit, handleAddressChange, dialogOpen, AddressID, setDialogOpen, NewAddress, Addresses, AddressID, dispatch, UpdateAddress, HandelCheckout, router, isSubmitting, setIsSubmitting, handleFileChange, filePreview, setFilePreview, selectedFile, setSelectedFile
     }

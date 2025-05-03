@@ -83,6 +83,7 @@ const NavIconButton = memo(({ Icon, onClick, badgeCount, className }) => (
 ))
 
 export default function Navbar() {
+  const CartItemCount = useSelector((state) => state.Cart.CartItems?.length);
   const isAuth = useSelector((state) => state.Login.isAuth);
   const [isOpen, setIsOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState(null)
@@ -148,7 +149,7 @@ export default function Navbar() {
               <Link href="/account/cart" passHref className="rounded-full hover:bg-gray-100 relative">
                 <NavIconButton Icon={ShoppingBag} className="cursor-pointer" />
                 <span className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center bg-[#39b9ef] text-white text-xs rounded-full">
-                  3
+                  {CartItemCount}
                 </span>
               </Link>
 

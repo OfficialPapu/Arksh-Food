@@ -1,37 +1,14 @@
 "use client"
-
-import { useEffect, useState } from "react"
-import {
-  Home,
-  Lock,
-  MapPin,
-  Phone,
-  Plus,
-  Shield,
-  User,
-  Upload,
-  CheckCircle,
-  ReceiptText,
-  Loader2,
-  IdCard,
-  Check,
-  MessageCircleWarning,
-  Wallet,
-  LockKeyhole,
-  Banknote,
-  TagIcon,
-  Package,
-  Download,
-} from "lucide-react"
+import { useEffect } from "react"
+import { Home, Lock, MapPin, Phone, Plus, Shield, User, Upload, CheckCircle, ReceiptText, Loader2, IdCard, Check, MessageCircleWarning, Wallet, LockKeyhole, Banknote, TagIcon, Download } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Input } from "@/Components/ui/input"
 import { Label } from "@/Components/ui/label"
 import { RadioGroup } from "@/Components/ui/radio-group"
 import { Separator } from "@/Components/ui/separator"
 import { Textarea } from "@/Components/ui/textarea"
-import { cn } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/Components/ui/dialog"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster } from "react-hot-toast"
 import useCheckoutActions from "@/Components/Hooks/Checkout"
 import useCartActions from "@/Components/Hooks/Cart"
 import { UpdatePaymentMethod } from "@/Components/Redux/Slices/CheckoutSlice"
