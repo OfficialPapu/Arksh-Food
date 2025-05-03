@@ -31,19 +31,20 @@ export default function CheckoutPage() {
 
           <div className="lg:col-span-7 space-y-8">
             <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 transition-all hover:shadow-md">
-              <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-[#e6f0f9] to-white">
+              <div className="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-gradient-to-r from-[#e6f0f9] to-white gap-4 sm:gap-0">
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Select Address</h1>
-                  <p className="text-gray-500 mt-1">Choose your preferred delivery location</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">Select Address</p>
+                  <p className="text-gray-500 mt-1 text-sm sm:text-base">Choose your preferred delivery location</p>
                 </div>
                 <button
                   onClick={() => setDialogOpen(true)}
-                  className="flex items-center gap-2 px-5 py-3 bg-[#0055a4] text-white rounded-lg hover:bg-[#00458c] transition-colors"
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-3 sm:px-5 py-2.5 sm:py-3 bg-[#0055a4] text-white rounded-lg hover:bg-[#00458c] transition-colors"
                 >
                   <Plus className="w-5 h-5" />
-                  <span className="font-medium">New Address</span>
+                  <span className="font-medium text-sm sm:text-base">New Address</span>
                 </button>
               </div>
+
               <div className="p-6 max-w-4xl mx-auto">
                 {Addresses.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -465,18 +466,18 @@ export default function CheckoutPage() {
                             <div className="text-sm text-gray-500">
                               {item.Discount > 0 ? (
                                 <div className="flex items-center">
-                                  <span className="text-red-500">Rs. {item.PriceAfterDiscount.toFixed(2)}</span>
-                                  <span className="text-gray-400 line-through text-xs ml-1">Rs. {item.Price.toFixed(2)}</span>
+                                  <span className="text-red-500">Rs. {item?.PriceAfterDiscount.toFixed(2)}</span>
+                                  <span className="text-gray-400 line-through text-xs ml-1">Rs. {item?.Price.toFixed(2)}</span>
                                 </div>
                               ) : (
-                                <span>Rs. {item.Price.toFixed(2)}</span>
+                                <span>Rs. {item?.Price.toFixed(2)}</span>
                               )}
                               {item.quantity > 1 && <span className="ml-1">× {item.Quantity}</span>}
                             </div>
                             {item.Discount ? (
-                              <div className="font-medium text-gray-900">Rs. {(item.PriceAfterDiscount * item.Quantity).toFixed(2)}</div>
+                              <div className="font-medium text-gray-900">Rs. {(item?.PriceAfterDiscount * item?.Quantity).toFixed(2)}</div>
                             ) : (
-                              <div className="font-medium text-gray-900">Rs. {(item.Price * item.Quantity).toFixed(2)}</div>
+                              <div className="font-medium text-gray-900">Rs. {(item?.Price * item?.Quantity).toFixed(2)}</div>
                             )}
                           </div>
                         </div>
@@ -493,7 +494,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>Rs. {Subtotal.toFixed(2)}</span>
+                    <span>Rs. {Subtotal?.toFixed(2)}</span>
                   </div>
 
                   {Discount ? (
@@ -502,18 +503,18 @@ export default function CheckoutPage() {
                         <TagIcon className="h-4 w-4" />
                         Discount
                       </span>
-                      <span className="text-green-600 font-medium">- Rs. {Discount.toFixed(2)}</span>
+                      <span className="text-green-600 font-medium">- Rs. {Discount?.toFixed(2)}</span>
                     </div>
                   ) : null}
                   <div className="flex justify-between text-gray-600">
                     <span>Delivery</span>
-                    <span>{PickupCost == 0 ? "Free" : "Rs. " + PickupCost.toFixed(2)}</span>
+                    <span>{PickupCost == 0 ? "Free" : "Rs. " + PickupCost?.toFixed(2)}</span>
                   </div>
                   <Separator className="my-2" />
 
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span className="text-xl text-[#0055a4]">Rs. {Total.toFixed(2)}</span>
+                    <span className="text-xl text-[#0055a4]">Rs. {Total?.toFixed(2)}</span>
                   </div>
                   <div className="text-xs text-gray-500 mt-1 text-right">Including all taxes</div>
                 </div>

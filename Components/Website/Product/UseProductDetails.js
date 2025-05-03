@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react"
 import { useParams } from 'next/navigation'
+import axios from "@/lib/axios";
 const UseProductDetails = () => {
     const { Slug } = useParams();
+    const [Product, setProduct] = useState([]);
+    const BASE_IMAGES_PATH = process.env.NEXT_PUBLIC_BASE_IMAGES_PATH;
     const descriptionContent = `
     <div class="space-y-6">
       <div>
@@ -114,14 +117,14 @@ const UseProductDetails = () => {
     ];
 
 
-    const Product = {
-        Media: {
-            Images: [
-                'https://img.drz.lazcdn.com/static/np/p/d3855852984beb492053962461a4e00f.png_400x400q75.png_.webp',
-                'https://img.drz.lazcdn.com/static/np/p/e983ad3dd92378e03e4a5cbd4585b93d.png_400x400q75.png_.webp',
-            ]
-        }
-    };
+    // const Product = {
+    //     Media: {
+    //         Images: [
+    //             'https://img.drz.lazcdn.com/static/np/p/d3855852984beb492053962461a4e00f.png_400x400q75.png_.webp',
+    //             'https://img.drz.lazcdn.com/static/np/p/e983ad3dd92378e03e4a5cbd4585b93d.png_400x400q75.png_.webp',
+    //         ]
+    //     }
+    // };
 
 
     const AddReview = async () => {
@@ -149,6 +152,23 @@ const UseProductDetails = () => {
         //     }
         // }
     }
+ 
+    async function GetProductInfo() {
+      const response = await axios.get('api/product/' + Slug);
+      const result = response.data;
+      setBreadcrumbView((prv) =>
+          prv.map((item, index) =>
+              index === 2 ? { ...item, label: result[0].Name } : item
+          )
+      );
+      setProduct(result[0]);
+  }
+
+  useEffect(() => {
+      GetProductInfo();
+  }, [])
+
+
     return {
         descriptionContent, ingredientsContent, howToUseContent, BreadcrumbItems, Product, thumbsSwiper, setThumbsSwiper, AddReview, Rating, setRating, Comment, setComment, Reviews
     }

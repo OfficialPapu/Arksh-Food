@@ -25,11 +25,11 @@ const Ordersummary = () => {
                                         <div className="text-sm text-gray-500">
                                             {item.Discount > 0 ? (
                                                 <div className="flex items-center">
-                                                    <span className="text-red-500">Rs. {item.PriceAfterDiscount.toFixed(2)}</span>
-                                                    <span className="text-gray-400 line-through text-xs ml-1">Rs. {item.Price.toFixed(2)}</span>
+                                                    <span className="text-red-500">Rs. {item.PriceAfterDiscount?.toFixed(0)}</span>
+                                                    <span className="text-gray-400 line-through text-xs ml-1">Rs. {item?.Price.toFixed(0)}</span>
                                                 </div>
                                             ) : (
-                                                <span>Rs. {item.Price.toFixed(2)}</span>
+                                                <span>Rs. {item?.Price.toFixed(2)}</span>
                                             )}
                                             {item.quantity > 1 && <span className="ml-1">{item.Quantity}</span>}
                                         </div>
@@ -53,7 +53,7 @@ const Ordersummary = () => {
                     </div>
                     <div className="flex justify-between text-gray-600">
                         <span>Subtotal</span>
-                        <span>Rs. {Subtotal.toFixed(2)}</span>
+                        <span>Rs. {Subtotal?.toFixed(2)}</span>
                     </div>
 
                     {Discount ? (
@@ -62,12 +62,12 @@ const Ordersummary = () => {
                                 <TagIcon className="h-4 w-4" />
                                 Discount
                             </span>
-                            <span className="text-green-600 font-medium">- Rs. {Discount.toFixed(2)}</span>
+                            <span className="text-green-600 font-medium">- Rs. {Discount?.toFixed(2)}</span>
                         </div>
                     ) : null}
                     <div className="flex justify-between text-gray-600">
                         <span>Delivery</span>
-                        <span>{PickupCost == 0 ? "Free" : "Rs. " + PickupCost.toFixed(2)}</span>
+                        <span>{PickupCost == 0 ? "Free" : "Rs. " + PickupCost?.toFixed(2)}</span>
                     </div>
                 </div>
             </div>
