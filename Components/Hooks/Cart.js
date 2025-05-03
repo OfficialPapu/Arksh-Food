@@ -74,8 +74,6 @@ const useCartActions = () => {
             toast.error('Oops! Already in your cart');
             return;
         }
-        console.log("Product", Product);
-
         const StatusCode = !ReAddingItem ? await StoreItemInDB(Product, UserID) : 201;
         if (StatusCode == 201) {
             dispatch(AddToCart({

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Minus, Plus, ShoppingBag, X, CreditCard, Shield, TagIcon } from "lucide-react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";
 import Link from "next/link"
-import useCartActions from "../../Hooks/Cart"
+import useCartActions from "../../../Hooks/Cart"
 import { Toaster } from "react-hot-toast"
 
 export default function Cart() {

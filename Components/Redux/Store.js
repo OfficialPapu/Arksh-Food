@@ -4,7 +4,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
 import LoginSlice from "./Slices/LoginSlice";
 import CartSlice from "./Slices/CartSlice";
-// import CheckoutSlice from "./Slices/CheckoutSlice";
+import CheckoutSlice from "./Slices/CheckoutSlice";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 const persistConfig = {
     key: "ArkshFood",
@@ -23,7 +23,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     Login: LoginSlice,
     Cart: CartSlice,
-    // Checkout: CheckoutSlice,
+    Checkout: CheckoutSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

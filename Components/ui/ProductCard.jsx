@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Check, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./button";
-import useCartActions from "../Website/Hooks/Cart";
+import useCartActions from "../Hooks/Cart";
 export function ProductCard({ Product }) {
   Product.Quantity = 1;
   let PriceAfterDiscount =
