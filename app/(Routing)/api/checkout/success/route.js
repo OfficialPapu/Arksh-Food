@@ -7,9 +7,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
     try {
-        console.log("hhhhhhhhhhhhhhhhhhh");
-
-        const { PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID, CartItems } = await request.json();
+        const { PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID, CartItems, PaymentProof } = await request.json();
         if (!PaymentMethod || !PickupLocation || !AddressID || !CartItems || CartItems.length === 0 || !Total || !UserID) {
             return NextResponse.json({ message: "Missing required fields or empty cart" }, { status: 400 })
         }
@@ -57,12 +55,13 @@ export async function POST(request, { params }) {
             },
             Payment: {
                 Method: PaymentMethod,
+                Screenshot: PaymentProof,
             },
         });
 
         await NewOrder.save();
 
-        
+
         const OrderData = await OrderSchema.findById(NewOrder._id).populate({ path: 'OrderItemsID', populate: { path: 'ProductID', select: 'Name Price' } }).populate('UserID', 'Name Email').populate('Shipping.Address', 'Name Phone Address City PostalCode');
         // await UserNotify(OrderData);
         // await AdminNotify(OrderData);

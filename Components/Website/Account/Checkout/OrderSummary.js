@@ -1,14 +1,16 @@
 "use client"
 import { TagIcon } from "lucide-react"
 import useCartActions from "@/Components/Hooks/Cart"
+import { useSelector } from "react-redux";
 
 const Ordersummary = () => {
-    const { CartItems, Subtotal, Discount, PickupCost, PickupLocation } = useCartActions();
+    const { PickupCost, PickupLocation } = useCartActions();
+    const { CheckoutItems, Subtotal, Discount, } = useSelector((state) => state.Checkout);
     return (
         <>
             <div className="pt-6">
                 <div className="max-h-[300px] overflow-y-auto mb-6 pr-2 space-y-5 custom-scrollbar">
-                    {CartItems.map((item) => {
+                    {CheckoutItems?.map((item) => {
                         return (
                             <div key={item.ProductID} className="flex gap-4 group">
                                 <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 group-hover:border-[#0055a4] transition-all">

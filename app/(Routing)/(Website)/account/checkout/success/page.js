@@ -1,92 +1,24 @@
 "use client"
 import { format } from "date-fns";
-
 import { useEffect, useRef, useState } from "react"
-import { ArrowLeft, Check, ChevronRight, Clock, MapPin, Printer, Share } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Check, ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
-import Image from "next/image"
 import Ordersummary from "@/Components/Website/Account/Checkout/OrderSummary"
-import { ConvertCartToCheckout, HandelOrderPlace } from "@/Components/Redux/Slices/CheckoutSlice"
+import { ClearPaymentProof, ConvertCartToCheckout, HandelOrderPlace } from "@/Components/Redux/Slices/CheckoutSlice"
 import { ClearCart } from "@/Components/Redux/Slices/CartSlice"
 import { useRouter } from "next/navigation"
 import useCartActions from "@/Components/Hooks/Cart"
 import useCheckoutActions from "@/Components/Hooks/Checkout"
 import axios from "@/lib/axios"
 import { useSelector } from "react-redux"
-// Sample order details
-const orderDetails = {
-  orderId: "ORD-2023-48756",
-  orderDate: "April 6, 2025",
-  orderTime: "10:42 PM",
-  estimatedDelivery: "11:15 PM",
-  paymentMethod: "Credit Card",
-  deliveryAddress: "123 Main Street, Kathmandu, Nepal",
-  contactNumber: "+977 9876543210",
-  items: [
-    {
-      id: 1,
-      name: "Chicken Biryani",
-      price: 350,
-      discountPercentage: 10,
-      quantity: 1,
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      id: 2,
-      name: "Vegetable Momo",
-      price: 180,
-      discountPercentage: 0,
-      quantity: 2,
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      id: 3,
-      name: "Butter Naan",
-      price: 80,
-      discountPercentage: 15,
-      quantity: 3,
-      image: "/placeholder.svg?height=60&width=60",
-    },
-  ],
-  subtotal: 610,
-  deliveryCharge: 100,
-  discount: 30.5,
-  total: 679.5,
-  status: "confirmed", // confirmed, preparing, on-the-way, delivered
-}
-
-
-
-const PlaceOrder = async (CartItems, PaymentMethod, AddressID, PickupCost, PickupLocation, Total, Subtotal, Discount, UserID, dispatch) => {
-  const orderData = { CartItems, PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID };
-  try {
-    const response = await axios.post("api/checkout/success", orderData);
-    console.log(response);
-
-    if (response.status == 201) {
-      const OrderData = { OrderID: response.data.OrderID, Total, Subtotal, Discount };
-      dispatch(HandelOrderPlace(OrderData));
-      dispatch(ConvertCartToCheckout());
-      dispatch(ClearCart());
-    }
-  } catch (error) {
-    console.log(error);
-
-  }
-}
-
 
 export default function OrderConfirmation() {
+  const router = useRouter();
   const OrderID = useSelector((state) => state.Checkout.OrderID);
   const TodayDate = format(new Date(), "d MMM yyyy");
-
-  const router = useRouter();
   let { Total, Subtotal, Discount, CartItems, PickupCost, PickupLocation, UserID } = useCartActions();
-  const { AddressID, PaymentMethod, dispatch, CheckoutItems, Address } = useCheckoutActions();
-
-  console.log(Address);
-  
+  let PaymentProof = useSelector((state) => state.Checkout.PaymentScreenshot);
+  const { AddressID, PaymentMethod, dispatch, } = useCheckoutActions();
   const hasPlacedOrder = useRef(false);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   useEffect(() => {
@@ -94,16 +26,38 @@ export default function OrderConfirmation() {
     if (!CartItems?.length || hasPlacedOrder.current || isOrderPlaced) return;
     hasPlacedOrder.current = true;
     setIsOrderPlaced(true);
-    const placeOrder = async () => { await PlaceOrder(CartItems, PaymentMethod, AddressID, PickupCost, PickupLocation, Total, Subtotal, Discount, UserID, dispatch) };
+    const placeOrder = async () => { await PlaceOrder() };
     placeOrder();
   }, []);
+
+
+  const PlaceOrder = async () => {
+    const orderData = { CartItems, PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID, PaymentProof };
+    try {
+      const response = await axios.post("api/checkout/success", orderData);
+      console.log(response);
+
+      if (response.status == 201) {
+        const OrderData = { OrderID: response.data.OrderID, Total, Subtotal, Discount };
+        dispatch(HandelOrderPlace(OrderData));
+        dispatch(ConvertCartToCheckout());
+        dispatch(ClearCart());
+        dispatch(ClearPaymentProof());
+      }
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+
   const [showDetails, setShowDetails] = useState(true)
+  const { Address, Total: GrandTotal } = useSelector((state) => state.Checkout);
 
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-5xl mx-auto px-4 ">
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-12 relative overflow-hidden">
-          {/* Star decorative elements */}
           <div className="absolute -top-10 -right-10 w-40 h-40 text-[#39b0e5]/10">
             <LargeStar />
           </div>
@@ -111,7 +65,6 @@ export default function OrderConfirmation() {
             <LargeStar />
           </div>
 
-          {/* Header */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-10 relative z-10">
             <div className="mb-4 md:mb-0 text-center md:text-left">
               <h1 className="text-3xl font-bold text-[#0a4d8c]">Order Confirmation</h1>
@@ -195,11 +148,11 @@ export default function OrderConfirmation() {
                   <ul className="space-y-3 mt-2">
                     <li className="flex items-start gap-2 text-sm">
                       <span className="text-slate-500 w-20">Address:</span>
-                      <span className="font-medium text-slate-700">{orderDetails.deliveryAddress}</span>
+                      <span className="font-medium text-slate-700">{Address.Address}</span>
                     </li>
                     <li className="flex items-center gap-2 text-sm">
                       <span className="text-slate-500 w-20">Phone:</span>
-                      <span className="font-medium text-slate-700">{orderDetails.contactNumber}</span>
+                      <span className="font-medium text-slate-700">{Address.Phone}</span>
                     </li>
                   </ul>
                 </div>
@@ -219,7 +172,7 @@ export default function OrderConfirmation() {
             <div className="flex justify-between items-center rounded-2xl p-5">
               <span className="text-lg font-medium">Total Amount:</span>
               <div>
-                <p className="text-2xl text-[#0055a4] font-bold">Rs. {1000}</p>
+                <p className="text-2xl text-[#0055a4] font-bold">Rs. {GrandTotal.toFixed(2)}</p>
                 <p className="text-xs text-gray-500 mt-1 text-right">Including all taxes</p>
               </div>
             </div>

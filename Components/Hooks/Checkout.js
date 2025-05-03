@@ -2,21 +2,15 @@
 import { useEffect, useState } from "react";
 import useCartActions from "./Cart";
 import axios from "@/lib/axios";
-// import { useSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
-import { UpdateAddress } from "@/Components/Redux/Slices/CheckoutSlice";
+import { HandelPaymentProof, UpdateAddress } from "@/Components/Redux/Slices/CheckoutSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const useCheckoutActions = () => {
     const dispatch = useDispatch();
     const router = useRouter();
-    // const { enqueueSnackbar: ShowNotification } = useSnackbar();
-    const { CartItems, UserID, PickupLocation } = useCartActions();
-    const [showAllProducts, setShowAllProducts] = useState(false)
-    const initialProductsToShow = 2
-    const hasMoreProducts = CartItems.length > initialProductsToShow
-    const visibleProducts = showAllProducts ? CartItems : CartItems.slice(0, initialProductsToShow)
+    const { UserID, PickupLocation } = useCartActions();
     const PaymentMethod = useSelector((state) => state.Checkout.PaymentMethod);
     const AddressID = useSelector((state) => state.Checkout.Address.ID);
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -33,7 +27,7 @@ const useCheckoutActions = () => {
     const [dialogOpen, setDialogOpen] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null)
     const [filePreview, setFilePreview] = useState(null)
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0]
             setSelectedFile(file)
@@ -43,6 +37,18 @@ const useCheckoutActions = () => {
                 setFilePreview(event.target.result)
             }
             reader.readAsDataURL(file)
+
+            const formData = new FormData()
+            formData.append('image', file)
+
+            try {
+                const response = await axios.post('api/checkout/paymentproof', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+                if (response.status == 200) {
+                    dispatch(HandelPaymentProof(response.data.PaymentScreenshot))
+                }
+            } catch (error) {
+                toast.error('Upload failed')
+            }
         }
     }
 
@@ -123,7 +129,7 @@ const useCheckoutActions = () => {
     };
 
     return {
-        PaymentMethod, showAllProducts, setShowAllProducts, hasMoreProducts, visibleProducts, handleAddressSubmit, handleAddressChange, dialogOpen, AddressID, setDialogOpen, NewAddress, Addresses, AddressID, dispatch, UpdateAddress, HandelCheckout, router, isSubmitting, setIsSubmitting, handleFileChange, filePreview, setFilePreview, selectedFile, setSelectedFile
+        PaymentMethod, handleAddressSubmit, handleAddressChange, dialogOpen, AddressID, setDialogOpen, NewAddress, Addresses, AddressID, dispatch, UpdateAddress, HandelCheckout, router, isSubmitting, setIsSubmitting, handleFileChange, filePreview, setFilePreview, selectedFile, setSelectedFile
     }
 }
 

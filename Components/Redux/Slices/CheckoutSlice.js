@@ -9,7 +9,8 @@ const CheckoutSlice = createSlice({
     OrderID: null,
     Subtotal: null,
     Discount: null,
-    Total: null
+    Total: null,
+    PaymentScreenshot: null
   },
   reducers: {
     UpdatePaymentMethod: (state, action) => {
@@ -32,6 +33,12 @@ const CheckoutSlice = createSlice({
       state.Total = Total;
       state.Subtotal = Subtotal;
       state.Discount = Discount;
+    },
+    HandelPaymentProof: (state, action) => {
+      state.PaymentScreenshot = action.payload;
+    },
+    ClearPaymentProof: (state) => {
+      state.PaymentScreenshot = null;
     }
   }
 })
@@ -45,5 +52,5 @@ export const ConvertCartToCheckout = () => (dispatch, getState) => {
   );
 };
 
-export const { UpdatePaymentMethod, UpdateAddress, ClearCheckoutState, HandelOrderPlace } = CheckoutSlice.actions;
+export const { UpdatePaymentMethod, UpdateAddress, ClearCheckoutState, HandelOrderPlace, HandelPaymentProof, ClearPaymentProof } = CheckoutSlice.actions;
 export default CheckoutSlice.reducer;
