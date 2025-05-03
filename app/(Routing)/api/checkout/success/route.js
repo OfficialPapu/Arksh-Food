@@ -4,7 +4,7 @@ import { CartItemSchema } from "@/Models/CartModel";
 import { OrderItemsSchema, OrderSchema } from "@/Models/OrderModel";
 import ProductSchema from "@/Models/ProductModel";
 import UserSchema from "@/Models/UserModel";
-import orderConfirmationTemplate from "@/Views/Emails/welcomeEmail";
+import NotifyUser from "@/Views/Emails/NotifyUser";
 import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
@@ -88,8 +88,8 @@ const AdminNotify = async (OrderData) => {
     try {
         const to = process.env.EMAIL;
         const subject = 'New Order Notification';
-        const html = orderConfirmationTemplate();
-        const info = await SendEmail(to, subject, html);
+        const html = NotifyUser();
+        // const info = await SendEmail(to, subject, html);
     } catch (error) {
         NextResponse.json({ status: 500 });
     }
@@ -99,7 +99,7 @@ const UserNotify = async (OrderData) => {
     try {
         const to = OrderData.UserID.Email;
         const subject = 'Order placed successfully - Arksh Food';
-        const html = orderConfirmationTemplate();
+        const html = NotifyUser(OrderData);
         const info = await SendEmail(to, subject, html);
     } catch (error) {
         NextResponse.json({ status: 500 });

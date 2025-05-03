@@ -107,8 +107,8 @@ export default function Cart() {
                                                             <div className="flex items-center mt-1 lg:mt-2">
                                                                 {item.Discount ? (
                                                                     <>
-                                                                        <span className="text-red-500 font-medium">Rs. {item.PriceAfterDiscount}</span>
-                                                                        <span className="text-gray-400 line-through text-sm ml-2">Rs. {item.Price}</span>
+                                                                        <span className="text-red-500 font-medium">Rs. {item.PriceAfterDiscount.toFixed(2)}</span>
+                                                                        <span className="text-gray-400 line-through text-sm ml-2">Rs. {item.Price.toFixed(2)}</span>
                                                                         {item.Discount > 0 && (
                                                                             <span className="ml-2 bg-red-100 text-red-700 text-xs px-1.5 py-0.5 rounded-full font-medium">
                                                                                 Save {item.Discount}%
@@ -116,7 +116,7 @@ export default function Cart() {
                                                                         )}
                                                                     </>
                                                                 ) : (
-                                                                    <span className="text-gray-700 font-medium">Rs. {item.Price}</span>
+                                                                    <span className="text-gray-700 font-medium">Rs. {item.Price.toFixed(2)}</span>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -150,7 +150,7 @@ export default function Cart() {
                                                             </button>
                                                         </div>
                                                         <div className="font-semibold text-[#0055a4]">
-                                                            Rs. {Total.toFixed(0)}
+                                                            Rs. {Total.toFixed(2)}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -194,7 +194,7 @@ export default function Cart() {
                                 <div className="space-y-4 mb-6">
                                     <div className="flex justify-between text-gray-600">
                                         <span>Subtotal</span>
-                                        <span>Rs. {Subtotal.toFixed(0)}</span>
+                                        <span>Rs. {Subtotal.toFixed(2)}</span>
                                     </div>
 
 
@@ -204,19 +204,19 @@ export default function Cart() {
                                                 <TagIcon className="h-4 w-4" />
                                                 Discount
                                             </span>
-                                            <span className="text-green-600 font-medium">- Rs. {Discount.toLocaleString()}</span>
+                                            <span className="text-green-600 font-medium">- Rs. {Discount.toFixed(2)}</span>
                                         </div>
                                     ) : null}
 
                                     <div className="flex justify-between text-gray-600">
                                         <span>Delivery</span>
-                                        <span>{PickupCost === 0 ? "Free" : `Rs. ${PickupCost}`}</span>
+                                        <span>{PickupCost === 0 ? "Free" : `Rs. ${PickupCost.toFixed(2)}`}</span>
                                     </div>
 
                                     <div className="pt-4 border-t border-gray-100">
                                         <div className="flex justify-between text-lg font-semibold">
                                             <span>Total</span>
-                                            <span className="text-[#0055a4]">Rs. {Total.toFixed(0)}</span>
+                                            <span className="text-[#0055a4]">Rs. {Total.toFixed(2)}</span>
                                         </div>
                                         <div className="text-xs text-gray-500 mt-1 text-right">Including all taxes</div>
                                     </div>

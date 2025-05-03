@@ -465,18 +465,18 @@ export default function CheckoutPage() {
                             <div className="text-sm text-gray-500">
                               {item.Discount > 0 ? (
                                 <div className="flex items-center">
-                                  <span className="text-red-500">Rs. {item.PriceAfterDiscount}</span>
-                                  <span className="text-gray-400 line-through text-xs ml-1">Rs. {item.Price}</span>
+                                  <span className="text-red-500">Rs. {item.PriceAfterDiscount.toFixed(2)}</span>
+                                  <span className="text-gray-400 line-through text-xs ml-1">Rs. {item.Price.toFixed(2)}</span>
                                 </div>
                               ) : (
-                                <span>Rs. {item.Price}</span>
+                                <span>Rs. {item.Price.toFixed(2)}</span>
                               )}
                               {item.quantity > 1 && <span className="ml-1">× {item.Quantity}</span>}
                             </div>
                             {item.Discount ? (
-                              <div className="font-medium text-gray-900">Rs. {item.PriceAfterDiscount * item.Quantity}</div>
+                              <div className="font-medium text-gray-900">Rs. {(item.PriceAfterDiscount * item.Quantity).toFixed(2)}</div>
                             ) : (
-                              <div className="font-medium text-gray-900">Rs. {item.Price * item.Quantity}</div>
+                              <div className="font-medium text-gray-900">Rs. {(item.Price * item.Quantity).toFixed(2)}</div>
                             )}
                           </div>
                         </div>
@@ -493,7 +493,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>Rs. {Subtotal.toFixed(0)}</span>
+                    <span>Rs. {Subtotal.toFixed(2)}</span>
                   </div>
 
                   {Discount ? (
@@ -502,18 +502,18 @@ export default function CheckoutPage() {
                         <TagIcon className="h-4 w-4" />
                         Discount
                       </span>
-                      <span className="text-green-600 font-medium">- Rs. {Discount.toLocaleString()}</span>
+                      <span className="text-green-600 font-medium">- Rs. {Discount.toFixed(2)}</span>
                     </div>
                   ) : null}
                   <div className="flex justify-between text-gray-600">
                     <span>Delivery</span>
-                    <span>{PickupCost == 0 ? "Free" : "Rs. " + PickupCost}</span>
+                    <span>{PickupCost == 0 ? "Free" : "Rs. " + PickupCost.toFixed(2)}</span>
                   </div>
                   <Separator className="my-2" />
 
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span className="text-xl text-[#0055a4]">Rs. {Total.toFixed(0)}</span>
+                    <span className="text-xl text-[#0055a4]">Rs. {Total.toFixed(2)}</span>
                   </div>
                   <div className="text-xs text-gray-500 mt-1 text-right">Including all taxes</div>
                 </div>

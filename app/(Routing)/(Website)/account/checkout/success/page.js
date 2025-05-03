@@ -45,8 +45,6 @@ export default function OrderConfirmation() {
         dispatch(ClearPaymentProof());
       }
     } catch (error) {
-      console.log(error);
-
     }
   }
 
