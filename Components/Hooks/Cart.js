@@ -12,6 +12,7 @@ const useCartActions = () => {
     const isAuth = useSelector((state) => state.Login.isAuth);
     const UserID = useSelector((state) => state.Login?.UserDetails?.UserID);
     const BASE_IMAGES_PATH = process.env.NEXT_PUBLIC_IMAGE_URL;
+    const [loading, setLoading] = useState(false);
     const PickupOptions = [
         {
             ID: "Inside-Valley",
@@ -74,6 +75,8 @@ const useCartActions = () => {
             toast.error('Oops! Already in your cart');
             return;
         }
+        if (loading) return; 
+        setLoading(true);
         const StatusCode = !ReAddingItem ? await StoreItemInDB(Product, UserID) : 201;
         if (StatusCode == 201) {
             dispatch(AddToCart({
@@ -90,6 +93,7 @@ const useCartActions = () => {
         } else {
             toast.error('Something went wrong');
         }
+        setLoading(false);
     }
 
     const HandelRemoveFromCart = async (ProductID, CartItemID) => {
@@ -172,7 +176,7 @@ const useCartActions = () => {
     const Discount = useSelector((state) => state.Cart.OriginalTotal - state.Cart.DiscountedTotal) || null
     const Total = Math.max(0, Subtotal + PickupCost - (Discount || 0))
 
-    return { GetCartItems, HandleAddToCart, HandelUpdateQuantity, HandelRemoveFromCart, IsProductInCart, HandelCheckout, PickupOptions, handlePickupOptionChange, selectedPickupOption, PickupCost, Subtotal, Discount, Total, PickupLocation, CartItems, UserID };
+    return { GetCartItems, HandleAddToCart, HandelUpdateQuantity, HandelRemoveFromCart, IsProductInCart, HandelCheckout, PickupOptions, handlePickupOptionChange, selectedPickupOption, PickupCost, Subtotal, Discount, Total, PickupLocation, CartItems, UserID, loading, setLoading };
 }
 
 export default useCartActions;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Check, ShoppingBag } from "lucide-react";
+import { CheckCircle, Loader2, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./button";
 import useCartActions from "../Hooks/Cart";
@@ -12,7 +12,8 @@ export function ProductCard({ Product }) {
           Product.Price - (Product.Price / 100) * Product.Discount.Percentage
         )
       : null;
-  const { HandleAddToCart, IsProductInCart } = useCartActions();
+  const { HandleAddToCart, IsProductInCart, loading, setLoading } =
+    useCartActions();
   const isInCart = IsProductInCart(Product._id);
   return (
     <div className="group h-full overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md flex flex-col">
@@ -82,15 +83,20 @@ export function ProductCard({ Product }) {
             await HandleAddToCart(Product);
           }}
         >
-          {isInCart ? (
+          {loading ? (
             <>
-              <Check className="mt-[1px] h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              Added
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Adding to Bag</span>
+            </>
+          ) : isInCart ? (
+            <>
+              <CheckCircle className="h-5 w-5" />
+              <span>In Your Bag</span>
             </>
           ) : (
             <>
-              <ShoppingBag className="mt-[1px] h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              Add to Cart
+              <ShoppingBag className="h-5 w-5" />
+              <span>Add to cart</span>
             </>
           )}
         </Button>
