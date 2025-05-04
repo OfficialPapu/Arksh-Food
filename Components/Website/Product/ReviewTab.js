@@ -38,7 +38,7 @@ const ReviewTab = () => {
                                 onChange={(e) => setComment(e.target.value)}
                             />
                         </div>
-                        <Button className="w-full sm:w-auto bg-black hover:bg-black/90 text-white" onClick={async () => await AddReview()}>Submit Review</Button>
+                        <Button className="w-full sm:w-auto bg-[#0055b8] hover:bg-[#0055b8]/90 text-white" onClick={async () => await AddReview()}>Submit Review</Button>
                     </div>
                 </CardContent>
             </Card>

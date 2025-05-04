@@ -1,23 +1,17 @@
 import ConnectDB from "@/lib/MongoDB";
+import ProductSchema from "@/Models/ProductModel";
 import { NextResponse } from "next/server";
-import CategoriesSchema from "@/Models/CategoryModel";
-export async function DELETE(request, { params }) {
+export async function GET(request, { params }) {
   try {
-    const { id } = await params;
-    if (!id) {
-      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    const { Slug } = await params;
+    if (!Slug) {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
     }
-    const deletedCategory = await CategoriesSchema.findByIdAndDelete(id);
-    if (!deletedCategory) {
-      return NextResponse.json(
-        { error: "Category not found" },
-        { status: 404 }
-      );
+    const Product = await ProductSchema.find({ Slug }).populate("Category");
+    if (!Product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
-    return NextResponse.json(
-      { message: "Category deleted successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json(Product, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },

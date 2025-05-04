@@ -231,6 +231,11 @@ footer ul {
   margin: 0 !important;
 }
 
+.ProductPage img {
+  border-radius: 20px;
+  margin: 10px 0;
+}
+
 
 blockquote {
   font-style: italic;
