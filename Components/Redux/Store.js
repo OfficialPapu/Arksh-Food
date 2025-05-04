@@ -5,31 +5,33 @@ import { combineReducers } from "redux";
 import LoginSlice from "./Slices/LoginSlice";
 import CartSlice from "./Slices/CartSlice";
 import CheckoutSlice from "./Slices/CheckoutSlice";
+import ApiStatusSlice from "./Slices/ApiStatusSlice";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 const persistConfig = {
-    key: "ArkshFood",
-    storage,    
-    transforms: [
-        // encryptTransform({
-        //     secretKey: process.env.NEXT_PUBLIC_PERSIST_ENCRYPT_KEY,
-        //     onError: function (error) {
-        //         localStorage.clear(); 
-        //         window.location.href = "/";
-        //     },
-        // }),
-    ],
+  key: "ArkshFood",
+  storage,
+  transforms: [
+    // encryptTransform({
+    //     secretKey: process.env.NEXT_PUBLIC_PERSIST_ENCRYPT_KEY,
+    //     onError: function (error) {
+    //         localStorage.clear();
+    //         window.location.href = "/";
+    //     },
+    // }),
+  ],
 };
 
 const rootReducer = combineReducers({
-    Login: LoginSlice,
-    Cart: CartSlice,
-    Checkout: CheckoutSlice,
+  Login: LoginSlice,
+  Cart: CartSlice,
+  Checkout: CheckoutSlice,
+  ApiStatus: ApiStatusSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const Store = configureStore({
-    reducer: persistedReducer,
+  reducer: persistedReducer,
 });
 
 export const Persistor = persistStore(Store);

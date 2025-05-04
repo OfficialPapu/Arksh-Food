@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useState } from 'react'
+import React from 'react'
 import { Star } from "lucide-react"
 import { Textarea } from "@/Components/ui/textarea"
 import { Button } from "@/Components/ui/button"
@@ -46,13 +46,13 @@ const ReviewTab = () => {
             <Card className="border-none">
                 <CardContent className="p-6">
 
-                    {Reviews.length > 0 ? (
+                    {Reviews?.length > 0 ? (
                         <>
-                            <h3 className="text-xl font-semibold !mb-4">Reviews ({Reviews.length})</h3>
-                            {Reviews.map((Review, index) => (
+                            <h3 className="text-xl font-semibold !mb-4">Reviews ({Reviews?.length})</h3>
+                            {Reviews?.map((Review, index) => (
                                 <div key={index} className="flex items-start gap-4 mt-4">
                                     <Avatar className="w-12 h-12 grid place-content-center">
-                                        <Avatar className="grid place-content-center"> {Review?.UserID?.Name.split(' ').map((part, i) => i === 0 || i === 1 ? part[0] : '').join('')}</Avatar>
+                                        <Avatar className="grid place-content-center"> {Review?.User?.Name.split(' ').map((part, i) => i === 0 || i === 1 ? part[0] : '').join('')}</Avatar>
                                     </Avatar>
                                     <div className="flex-1">
                                         <div className="flex items-start justify-between mb-2">
