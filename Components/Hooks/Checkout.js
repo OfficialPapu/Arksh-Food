@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import useCartActions from "./Cart";
 import axios from "@/lib/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { HandelPaymentProof, UpdateAddress } from "@/Components/Redux/Slices/CheckoutSlice";
+import { HandelPaymentProof, UpdateAddress } from "@/Components/Redux/ClientSlices/CheckoutSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

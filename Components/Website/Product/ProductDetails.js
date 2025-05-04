@@ -44,9 +44,7 @@ const ProductDetails = () => {
     })();
   }, [GetProductInfo]);
 
-  if (loading) {
-    return <PreLoader />;
-  }
+  if (loading) return <PreLoader />;
 
   return (
     <>

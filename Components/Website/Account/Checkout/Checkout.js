@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Toaster } from "react-hot-toast"
 import useCheckoutActions from "@/Components/Hooks/Checkout"
 import useCartActions from "@/Components/Hooks/Cart"
-import { UpdatePaymentMethod } from "@/Components/Redux/Slices/CheckoutSlice"
+import { UpdatePaymentMethod } from "@/Components/Redux/ClientSlices/CheckoutSlice"
 
 
 export default function CheckoutPage() {
@@ -298,7 +298,7 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* eSewa Option */}
-                  <div
+                  {/* <div
                     className={`border rounded-xl p-5 cursor-pointer transition-all hover:border-[#0055a4]/50 ${PaymentMethod === "eSewa"
                       ? "border-[#0055a4] bg-[#e6f0f9]/50 shadow-sm"
                       : "border-gray-200"
@@ -427,7 +427,7 @@ export default function CheckoutPage() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </div> */}
                 </RadioGroup>
 
                 <div className="flex items-center text-sm text-gray-600 mt-6">

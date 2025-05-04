@@ -10,7 +10,7 @@ import { EyeIcon, EyeOffIcon, LockIcon, MailIcon, Loader2 } from "lucide-react"
 import Link from "next/link"
 import axios from "@/lib/axios"
 import { useDispatch } from "react-redux"
-import { Login } from "@/Components/Redux/Slices/LoginSlice"
+import { Login } from "@/Components/Redux/ClientSlices/LoginSlice"
 import { useRouter, useSearchParams } from "next/navigation"
 import Hashids from 'hashids';
 export function LoginForm() {

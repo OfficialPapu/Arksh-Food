@@ -5,7 +5,7 @@ import {
   UpdateQuantity,
   ClearCart,
   UpdatePickup,
-} from "@/Components/Redux/Slices/CartSlice";
+} from "@/Components/Redux/ClientSlices/CartSlice";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import { useEffect, useState } from "react";

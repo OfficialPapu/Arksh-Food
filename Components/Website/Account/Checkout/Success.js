@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from "react"
 import { Check, ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Ordersummary from "@/Components/Website/Account/Checkout/OrderSummary"
-import { ClearPaymentProof, ConvertCartToCheckout, HandelOrderPlace } from "@/Components/Redux/Slices/CheckoutSlice"
-import { ClearCart } from "@/Components/Redux/Slices/CartSlice"
+import { ClearPaymentProof, ConvertCartToCheckout, HandelOrderPlace } from "@/Components/Redux/ClientSlices/CheckoutSlice"
+import { ClearCart } from "@/Components/Redux/ClientSlices/CartSlice"
 import { useRouter } from "next/navigation"
 import useCartActions from "@/Components/Hooks/Cart"
 import useCheckoutActions from "@/Components/Hooks/Checkout"
 import axios from "@/lib/axios"
 import { useSelector } from "react-redux"
+import SuccessPreLoader from "./SuccessPreLoader";
 
 const Success = () => {
     const router = useRouter();
+  const [loading, setLoading] = useState(true);
     const OrderID = useSelector((state) => state.Checkout.OrderID);
     const TodayDate = format(new Date(), "d MMM yyyy");
     let { Total, Subtotal, Discount, CartItems, PickupCost, PickupLocation, UserID } = useCartActions();
@@ -23,7 +25,10 @@ const Success = () => {
     const [isOrderPlaced, setIsOrderPlaced] = useState(false);
     useEffect(() => {
         if (!AddressID || !PaymentMethod) router.push('/account/cart');
-        if (!CartItems?.length || hasPlacedOrder.current || isOrderPlaced) return;
+        if (!CartItems?.length || hasPlacedOrder.current || isOrderPlaced) {
+            setLoading(false);
+            return;
+        };
         hasPlacedOrder.current = true;
         setIsOrderPlaced(true);
         const placeOrder = async () => { await PlaceOrder() };
@@ -35,8 +40,6 @@ const Success = () => {
         const orderData = { CartItems, PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID, PaymentProof };
         try {
             const response = await axios.post("api/checkout/success", orderData);
-            console.log(response);
-
             if (response.status == 201) {
                 const OrderData = { OrderID: response.data.OrderID, Total, Subtotal, Discount };
                 dispatch(HandelOrderPlace(OrderData));
@@ -45,6 +48,8 @@ const Success = () => {
                 dispatch(ClearPaymentProof());
             }
         } catch (error) {
+        }finally {
+            setLoading(false);
         }
     }
 
@@ -52,6 +57,7 @@ const Success = () => {
     const [showDetails, setShowDetails] = useState(true)
     const { Address, Total: GrandTotal } = useSelector((state) => state.Checkout);
 
+    if (loading) return <SuccessPreLoader />;
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-5xl mx-auto px-4 ">

@@ -2,10 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
-import LoginSlice from "./Slices/LoginSlice";
-import CartSlice from "./Slices/CartSlice";
-import CheckoutSlice from "./Slices/CheckoutSlice";
-import ApiStatusSlice from "./Slices/ApiStatusSlice";
+import LoginSlice from "./ClientSlices/LoginSlice";
+import CartSlice from "./ClientSlices/CartSlice";
+import CheckoutSlice from "./ClientSlices/CheckoutSlice";
+import ApiStatusSlice from "./ClientSlices/ApiStatusSlice";
+import OrderDetailsSlice from "./AdminSlices/OrderDetailsSlice";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 const persistConfig = {
   key: "ArkshFood",
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   Cart: CartSlice,
   Checkout: CheckoutSlice,
   ApiStatus: ApiStatusSlice,
+  AdminOrderDetails: OrderDetailsSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
