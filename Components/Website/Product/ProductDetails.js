@@ -1,19 +1,53 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingBag, ArrowLeft } from "lucide-react";
+import { Search, ShoppingBag, ArrowLeft, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductCarousel from "@/Components/Website/Product/ProductCarousel";
 import ActionSection from "@/Components/Website/Product/ActionSection";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/Components/ui/breadcrumb";
 import UseProductDetails from "./UseProductDetails";
 import ReviewTab from "./ReviewTab";
+import Image from "next/image";
+import PreLoader from "./PreLoader";
 const ProductDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { BreadcrumbItems, Product } = UseProductDetails();
+  const { BreadcrumbItems, Product, GetProductInfo, GetReviews, Reviews } =
+    UseProductDetails();
+  const [loading, setLoading] = useState(true);
+  const hasFetchedRef = useRef(false);
+
+  useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
+    (async () => {
+      try {
+        const productData = await GetProductInfo();
+        if (productData?._id) {
+          await GetReviews(productData._id);
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [GetProductInfo]);
+
+  if (loading) {
+    return <PreLoader />;
+  }
+
   return (
     <>
       {Product && Product.Name ? (
@@ -42,8 +76,8 @@ const ProductDetails = () => {
           <main className="pb-8 px-4">
             <div className="relative">
               <div className="grid SliderWrapper">
-                <ProductCarousel />
-                <ActionSection />
+                <ProductCarousel Product={Product} />
+                <ActionSection Product={Product} />
               </div>
             </div>
 
@@ -88,7 +122,7 @@ const ProductDetails = () => {
                     value="Review"
                     className="p-5 lg:p-6 focus-visible:outline-none focus-visible:ring-0 ProductPage"
                   >
-                    <ReviewTab />
+                    <ReviewTab Product={Product} Reviews={Reviews} />
                   </TabsContent>
                 </Tabs>
               </div>

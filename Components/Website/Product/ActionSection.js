@@ -17,28 +17,15 @@ import UseProductDetails from "./UseProductDetails";
 import useCartActions from "@/Components/Hooks/Cart";
 import { Toaster } from "react-hot-toast";
 import ShareButton from "./ShareBtn";
-const ActionSection = () => {
-  const incrementQuantity = () => {
-    setQuantity((prev) => prev + 1);
-    Product.Quantity = quantity;
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - 1);
-    }
-    Product.Quantity = quantity;
-  };
-
-  // Product benefits
+const ActionSection = ({ Product }) => {
   const productBenefits = [
     { icon: <Leaf className="h-5 w-5" />, text: "100% Organic" },
     { icon: <Award className="h-5 w-5" />, text: "High Protein" },
     { icon: <Clock className="h-5 w-5" />, text: "Ready in 5 mins" },
   ];
 
-  const { Product } = UseProductDetails();
-  const [quantity, setQuantity] = useState(1);
+  const { incrementQuantity, decrementQuantity, quantity } =
+    UseProductDetails();
   const { HandleAddToCart, IsProductInCart, loading, setLoading } =
     useCartActions();
   const isInCart = IsProductInCart(Product._id);
@@ -46,7 +33,7 @@ const ActionSection = () => {
     <div>
       {/* Product Header */}
       <div className="mb-8">
-      <Toaster toastOptions={{ duration: 2000 }} />
+        <Toaster toastOptions={{ duration: 2000 }} />
         <div className="flex items-center justify-between mb-2">
           <div className="inline-flex items-center gap-2">
             <div className="h-3 w-3 rounded-full bg-[#0055b8]"></div>
@@ -55,7 +42,7 @@ const ActionSection = () => {
             </span>
           </div>
           <div className="flex gap-3">
-            <ShareButton/>
+            <ShareButton />
           </div>
         </div>
 
@@ -96,7 +83,7 @@ const ActionSection = () => {
               variant="ghost"
               size="icon"
               className="h-9 w-9 rounded-full text-gray-500 hover:text-[#0055b8] hover:bg-blue-50"
-              onClick={decrementQuantity}
+              onClick={() => decrementQuantity()}
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -107,7 +94,7 @@ const ActionSection = () => {
               variant="ghost"
               size="icon"
               className="h-9 w-9 rounded-full text-gray-500 hover:text-[#0055b8] hover:bg-blue-50"
-              onClick={incrementQuantity}
+              onClick={() => incrementQuantity()}
             >
               <Plus className="h-4 w-4" />
             </Button>
@@ -137,7 +124,6 @@ const ActionSection = () => {
 
       {/* Action Buttons */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
-
         <Button
           className="h-12 px-6 bg-[#0055b8] hover:bg-[#0055b8]/90 text-white rounded-lg font-medium text-base shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
           onClick={async () => {
@@ -163,7 +149,13 @@ const ActionSection = () => {
           )}
         </Button>
 
-        <Button className="h-12 bg-white border-2 border-[#0055b8] text-[#0055b8] hover:bg-[#0055b8]/5 rounded-lg font-medium text-base shadow-sm">
+        <Button
+          className="h-12 bg-white border-2 border-[#0055b8] text-[#0055b8] hover:bg-[#0055b8]/5 rounded-lg font-medium text-base shadow-sm"
+          disabled={loading}
+          onClick={async () => {
+            await HandleAddToCart(Product, false, true);
+          }}
+        >
           <ShoppingBag className="h-5 w-5 mr-2" />
           Buy Now
         </Button>

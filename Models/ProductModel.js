@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import CategoriesSchema from "./CategoryModel";
+import UserSchema from "./UserModel";
 let ProductSchema = new mongoose.Schema(
   {
     Name: { type: String, required: true },
@@ -42,4 +44,3 @@ ProductSchema =
   mongoose.model("Products", ProductSchema, "Products");
 
 export default ProductSchema;
-

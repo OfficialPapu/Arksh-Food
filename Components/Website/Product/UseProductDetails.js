@@ -14,32 +14,19 @@ const UseProductDetails = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const isAuth = useSelector((state) => state.Login.isAuth);
   const UserID = useSelector((state) => state.Login?.UserDetails?.UserID);
-  const hasFetchedRef = useRef(false);
   const BreadcrumbItems = [
     { name: "Home", href: "/" },
     { name: "Proudct" },
     { name: Product?.Name },
   ];
 
-  const GetReviews = async () => {
-    const response = await axios.get("api/product/review/" + Product._id);
+  const GetReviews = async (ProductID) => {
+    const response = await axios.get("api/product/review/" + ProductID);
     const result = response.data;
     setReviews(result.Review);
   };
-  
-  // useEffect(() => {
-  //   // if (!hasFetchedRef.current && Product.length == 0) {
-  //   GetReviews();
-  //   GetProductInfo();
-  //   hasFetchedRef.current = true;
-  //   // }
-  // }, []);
 
-  useEffect(() => {
-    GetReviews();
-  }, [Product]);
-
-  const AddReview = async () => {
+  const AddReview = async (ProductID) => {
     try {
       if (!isAuth) {
         router.push("/auth/login");
@@ -51,7 +38,7 @@ const UseProductDetails = () => {
       }
       const response = await axios.post("api/product/review/add", {
         UserID,
-        ProductID: Product._id,
+        ProductID,
         Rating,
         Comment,
       });
@@ -74,13 +61,29 @@ const UseProductDetails = () => {
     const response = await axios.get("api/product/" + Slug);
     const result = response.data;
     setProduct(result[0]);
+    return result[0];
   }
 
-  useEffect(() => {
-    GetProductInfo();
-  }, []);
+  const [quantity, setQuantity] = useState(1);
 
+  const incrementQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
+  useEffect(() => {
+    Product.Quantity = quantity;
+  }, [quantity]);
   return {
+    quantity,
+    GetProductInfo,
+    incrementQuantity,
+    decrementQuantity,
     BreadcrumbItems,
     Product,
     thumbsSwiper,
@@ -92,6 +95,7 @@ const UseProductDetails = () => {
     setComment,
     Reviews,
     BASE_IMAGES_PATH,
+    GetReviews,
   };
 };
 

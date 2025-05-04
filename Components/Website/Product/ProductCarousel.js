@@ -6,8 +6,8 @@ import "swiper/css";
 import "swiper/css/thumbs";
 import { Thumbs } from "swiper/modules";
 
-const ProductCarousel = () => {
-  const { Product, thumbsSwiper, setThumbsSwiper, BASE_IMAGES_PATH } =
+const ProductCarousel = ({ Product }) => {
+  const { thumbsSwiper, setThumbsSwiper, BASE_IMAGES_PATH } =
     UseProductDetails();
   return (
     <div className="relative flex flex-col md:flex-row gap-1 lg:h-[400px] sm:h-[350px] h-[300px]">

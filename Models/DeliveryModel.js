@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import UserSchema from './UserModel';
+import mongoose from 'mongoose';
 
 let DeliverySchema = new mongoose.Schema({
     UserID: {

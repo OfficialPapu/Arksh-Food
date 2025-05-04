@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import DeliverySchema from './DeliveryModel';
+import UserSchema from './UserModel';
+import ProductSchema from './ProductModel';
 
 const OrderItemsSchemaDef = new mongoose.Schema({
     ProductID: { type: mongoose.Schema.Types.ObjectId, ref: "Products", required: true },

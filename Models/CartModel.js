@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import ProductSchema from './ProductModel';
+import UserSchema from './UserModel';
 
 const CartItemSchemaDef = new mongoose.Schema({
   ProductID: { type: mongoose.Schema.Types.ObjectId, ref: "Products" },
