@@ -4,7 +4,7 @@ import { CartItemSchema } from "@/Models/CartModel";
 import { OrderItemsSchema, OrderSchema } from "@/Models/OrderModel";
 import ProductSchema from "@/Models/ProductModel";
 import UserSchema from "@/Models/UserModel";
-import NotifyUser from "@/Views/Emails/NotifyUser";
+import EmailTemplate from "@/Views/Emails/EmailTemplate";
 import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
@@ -24,6 +24,13 @@ export async function POST(request, { params }) {
             if (!Product) {
                 return NextResponse.json({ message: `Product not found: ${Item.ProductID}` }, { status: 404 })
             }
+
+            if (Product.Stock < Item.Quantity) {
+                return NextResponse.json({ message: `Insufficient stock for product: ${Product.Name}` }, { status: 400 });
+            }
+            Product.Stock -= Item.Quantity;
+            await Product.save();
+
             let UnitPrice = Item.PriceAfterDiscount ? Item.PriceAfterDiscount : Item.Price;
             let OrderItem = new OrderItemsSchema({
                 ProductID: Product._id,
@@ -62,15 +69,11 @@ export async function POST(request, { params }) {
         });
 
         await NewOrder.save();
-
-
         const OrderData = await OrderSchema.findById(NewOrder._id).populate({ path: 'OrderItemsID', populate: { path: 'ProductID', select: 'Name Price' } }).populate('UserID', 'Name Email').populate('Shipping.Address', 'Name Phone Address City PostalCode');
         await UserNotify(OrderData);
         await AdminNotify(OrderData);
         return NextResponse.json({ OrderID: OrderID }, { status: 201 })
     } catch (error) {
-        console.log(error);
-
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
@@ -86,10 +89,17 @@ function generateShipmentID() {
 
 const AdminNotify = async (OrderData) => {
     try {
+        const Email = {
+            Title: "New Order Notification",
+            Subtitle: "A new order has been placed.",
+            Description: "A new order has been placed. Please review the order details and take appropriate action.",
+            isAdminNotification: true,
+        }
+        OrderData.Email = Email;
         const to = process.env.EMAIL;
         const subject = 'New Order Notification';
-        const html = NotifyUser();
-        // const info = await SendEmail(to, subject, html);
+        const html = EmailTemplate(OrderData);
+        const info = await SendEmail(to, subject, html);
     } catch (error) {
         NextResponse.json({ status: 500 });
     }
@@ -97,9 +107,17 @@ const AdminNotify = async (OrderData) => {
 
 const UserNotify = async (OrderData) => {
     try {
+        
+        const Email = {
+            Title: "Order placed successfully!",
+            Subtitle: "Your order has been placed successfully.",
+            Description: "Your order has been confirmed and is now being processed. We'll send you another email when your order ships.",
+            isAdminNotification: false,
+        }
+        OrderData.Email = Email;
         const to = OrderData.UserID.Email;
         const subject = 'Order placed successfully - Arksh Food';
-        const html = NotifyUser(OrderData);
+        const html = EmailTemplate(OrderData);
         const info = await SendEmail(to, subject, html);
     } catch (error) {
         NextResponse.json({ status: 500 });

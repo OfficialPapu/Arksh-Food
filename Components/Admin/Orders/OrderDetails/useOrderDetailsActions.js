@@ -69,7 +69,7 @@ const useOrderDetailsActions = () => {
     setIsLoading(true);
     try {
       const ApiData = { updateMode, selectedItems, NewStatus };
-      const response = await axios.put(`api/admin/order/${OrderID}`, ApiData);
+      const response = await axios.put(`api/admin/orders/${OrderID}`, ApiData);
       if (response.status == 200) {
         toast.success(`Status Updated to ${NewStatus}`);
         dispatch(HandelOrderDataStatusChanges(ApiData));
