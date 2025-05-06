@@ -36,7 +36,7 @@ let ProductSchema = new mongoose.Schema(
       default: "Active",
     },
   },
-  { timestamps: { createdAt: "CreatedAt", updatedAt: "UpdateAt" } }
+  { timestamps: { createdAt: "CreatedAt", updatedAt: "UpdatedAt" } }
 );
 
 ProductSchema =

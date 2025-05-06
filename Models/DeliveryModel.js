@@ -38,7 +38,7 @@ let DeliverySchema = new mongoose.Schema({
     Notes: {
         type: String
     },
-}, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdateAt' } })
+}, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdatedAt' } })
 
 DeliverySchema = mongoose.models.Deliverys || mongoose.model("Deliverys", DeliverySchema, "Deliverys");
 export default DeliverySchema;

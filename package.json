@@ -50,6 +50,8 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "draft-js": "^0.11.7",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "framer-motion": "^12.6.3",
     "hashids": "^2.3.0",
     "jose": "^6.0.10",

@@ -15,7 +15,7 @@ let CategoriesSchema = mongoose.Schema({
         type: String,
         required: true
     },
-}, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdateAt' } })
+}, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdatedAt' } })
 
 CategoriesSchema = mongoose.models.Categories || mongoose.model("Categories", CategoriesSchema, "Categories");
 export default CategoriesSchema;

@@ -48,7 +48,7 @@ let UserSchema = mongoose.Schema({
     DOB: {
         type: Date,
     },
-}, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdateAt' } })
+}, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdatedAt' } })
 
 UserSchema = mongoose.models.Users || mongoose.model("Users", UserSchema, "Users");
 
