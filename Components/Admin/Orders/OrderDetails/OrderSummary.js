@@ -29,7 +29,7 @@ const OrderSummary = () => {
     };
     
     return (
-        <div className="mb-8 overflow-hidden rounded-xl bg-white shadow-sm dark:bg-slate-950">
+        <div className="mb-8 overflow-hidden bg-white shadow-sm dark:bg-slate-950">
             <div className="grid grid-cols-1 divide-y divide-slate-200 sm:grid-cols-2 sm:divide-y-0 sm:divide-x md:grid-cols-3 dark:divide-slate-800">
                 <div className="p-6">
                     <div className="text-sm font-medium text-slate-500 dark:text-slate-400">Customer</div>
@@ -95,8 +95,8 @@ const OrderSummary = () => {
             
             {/* Full Screen Image Preview Modal with Payment Details */}
             {showFullScreenImage && OrderData?.Payment?.Screenshot && (
-                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={toggleFullScreenImage}>
-                    <div className="relative max-w-4xl w-full animate-fade-in">
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 top-10" onClick={toggleFullScreenImage}>
+                    <div className="relative max-w-2xl w-full animate-fade-in">
                         <Button 
                             variant="outline" 
                             size="icon" 
@@ -152,7 +152,7 @@ const OrderSummary = () => {
                                 <img
                                     src={`${BASE_IMAGES_PATH}/${OrderData.Payment.Screenshot}`}
                                     alt="Payment Screenshot"
-                                    className="w-full h-auto max-h-[70vh] object-contain"
+                                    className="w-full h-auto max-h-[50vh] object-contain"
                                 />
                                 <div className="mt-3 text-xs text-slate-500 dark:text-slate-400">
                                     Receipt uploaded by customer

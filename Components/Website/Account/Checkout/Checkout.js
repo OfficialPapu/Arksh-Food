@@ -558,14 +558,14 @@ export default function CheckoutPage() {
           <div className="grid gap-5 py-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <Label htmlFor="addressName" className="text-gray-700 font-medium">
+                <Label htmlFor="AddressName" className="text-gray-700 font-medium">
                   Address Name
                 </Label>
                 <div className="relative mt-1.5">
                   <Home className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    id="addressName"
-                    Name="AddressName"
+                    id="AddressName"
+                    name="AddressName"
                     placeholder="Home, Office, etc."
                     className="pl-10 h-11 rounded-lg border-gray-200 focus:border-[#0055a4] focus:ring-[#0055a4]"
                     value={NewAddress.AddressName}

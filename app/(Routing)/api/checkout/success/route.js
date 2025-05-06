@@ -9,7 +9,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
     try {
-        const { PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID, CartItems, PaymentProof } = await request.json();
+        let { PaymentMethod, PickupLocation, AddressID, PickupCost, Total, Subtotal, Discount, UserID, CartItems, PaymentProof } = await request.json();
+        Discount = Math.round(Discount), Total = Math.round(Total - PickupCost), Subtotal = Math.round(Subtotal);
         if (!PaymentMethod || !PickupLocation || !AddressID || !CartItems || CartItems.length === 0 || !Total || !UserID) {
             return NextResponse.json({ message: "Missing required fields or empty cart" }, { status: 400 })
         }
@@ -34,10 +35,10 @@ export async function POST(request, { params }) {
             let UnitPrice = Item.PriceAfterDiscount ? Item.PriceAfterDiscount : Item.Price;
             let OrderItem = new OrderItemsSchema({
                 ProductID: Product._id,
-                BasePrice: Product.Price,
-                UnitPrice: UnitPrice,
+                BasePrice: Math.round(Product.Price),
+                UnitPrice: Math.round(UnitPrice),
                 Quantity: Item.Quantity,
-                Total: UnitPrice * Item.Quantity,
+                Total: Math.round(UnitPrice * Item.Quantity),
             });
             await CartItemSchema.updateOne(
                 { _id: Item.CartItemID },

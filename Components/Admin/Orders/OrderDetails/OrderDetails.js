@@ -107,14 +107,14 @@ const OrderDetails = () => {
                                     {OrderData?.Discount && (
                                         <div className="flex items-center justify-between text-sm">
                                             <span className="text-slate-500 dark:text-slate-400">Discount:</span>
-                                            <span className="font-medium text-slate-900 dark:text-white">- Rs. {OrderData?.Discount}</span>
+                                            <span className="font-medium text-slate-900 dark:text-white">- Rs. { Math.round(OrderData?.Discount)}</span>
                                         </div>
                                     )}
                                     <Separator className="my-2" />
                                     <div className="flex items-center justify-between">
                                         <span className="font-medium text-slate-900 dark:text-white">Total:</span>
                                         <span className="text-lg font-bold text-slate-900 dark:text-white">
-                                            Rs. {OrderData?.GrandTotal}
+                                            Rs. {OrderData?.GrandTotal + OrderData?.Shipping?.Cost}
                                         </span>
                                     </div>
                                 </div>

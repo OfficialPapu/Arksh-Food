@@ -117,7 +117,7 @@ const ProductInfo = () => {
         </CardContent>
         <CardFooter className="flex flex-row justify-end gap-2 border-t bg-slate-50 px-4 py-3 sm:px-6 sm:py-4">
           <div className="text-right">
-            <div className="text-sm text-slate-500 dark:text-slate-400">Order Total</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">Order Subtotal</div>
             <div className="text-lg font-bold text-slate-900 dark:text-white">Rs. {OrderData?.GrandTotal ? OrderData?.GrandTotal.toFixed(2) : "0.00"}</div>
           </div>
         </CardFooter>

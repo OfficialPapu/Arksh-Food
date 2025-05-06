@@ -1,9 +1,10 @@
+import UserList from '@/Components/Admin/Users/UserList'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      
+      <UserList/>
     </div>
   )
 }

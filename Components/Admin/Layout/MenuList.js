@@ -28,11 +28,6 @@ const navItems = [
         href: "/admin/products/new",
         icon: <Tag className="h-3.5 w-3.5" />,
       },
-      {
-        title: "Categories",
-        href: "/admin/categories",
-        icon: <Tag className="h-3.5 w-3.5" />,
-      },
     ],
   },
   {
@@ -55,50 +50,11 @@ const navItems = [
     title: "Orders",
     href: "/admin/orders",
     icon: <ShoppingCart className="h-4 w-4" />,
-    submenu: [
-      {
-        title: "All Orders",
-        href: "/admin/orders",
-        icon: <ShoppingCart className="h-3.5 w-3.5" />,
-      },
-      {
-        title: "Pending",
-        href: "/admin/orders/pending",
-        icon: <CreditCard className="h-3.5 w-3.5" />,
-      },
-      {
-        title: "Shipped",
-        href: "/admin/orders/shipped",
-        icon: <Truck className="h-3.5 w-3.5" />,
-      },
-      {
-        title: "Completed",
-        href: "/admin/orders/completed",
-        icon: <CheckCircle className="h-3.5 w-3.5" />,
-      },
-    ],
   },
   {
     title: "Customers",
-    href: "/admin/customers",
+    href: "/admin/users",
     icon: <Users className="h-4 w-4" />,
-    submenu: [
-      {
-        title: "All Customers",
-        href: "/admin/customers",
-        icon: <Users className="h-3.5 w-3.5" />,
-      },
-      {
-        title: "Customer Groups",
-        href: "/admin/customers/groups",
-        icon: <UserGroup className="h-3.5 w-3.5" />,
-      },
-      {
-        title: "Support Tickets",
-        href: "/admin/customers/support",
-        icon: <MessageSquare className="h-3.5 w-3.5" />,
-      },
-    ],
   },
   {
     title: "Analytics",
