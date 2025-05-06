@@ -1,10 +1,10 @@
-import UserDetails from "@/Components/Admin/Users/UserDetails";
 import React from "react";
+import UserDetailsComp from "@/Components/Admin/Users/UserDetails";
 
 const page = () => {
   return (
     <div>
-      <UserDetails />
+      <UserDetailsComp />
     </div>
   );
 };
