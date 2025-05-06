@@ -16,7 +16,7 @@ export default function MobileCard() {
                     {currentItems.map((Order) => (
                         <div
                             key={Order.OrderID}
-                            className="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950"
+                            className="rounded-lg bg-white shadow-sm dark:bg-gray-950"
                         >
                             <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
                                 <div>
@@ -43,7 +43,7 @@ export default function MobileCard() {
                                     </div>
                                     <div>
                                         <div className="text-xs text-gray-500 dark:text-gray-400">Items</div>
-                                        <div className="text-center text-gray-900 dark:text-white">{Order.OrderCount}</div>
+                                        <div className="text-center text-gray-900 dark:text-white">{Order?.OrderItemsID?.length}</div>
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">

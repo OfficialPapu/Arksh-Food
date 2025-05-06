@@ -9,10 +9,10 @@ export default function DesktopCard() {
     const { getPageNumbers, getStatusColor, currentItems, totalPages, indexOfLastItem, indexOfFirstItem, filteredOrders, page, updateFilters, goToPage } = useOrderActions();
     return (
         <div className="hidden rounded-lg bg-white shadow-sm dark:bg-gray-950 sm:block">
-            <div className="overflow-scroll rounded-lg border border-gray-200 dark:border-gray-800">
+            <div className="overflow-scroll">
                 <table className="w-full divide-y divide-gray-200 dark:divide-gray-800">
                     <thead>
-                        <tr className="bg-gray-50 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:bg-gray-900 dark:text-gray-400">
+                        <tr className="text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:bg-gray-900 dark:text-gray-400">
                             <th className="px-4 py-3 font-medium text-gray-700 dark:text-gray-300 sm:px-6">Order ID</th>
                             <th className="px-4 py-3 font-medium text-gray-700 dark:text-gray-300 sm:px-6">Customer</th>
                             <th className="hidden px-4 py-3 font-medium text-gray-700 dark:text-gray-300 lg:table-cell lg:px-6">
@@ -79,7 +79,7 @@ export default function DesktopCard() {
                 )}
             </div>
 
-            <div className="flex items-center justify-between border-t border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-800 dark:bg-gray-900 sm:px-6">
+            <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 dark:border-gray-800 dark:bg-gray-900 sm:px-6">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
                     Showing <span className="font-medium text-gray-900 dark:text-white">{indexOfFirstItem + 1}</span> to{" "}
                     <span className="font-medium text-gray-900 dark:text-white">
