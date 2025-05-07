@@ -33,15 +33,10 @@ import {
 } from "@/Components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import { Progress } from "@/Components/ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/Components/ui/tooltip";
 import { useParams } from "next/navigation";
 import axios from "@/lib/axios";
 import { getStatusColor } from "@/Components/ui/getStatusColor";
+import { format } from "date-fns";
 
 export default function UserDetailsPage() {
   const [userDetails, setUserDetails] = useState(null);
@@ -51,7 +46,7 @@ export default function UserDetailsPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`api/admin/users/${UserID}`);
+      const response = await axios.get(`api/users/${UserID}`);
       const data = response.data;
       setUserDetails(data);
       console.log("User details:", data);
@@ -72,14 +67,7 @@ export default function UserDetailsPage() {
     ? Math.round(totalSpent / userDetails.Orders.length)
     : 0;
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  const formatDate = (dateString) => format(new Date(dateString), "MMM d, yyyy");
 
   // Get the last order date
   const lastOrderDate = userDetails?.Orders.length

@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import useCheckoutActions from "@/Components/Hooks/Checkout"
 import useCartActions from "@/Components/Hooks/Cart"
 import { UpdatePaymentMethod } from "@/Components/Redux/ClientSlices/CheckoutSlice"
+import Image from "next/image"
 
 
 export default function CheckoutPage() {
@@ -453,7 +454,7 @@ export default function CheckoutPage() {
                     return (
                       <div key={item.ProductID} className="flex gap-4 group">
                         <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 group-hover:border-[#0055a4] transition-all">
-                          <img src={item.Image || "/placeholder.svg"} alt={item.Name} fill className="object-cover" />
+                          <Image src={item.Image || "/placeholder.svg"} alt={item.Name} fill className="object-cover" />
                           <div className="absolute -top-1 -right-1 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center bg-[#0055a4]">
                             {item.Quantity}
                           </div>
