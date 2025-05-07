@@ -8,7 +8,6 @@ import { Minus, Plus, ShoppingBag, X, CreditCard, Shield, TagIcon } from "lucide
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";
 import Link from "next/link"
 import useCartActions from "../../../Hooks/Cart"
-import { Toaster } from "react-hot-toast"
 
 export default function Cart() {
     const { HandelUpdateQuantity, HandelRemoveFromCart, CartItems, HandelCheckout, PickupOptions, handlePickupOptionChange, selectedPickupOption, PickupCost, Subtotal, Discount, Total } = useCartActions();
@@ -48,7 +47,6 @@ export default function Cart() {
 
     return (
         <div className="bg-gradient-to-b from-white to-blue-50 min-h-screen">
-            <Toaster toastOptions={{ duration: 2000 }} />
             <div className="mx-auto p-4 lg:p-6">
                 <header className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 lg:mb-10">
                     <Breadcrumb>

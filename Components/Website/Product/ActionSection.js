@@ -15,7 +15,6 @@ import {
 import { Button } from "@/Components/ui/button";
 import UseProductDetails from "./UseProductDetails";
 import useCartActions from "@/Components/Hooks/Cart";
-import { Toaster } from "react-hot-toast";
 import ShareButton from "./ShareBtn";
 const ActionSection = ({ Product }) => {
   const productBenefits = [
@@ -33,7 +32,6 @@ const ActionSection = ({ Product }) => {
     <div>
       {/* Product Header */}
       <div className="mb-8">
-        <Toaster toastOptions={{ duration: 2000 }} />
         <div className="flex items-center justify-between mb-2">
           <div className="inline-flex items-center gap-2">
             <div className="h-3 w-3 rounded-full bg-[#0055b8]"></div>

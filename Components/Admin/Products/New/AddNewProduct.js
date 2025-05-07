@@ -9,7 +9,6 @@ import PricingInventory from "../Tabs/PricingInventory";
 import { ProductProvider, useProductContext } from "../Context/ProductContext";
 import { DescTipTapProvider } from "../Context/DescTipTapContext";
 import { IngredientsTipTapProvider } from "../Context/IngredientsTipTapContext";
-import { Toaster } from "react-hot-toast";
 
 export default function AddNewProduct() {
   return (
@@ -27,7 +26,6 @@ function NewProductForm() {
   const { handleSubmit, isSubmitting, activeTab, setActiveTab } = useProductContext();
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-12 ProductPage">
-       <Toaster toastOptions={{ duration: 2000 }} />
       <div className="bg-white sm:border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">

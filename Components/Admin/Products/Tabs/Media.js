@@ -3,13 +3,11 @@ import { Upload, Trash2, Camera, Info, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Badge } from "@/Components/ui/badge";
-import { Toaster } from 'react-hot-toast';
 import {useProductContext} from "../Context/ProductContext";
 const Media = () => {
     const { images, isDragging, fileInputRef, handleDragOver, handleDragLeave, handleDrop, processImageFiles, handleImageChange, removeImage, formatFileSize, } = useProductContext();
     return (
         <Card className="overflow-hidden border-0 shadow-lg">
-            <Toaster toastOptions={{ duration: 2000 }} />
             <CardHeader className="bg-white px-6 py-5 border-b">
                 <CardTitle className="text-lg font-semibold flex items-center">
                     <Camera className="h-5 w-5 mr-2 text-[#0055a4]" />

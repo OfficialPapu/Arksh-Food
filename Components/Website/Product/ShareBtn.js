@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react"
 import { Linkedin, Link, X, MessageCircle, Share2 } from "lucide-react"
-import toast, { Toaster } from "react-hot-toast"
 
 
 export default function ShareButton({ url = window.location.href, title = "Check this out!" }) {
@@ -55,7 +54,6 @@ export default function ShareButton({ url = window.location.href, title = "Check
 
     return (
         <div className="relative" ref={menuRef}>
-            <Toaster toastOptions={{ duration: 2000 }} />
             <button
                 onClick={toggleMenu}
                 className="h-10 w-10 rounded-full flex items-center justify-center border border-gray-200 hover:border-gray-300"

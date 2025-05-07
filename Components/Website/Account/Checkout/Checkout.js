@@ -8,7 +8,6 @@ import { RadioGroup } from "@/Components/ui/radio-group"
 import { Separator } from "@/Components/ui/separator"
 import { Textarea } from "@/Components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/Components/ui/dialog"
-import { Toaster } from "react-hot-toast"
 import useCheckoutActions from "@/Components/Hooks/Checkout"
 import useCartActions from "@/Components/Hooks/Cart"
 import { UpdatePaymentMethod } from "@/Components/Redux/ClientSlices/CheckoutSlice"
@@ -24,7 +23,6 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Toaster toastOptions={{ duration: 3000 }} />
       <div className="px-1 sm:px-4 mx-auto">
         <div className="grid lg:grid-cols-12 gap-8">
 

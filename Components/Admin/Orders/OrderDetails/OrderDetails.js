@@ -6,14 +6,12 @@ import { TabsContent } from "@/Components/ui/tabs"
 import useOrderDetailsActions from "./useOrderDetailsActions"
 import ProductInfo from "./ProductInfo"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card"
-import { Toaster } from "react-hot-toast"
 
 const OrderDetails = () => {
     const { OrderData, getStatusColor } = useOrderDetailsActions();
     return (
         <>
             <TabsContent value="details" className="mt-6 space-y-6">
-         <Toaster toastOptions={{ duration: 2000 }} />
                 <ProductInfo />
                 <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     <Card>
