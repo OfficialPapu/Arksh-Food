@@ -7,15 +7,8 @@ import { Search, ShoppingBag, ChevronDown, ChevronRight, Star, X, Menu, User2 } 
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence, useAnimation } from "framer-motion"
 import { useRouter } from 'next/navigation'
-import { useSelector } from "react-redux"
-
-// Constants
-const CATEGORIES = [
-  { id: "biscuit", name: "Biscuits", icon: <Star className="h-5 w-5" />, color: "#f9d5a7", description: "Crunchy delights" },
-  { id: "coffee", name: "Coffee", icon: <Star className="h-5 w-5" />, color: "#c8b6a6", description: "Premium brews" },
-  { id: "chocolate", name: "Chocolate", icon: <Star className="h-5 w-5" />, color: "#a47551", description: "Sweet indulgence" },
-  { id: "pastry", name: "Pastry", icon: <Star className="h-5 w-5" />, color: "#f5e6ca", description: "Freshly baked" },
-]
+import { useDispatch, useSelector } from "react-redux"
+import { fetchCategories } from "@/Components/Redux/ClientSlices/CategorySlice"
 
 const FEATURED_ITEMS = [
   {
@@ -53,13 +46,12 @@ const QUICK_LINKS = [
   { name: "Terms and Conditions", href: "/terms-and-conditions" },
 ]
 
+
 // Memoized Components
 const CategoryButton = memo(({ active, onClick, children, icon, color, description }) => {
-  const controls = useAnimation()
 
   useEffect(() => {
     if (active) {
-      controls.start({ scale: [1, 1.05, 1], transition: { duration: 0.5 } })
     }
   }, [active, controls])
 
@@ -155,12 +147,18 @@ const NavIconButton = memo(({ Icon, onClick, badgeCount }) => (
 ))
 
 export default function Navbar() {
+
+  const dispatch = useDispatch();
+  const { Categories } = useSelector((state) => state.Categories);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
   const router = useRouter()
   const CartItemCount = useSelector(state => state.Cart?.CartItems?.length) || 0
   const isAuth = useSelector(state => state.Login?.isAuth)
 
   const [isOpen, setIsOpen] = useState(false)
-  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const searchInputRef = useRef(null)
@@ -243,21 +241,62 @@ export default function Navbar() {
           <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit" className="pb-16 fixed top-16 left-0 w-full bg-white shadow-lg z-40 overflow-hidden border-t">
             <div className="container mx-auto px-4 py-6 grid md:grid-cols-12 gap-8">
               <motion.div variants={itemVariants} className="md:col-span-3">
-                <h3 className="font-semibold text-[#0056b3] !mb-4">Categories</h3>
+                <h3 className="font-semibold text-[#0056b3] !my-4">Categories</h3>
                 <nav className="space-y-3">
-                  {CATEGORIES.map(cat => (
-                    <CategoryButton key={cat.id} active={activeCategory === cat.id} onClick={() => setActiveCategory(cat.id)} icon={cat.icon} color={cat.color} description={cat.description}>{cat.name}</CategoryButton>
+                  {Categories.slice(0,4).map(cat => (
+                    <Link href={`/category/${cat.Slug}`}>
+                    <motion.button
+                      transition={{ duration: 0.01 }}
+                      whileHover={{ x: 10 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={cn(
+                        "w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium flex items-center gap-3 text-gray-700 hover:bg-gray-50 hover:text-[#0056b3]",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "flex items-center justify-center w-10 h-10 rounded-full text-lg shadow-sm transition-all duration-300 text-[#0056b3]",
+                        )}
+                        style={{
+                          background: "rgba(255, 255, 255, 0.2)",
+                        }}
+                      >
+
+
+                        <div className="aspect-square w-full overflow-hidden">
+                          <Image
+                            width={400}
+                            height={400}
+                            src={
+                              process.env.NEXT_PUBLIC_IMAGE_URL +
+                              cat.Image || "/Arksh Food.png"
+                            }
+                            alt={`${cat.Category || "Category"} image`}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            priority
+                          />
+                        </div>
+                      </span>
+                      <div className="flex flex-col">
+                        <span className="font-semibold">{cat.Category}</span>
+                        <span className="text-xs opacity-80 font-normal">{cat.Description.split(" ").slice(0, 5).join(" ") + (cat.Description.split(" ").length > 5 ? "..." : "")}</span>
+                      </div>
+                      <motion.div className="ml-auto" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0 }}>
+                        <ChevronRight className="h-4 w-4" />
+                      </motion.div>
+                    </motion.button>
+                    </Link>
                   ))}
                 </nav>
               </motion.div>
-              <motion.div variants={itemVariants} className="md:col-span-6 border-l border-r px-6">
-                <h3 className="font-semibold text-[#0056b3] !mb-4">Featured Products</h3>
+              {/* <motion.div variants={itemVariants} className="md:col-span-6 border-l border-r px-6">
+                <h3 className="font-semibold text-[#0056b3] !my-4">Featured Products</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
                   {FEATURED_ITEMS.map((it, i) => <FeaturedItem key={i} {...it} />)}
                 </div>
-              </motion.div>
+              </motion.div> */}
               <motion.div variants={itemVariants} className="md:col-span-3">
-                <h3 className="font-semibold text-[#0056b3] !mb-4">Quick Links</h3>
+                <h3 className="font-semibold text-[#0056b3] !my-4">Quick Links</h3>
                 <nav className="space-y-2">
                   {QUICK_LINKS.map(link => <QuickLink key={link.href} href={link.href}>{link.name}</QuickLink>)}
                 </nav>

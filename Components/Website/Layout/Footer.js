@@ -1,5 +1,9 @@
+"use client"
 import Image from "next/image"
 import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { fetchCategories } from "@/Components/Redux/ClientSlices/CategorySlice"
 
 export default function Footer() {
   const socialLinks = [
@@ -14,13 +18,6 @@ export default function Footer() {
     { name: "Terms and Conditions", url: "/terms-and-conditions" },
   ]
 
-  const categoryLinks = [
-    { name: "Spices & Masalas", url: "#" },
-    { name: "Teas & Beverages", url: "#" },
-    { name: "Pickles & Chutneys", url: "#" },
-    { name: "Snacks & Sweets", url: "#" },
-    { name: "Gift Boxes", url: "#" }
-  ]
 
   const contactInfo = [
     { icon: MapPin, text: "Arksh Food Lazimpat, Kathmandu, Nepal" },
@@ -33,6 +30,12 @@ export default function Footer() {
     { name: "Terms of Service", url: "#" },
     { name: "Shipping Policy", url: "#" }
   ]
+
+  const dispatch = useDispatch();
+  const { Categories } = useSelector((state) => state.Categories);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   return (
     <footer className="bg-gray-50 mt-8">
@@ -81,15 +84,22 @@ export default function Footer() {
           <div>
             <h3 className="!mb-6 text-lg font-semibold text-gray-900">Categories</h3>
             <ul className="space-y-3">
-              {categoryLinks.map((category, index) => (
+              {Categories.slice(0, 5).map((category, index) => (
                 <li key={index}>
-                  <a href={category.url} className="text-gray-600 transition-colors hover:text-[#0055a4]">
-                    {category.name}
+                  <a
+                    href={`/category/${category.Slug}`}
+                    className="text-gray-600 transition-colors hover:text-[#0055a4]"
+                  >
+                    {category.Category}
                   </a>
                 </li>
               ))}
+              {Categories.length > 5 && (
+                <li className="text-gray-500 italic">and more available...</li>
+              )}
             </ul>
           </div>
+
 
           <div>
             <h3 className="!mb-6 text-lg font-semibold text-gray-900">Contact Us</h3>

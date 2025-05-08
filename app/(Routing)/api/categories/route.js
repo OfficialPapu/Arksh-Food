@@ -18,12 +18,17 @@ export async function GET(request) {
         }
       },
       {
+        $sort: {
+          Category: 1
+        }
+      },
+      {
         $project: {
           Products: 0
         }
       }
     ])
-    
+
     if (Categories.length === 0) {
       return NextResponse.json({ error: "No categories found" }, { status: 404 });
     }

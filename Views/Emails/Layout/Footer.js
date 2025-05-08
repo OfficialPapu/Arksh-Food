@@ -43,12 +43,12 @@ const Footer = ( OrderData ) => {
                 </div>
 
                 <div style="margin: 20px 0;">
-                    <a href="#"
+                    <a href="https://www.food.arkshgroup.com/privacy-policy"
                         style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">Privacy Policy</a>
-                    <a href="#"
+                    <a href="https://www.food.arkshgroup.com/terms-and-conditions"
                         style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">Terms of Service</a>
-                    <a href="#"
-                        style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">Return Policy</a>
+                    <a href="https://www.food.arkshgroup.com/about-us"
+                        style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">About Us</a>
                 </div>
 
                 <p style="font-size: 12px; color: rgba(255, 255, 255, 0.8); margin: 20px 0 0 0; padding: 0; line-height: 1.6;">
