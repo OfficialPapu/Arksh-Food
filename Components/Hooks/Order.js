@@ -12,7 +12,6 @@ const useOrderActions = () => {
             const response = await axios.get("api/admin/orders");
             setOrders(Object.values(response.data));
         } catch (error) {
-            console.error("Error fetching order list:", error);
         }
     }
     const hasFetched = useRef(false);

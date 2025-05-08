@@ -12,8 +12,6 @@ export async function POST(request, { params }) {
         const savedAddress = await newAddress.save();
         return NextResponse.json({ AddressID: savedAddress._id }, { status: 201 });
     } catch (error) {
-        console.log(error);
-
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

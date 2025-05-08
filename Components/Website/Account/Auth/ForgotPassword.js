@@ -31,9 +31,7 @@ export function ForgotPasswordForm() {
 
       // Handle successful submission
       setIsSubmitted(true)
-      console.log("Password reset email sent to:", email)
     } catch (err) {
-      console.error("Password reset request failed", err)
       setError("Failed to send reset link. Please try again.")
     } finally {
       setIsLoading(false)

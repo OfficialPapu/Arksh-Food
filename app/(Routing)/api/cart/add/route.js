@@ -13,9 +13,6 @@ export async function POST(request) {
     } = await request.json();
     Discount = Discount.Percentage;
     const Product = await ProductSchema.findById(_id);
-    console.log(Product.Quantity);
-    console.log(Quantity);
-
     if (Quantity <= 0)
       return NextResponse.json(
         { message: "Quantity must be greater than 0" },

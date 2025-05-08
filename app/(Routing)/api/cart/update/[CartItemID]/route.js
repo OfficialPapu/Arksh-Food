@@ -17,8 +17,6 @@ export async function PUT(request, { params }) {
         );
         return NextResponse.json({ message: "Quantity updated successfully" }, { status: 200 });
     } catch (error) {
-        console.log(error);
-        
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

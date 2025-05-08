@@ -45,7 +45,6 @@ export function LoginForm() {
             }
 
         } catch (err) {
-            console.log(err);
             setError(err.response.data || "Something went wrong")
         } finally {
             setIsLoading(false)

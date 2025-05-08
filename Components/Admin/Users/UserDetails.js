@@ -49,9 +49,7 @@ export default function UserDetailsPage() {
       const response = await axios.get(`api/users/${UserID}`);
       const data = response.data;
       setUserDetails(data);
-      console.log("User details:", data);
     } catch (error) {
-      console.error("Error fetching user details:", error);
     } finally {
       setIsLoading(false);
     }

@@ -55,10 +55,8 @@ export default function UserList() {
       const response = await axios.get("api/admin/users")
       const data = await response.data
       setUsersData(data)
-      console.log(data)
       setIsRefreshing(false)
     } catch (error) {
-      console.error("Error fetching user data:", error)
       setIsRefreshing(false)
     }
   }
