@@ -1,9 +1,9 @@
 "use client"
 import axios from "@/lib/axios"
-import { useState, useEffect } from "react"
-import { Search, ArrowUpDown, ChevronDown, ChevronUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState, useEffect, useRef } from "react"
+import { Search, ArrowUpDown, ChevronDown, Check } from "lucide-react"
+import { Button } from "@/Components/ui/button"
+import { Input } from "@/Components/ui/input"
 import { ProductCard } from "@/Components/ui/ProductCard"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSearchParams } from "next/navigation"
@@ -11,11 +11,12 @@ import { useSearchParams } from "next/navigation"
 export default function SearchResults() {
   const [products, setProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
-  const searchParams = useSearchParams();
-  const query = searchParams.get('q') || ""; 
+  const searchParams = useSearchParams()
+  const query = searchParams.get("q") || ""
   const [searchQuery, setSearchQuery] = useState(query || "")
   const [sortOption, setSortOption] = useState("relevance")
   const [showSortOptions, setShowSortOptions] = useState(false)
+  const sortRef = useRef(null)
 
   useEffect(() => {
     async function getResults() {
@@ -30,7 +31,7 @@ export default function SearchResults() {
   }, [searchQuery])
 
   useEffect(() => {
-    let result = [...products]
+    const result = [...products]
     if (sortOption === "price-low") {
       result.sort((a, b) => a.Price - b.Price)
     } else if (sortOption === "price-high") {
@@ -38,6 +39,20 @@ export default function SearchResults() {
     }
     setFilteredProducts(result)
   }, [products, sortOption])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setShowSortOptions(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   const handleSortChange = (option) => {
     setSortOption(option)
@@ -49,6 +64,12 @@ export default function SearchResults() {
     if (sortOption === "price-high") return "Price: High to Low"
     return "Relevance"
   }
+
+  const sortOptions = [
+    { value: "relevance", label: "Relevance" },
+    { value: "price-low", label: "Price: Low to High" },
+    { value: "price-high", label: "Price: High to Low" },
+  ]
 
   return (
     <div className="min-h-screen bg-white">
@@ -73,48 +94,57 @@ export default function SearchResults() {
       </div>
 
       <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
           <h2 className="text-xl font-semibold text-[#0A4D9C]">
-            {searchQuery ? `Results for “${searchQuery}”` : "Products"} ({filteredProducts.length})
+            {searchQuery ? `Results for "${searchQuery}"` : "Products"}
+            <span className="ml-2 text-lg font-normal text-gray-500">({filteredProducts.length})</span>
           </h2>
-          <div className="relative">
+
+          <div className="relative w-full sm:w-auto" ref={sortRef}>
             <Button
               id="sort-button"
               variant="outline"
-              className="gap-2"
               onClick={() => setShowSortOptions((v) => !v)}
+              aria-expanded={showSortOptions}
+              aria-haspopup="true"
+              className="w-full sm:w-auto bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 shadow-sm rounded-lg px-4 py-2.5 h-auto"
             >
-              <ArrowUpDown className="h-4 w-4" />
-              <span className="hidden sm:inline">Sort: {getSortLabel()}</span>
-              {showSortOptions ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-2">
+                  <ArrowUpDown className="h-4 w-4 text-[#0A4D9C]" />
+                  <span className="font-medium">{getSortLabel()}</span>
+                </div>
+                <ChevronDown
+                  className={`h-4 w-4 ml-2 transition-transform duration-200 ${showSortOptions ? "rotate-180" : ""}`}
+                />
+              </div>
             </Button>
+
             <AnimatePresence>
               {showSortOptions && (
                 <motion.div
                   id="sort-dropdown"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-full bg-white rounded-lg shadow-lg border z-10"
+                  initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-2 w-full sm:w-64 bg-white rounded-xl shadow-lg border border-gray-100 z-20 overflow-hidden"
                 >
-                  {[
-                    { value: "relevance", label: "Relevance" },
-                    { value: "price-low", label: "Price: Low to High" },
-                    { value: "price-high", label: "Price: High to Low" },
-                  ].map((opt) => (
-                    <button
-                      key={opt.value}
-                      className={`w-full text-left px-4 py-2 text-sm${
-                        sortOption === opt.value
-                          ? "bg-[#0A4D9C]/10 text-[#0A4D9C] font-medium"
-                          : "text-gray-700 hover:bg-gray-100 rounded-lg"
-                      }`}
-                      onClick={() => handleSortChange(opt.value)}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
+                  <div className="p-2">
+                    {sortOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        className={`w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg transition-colors duration-150 ${sortOption === opt.value
+                            ? "bg-[#0A4D9C]/10 text-[#0A4D9C] font-medium"
+                            : "text-gray-700 hover:bg-gray-50"
+                          }`}
+                        onClick={() => handleSortChange(opt.value)}
+                      >
+                        <span>{opt.label}</span>
+                        {sortOption === opt.value && <Check className="h-4 w-4 text-[#0A4D9C]" />}
+                      </button>
+                    ))}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

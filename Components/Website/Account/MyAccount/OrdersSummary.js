@@ -9,7 +9,8 @@ import { Button } from "@/Components/ui/button"
 import Link from "next/link"
 
 const OrdersSummary = ({ userDetails }) => {
-    const hasOrders = userDetails?.Orders && userDetails.Orders.length > 0
+    const hasOrders = Array.isArray(userDetails?.Orders) &&
+    userDetails.Orders.some(order => order?.OrderID !== null || (Array.isArray(order?.Items) && order.Items.length > 0 && order.Items.some(item => item?.ProductImage)));
     return (
         <div className="p-6 lg:p-8">
             {hasOrders ? (
@@ -70,9 +71,9 @@ const OrdersSummary = ({ userDetails }) => {
                                         >
                                             <div className="flex items-center">
                                                 <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 group-hover:border-[#0055a4] transition-all">
-                                                    <Image
+                                                    <img
                                                         src={process.env.NEXT_PUBLIC_IMAGE_URL + item.ProductImage || "/placeholder.svg"}
-                                                        alt={item.Name}
+                                                        alt={item.ProductName}
                                                         fill
                                                         className="object-cover"
                                                     />

@@ -13,13 +13,13 @@ const persistConfig = {
   key: "ArkshFood",
   storage,
   transforms: [
-    // encryptTransform({
-    //     secretKey: process.env.NEXT_PUBLIC_PERSIST_ENCRYPT_KEY,
-    //     onError: function (error) {
-    //         localStorage.clear();
-    //         window.location.href = "/";
-    //     },
-    // }),
+    encryptTransform({
+        secretKey: process.env.NEXT_PUBLIC_PERSIST_ENCRYPT_KEY,
+        onError: function (error) {
+            localStorage.clear();
+            window.location.href = "/";
+        },
+    }),
   ],
 };
 

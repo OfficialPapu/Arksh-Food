@@ -2,10 +2,10 @@
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
 import { Search, ShoppingBag, ArrowLeft, Loader2 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import ProductCarousel from "@/Components/Website/Product/ProductCarousel";
 import ActionSection from "@/Components/Website/Product/ActionSection";
 import {
@@ -18,7 +18,6 @@ import {
 } from "@/Components/ui/breadcrumb";
 import UseProductDetails from "./UseProductDetails";
 import ReviewTab from "./ReviewTab";
-import Image from "next/image";
 import PreLoader from "./PreLoader";
 const ProductDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,7 +70,7 @@ const ProductDetails = () => {
             </BreadcrumbList>
           </Breadcrumb>
 
-          <main className="pb-8 px-4">
+          <main className="pb-8">
             <div className="relative">
               <div className="grid SliderWrapper">
                 <ProductCarousel Product={Product} />
@@ -118,7 +117,7 @@ const ProductDetails = () => {
 
                   <TabsContent
                     value="Review"
-                    className="p-5 lg:p-6 focus-visible:outline-none focus-visible:ring-0 ProductPage"
+                    className="focus-visible:outline-none focus-visible:ring-0 ProductPage"
                   >
                     <ReviewTab Product={Product} Reviews={Reviews} />
                   </TabsContent>

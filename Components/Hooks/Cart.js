@@ -8,7 +8,7 @@ import {
 } from "@/Components/Redux/ClientSlices/CartSlice";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapPin, Store, Truck, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -190,11 +190,15 @@ const useCartActions = () => {
       } else {
         toast.error("Something went wrong");
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
+  const hasFetched = useRef(false);
   useEffect(() => {
-    GetCartItems();
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      GetCartItems();
+    }
   }, []);
 
   const HandelCheckout = () => {

@@ -28,26 +28,32 @@ export async function PUT(request) {
             await UserSchema.findByIdAndUpdate(UserID, { Password });
         } else {
             const ProfilePic = formData.get('ProfilePic');
+            if (ProfilePic) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(ProfilePic.type)) {
+                    return NextResponse.json(
+                        { error: 'Only images are allowed (JPEG, PNG, GIF, WEBP)' },
+                        { status: 415 }
+                    );
+                }
+
+                let { filePath, filename, year, month } = await GenerateFileName(ProfilePic);
+                const buffer = Buffer.from(await ProfilePic.arrayBuffer());
+                await fs.writeFile(filePath, buffer);
+                filePath = `${year}/${month}/${filename}`;
+                await UserSchema.findByIdAndUpdate(UserID, { ProfilePic: filePath });
+            }
             const Gender = formData.get('Gender');
             const DOB = formData.get('DOB');
             const Country = formData.get('Country');
             const City = formData.get('City');
-            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            if (!allowedTypes.includes(ProfilePic.type)) {
-                return NextResponse.json(
-                    { error: 'Only images are allowed (JPEG, PNG, GIF, WEBP)' },
-                    { status: 415 }
-                );
-            }
 
-            let { filePath, filename, year, month } = await GenerateFileName(ProfilePic);
-            const buffer = Buffer.from(await ProfilePic.arrayBuffer());
-            await fs.writeFile(filePath, buffer);
-            filePath = `${year}/${month}/${filename}`;
-            await UserSchema.findByIdAndUpdate(UserID, { Country, City, ProfilePic: filePath, Gender, DOB });
+            await UserSchema.findByIdAndUpdate(UserID, { Country, City, Gender, DOB });
         }
         return Response.json({ message: "success" }, { status: 200 });
     } catch (error) {
+        console.log(error);
+        
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

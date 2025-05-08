@@ -43,7 +43,7 @@ const UseProductDetails = () => {
         Comment,
       });
       if (response.data.status == 201) {
-        GetReviews();
+        await GetReviews(ProductID);
         setRating(0);
         setComment("");
         toast.success("Success! Review added");

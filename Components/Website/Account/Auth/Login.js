@@ -28,7 +28,6 @@ export function LoginForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError("")
-
         if (!email || !password) {
             setError("Please fill in all fields")
             return
@@ -43,9 +42,9 @@ export function LoginForm() {
                 dispatch(Login(UserDetails));
                 router.push(Buffer.from(hexCode, 'hex').toString() ? Buffer.from(hexCode, 'hex').toString() : "/");
             }
-
+            
         } catch (err) {
-            setError(err.response.data || "Something went wrong")
+            setError(err.response.data.message || "Something went wrong")
         } finally {
             setIsLoading(false)
         }

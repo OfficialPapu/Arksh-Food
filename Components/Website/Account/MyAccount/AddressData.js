@@ -1,6 +1,6 @@
 "use client"
 import { MapPin } from "lucide-react"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/Components/ui/card"
 
 const AddressData = ({ Addresses }) => {
     const hasAddress = Addresses && Addresses.length > 0

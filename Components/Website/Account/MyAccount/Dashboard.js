@@ -1,8 +1,7 @@
 "use client"
 import { format } from "date-fns"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { User, Upload, Lock, Eye, EyeOff, Calendar, Globe, Building, Star, Mail, Phone } from "lucide-react"
+import { User, Upload, Lock, Eye, EyeOff, Calendar, Globe, Building, Star, Mail, Phone, Loader2 } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Input } from "@/Components/ui/input"
 import { Label } from "@/Components/ui/label"
@@ -15,7 +14,6 @@ import { useSelector } from "react-redux"
 import toast from "react-hot-toast"
 
 const Dashboard = ({ userDetails, fetchData }) => {
-    const router = useRouter()
     const UserID = useSelector((state) => state.Login?.UserDetails?.UserID);
     const [editProfile, setEditProfile] = useState(false)
     const [editedUser, setEditedUser] = useState({
@@ -26,6 +24,12 @@ const Dashboard = ({ userDetails, fetchData }) => {
     })
     const [passwordModalOpen, setPasswordModalOpen] = useState(false)
     const [imageFile, setImageFile] = useState(null)
+    const [isLoading, setIsLoading] = useState(
+        {
+            Profile: false,
+            Password: false,
+        }
+    )
 
     // Password change state
     const [currentPassword, setCurrentPassword] = useState("")
@@ -43,12 +47,16 @@ const Dashboard = ({ userDetails, fetchData }) => {
     }
 
     const saveProfile = async () => {
+        setIsLoading((prv) => ({
+            ...prv,
+            Profile: true,
+        }));
         const formdata = new FormData();
         formdata.append("Gender", editedUser.Gender);
         formdata.append("DOB", editedUser.DOB);
         formdata.append("Country", editedUser.Country);
         formdata.append("City", editedUser.City);
-        formdata.append("ProfilePic", imageFile.file);
+        if (imageFile) formdata.append("ProfilePic", imageFile.file);
         formdata.append("UserID", UserID);
         formdata.append("isChagePassword", "false");
         try {
@@ -64,6 +72,10 @@ const Dashboard = ({ userDetails, fetchData }) => {
         } catch (error) {
             toast.error(error.response?.data?.message)
         }
+        setIsLoading((prv) => ({
+            ...prv,
+            Profile: false,
+        }));
         setEditProfile(false)
     }
 
@@ -104,6 +116,10 @@ const Dashboard = ({ userDetails, fetchData }) => {
             toast.error("Passwords do not match")
             return
         }
+        setIsLoading(prev => ({
+            ...prev,
+            Password: true,
+        }));
 
         try {
             const formdata = new FormData();
@@ -120,6 +136,10 @@ const Dashboard = ({ userDetails, fetchData }) => {
         } catch (error) {
             toast.error(error.response?.data?.message)
         }
+        setIsLoading(prev => ({
+            ...prev,
+            Password: false,
+        }));
     }
 
     return (
@@ -250,21 +270,21 @@ const Dashboard = ({ userDetails, fetchData }) => {
                                     <div className="space-y-4">
                                         <div className="bg-gray-50 p-4 rounded-lg">
                                             <p className="text-sm font-medium text-gray-500">Gender</p>
-                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.Gender || "Not provided"}</p>
+                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.Gender || userDetails?.Gender || "Not provided"}</p>
                                         </div>
                                         <div className="bg-gray-50 p-4 rounded-lg">
                                             <p className="text-sm font-medium text-gray-500">Date of Birth</p>
-                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.DOB || "Not provided"}</p>
+                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.DOB || userDetails?.DOB ? format(new Date(userDetails.DOB), "MMM d, yyyy") : "Not provided"}</p>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
                                         <div className="bg-gray-50 p-4 rounded-lg">
                                             <p className="text-sm font-medium text-gray-500">Country</p>
-                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.Country || "Not provided"}</p>
+                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.Country || userDetails?.Country || "Not provided"}</p>
                                         </div>
                                         <div className="bg-gray-50 p-4 rounded-lg">
                                             <p className="text-sm font-medium text-gray-500">City</p>
-                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.City || "Not provided"}</p>
+                                            <p className="mt-1 font-medium text-[#0055a4]">{editedUser.City || userDetails?.City || "Not provided"}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -360,8 +380,16 @@ const Dashboard = ({ userDetails, fetchData }) => {
                         <Button variant="outline" onClick={() => setPasswordModalOpen(false)} className="border-gray-200">
                             Cancel
                         </Button>
-                        <Button className="bg-[#0055a4] hover:bg-[#004080] text-white" onClick={handlePasswordChange}>
-                            Change Password
+                        <Button className="bg-[#0055a4] hover:bg-[#004080] text-white" onClick={handlePasswordChange} disabled={isLoading.Password}>
+                            {isLoading.Password ? (
+                                <span className="flex items-center gap-2">
+                                    <Loader2 size={18} className="animate-spin" /> Changing...
+                                </span>
+                            ) : (
+                                <>
+                                    <span className="relative z-10">Change Password</span>
+                                </>
+                            )}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -379,7 +407,7 @@ const Dashboard = ({ userDetails, fetchData }) => {
                     <div className="grid gap-5 py-4">
                         <div className="flex justify-center">
                             <div className="relative">
-                            <Avatar className="h-24 w-24 border-4 border-white shadow-md">
+                                <Avatar className="h-24 w-24 border-4 border-white shadow-md">
                                     <AvatarImage src={imageFile?.src || process.env.NEXT_PUBLIC_IMAGE_URL + userDetails?.ProfilePic} alt={userDetails?.Name} className={"object-cover"} />
                                     <AvatarFallback className="bg-[#0055a4] text-white text-xl">
                                         {userDetails?.Name
@@ -477,8 +505,16 @@ const Dashboard = ({ userDetails, fetchData }) => {
                         <Button variant="outline" onClick={() => setEditProfile(false)} className="border-gray-200">
                             Cancel
                         </Button>
-                        <Button className="bg-[#0055a4] hover:bg-[#004080] text-white" onClick={saveProfile}>
-                            Save Changes
+                        <Button className="bg-[#0055a4] hover:bg-[#004080] text-white" onClick={saveProfile} disabled={isLoading.Profile}>
+                            {isLoading.Profile ? (
+                                <span className="flex items-center gap-2">
+                                    <Loader2 size={18} className="animate-spin" /> Saving...
+                                </span>
+                            ) : (
+                                <>
+                                    <span className="relative z-10">Save Changes</span>
+                                </>
+                            )}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

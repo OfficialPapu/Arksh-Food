@@ -7,8 +7,23 @@ import { Avatar, AvatarFallback } from "@/Components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet"
 import { MenuList } from "./MenuList"
+import { useDispatch } from "react-redux"
+import { Logout } from "@/Components/Redux/ClientSlices/LoginSlice"
+import axios from "@/lib/axios"
+import { useRouter } from "next/navigation"
 
 export function AdminHeader() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const Logoutfunction = async () => {
+    const response = await axios.get("api/auth/logout");
+    if (response.status === 200) {
+      dispatch(Logout());
+      router.push("/");
+    } else {
+      toast.error("Something went wrong");
+    }
+  }
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
       <div className="flex h-14 items-center justify-between px-4 md:px-6">
@@ -47,7 +62,7 @@ export function AdminHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+              <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={Logoutfunction()}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
               </DropdownMenuItem>
