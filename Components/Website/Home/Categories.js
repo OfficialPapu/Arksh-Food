@@ -1,20 +1,16 @@
 "use client"
-import axios from "@/lib/axios";
+import { fetchCategories } from "@/Components/Redux/ClientSlices/CategorySlice";
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Categories() {
-  const [ProductCategories, setProductCategories] = useState([]);
+  const dispatch = useDispatch();
+  const { Categories } = useSelector((state) => state.Categories);
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("/api/categories");
-        setProductCategories(response.data);
-      } catch (error) { }
-    };
-    fetchCategories();
-  }, []);
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   return (
     <section className="py-12 md:py-16 bg-gray-50">
@@ -27,7 +23,7 @@ export default function Categories() {
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:grid-cols-4">
-          {ProductCategories.slice(0, 4).map((Category) => (
+          {Categories.map((Category) => (
             <div
               key={Category._id}
               className="group relative overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -50,7 +46,7 @@ export default function Categories() {
                 <div>
                   <h3 className="mb-0.5 md:mb-1 text-base sm:text-lg md:text-xl font-bold text-white">{Category.Category}</h3>
                   <p className="mb-1 md:mb-2 text-xs md:text-sm text-white/90 line-clamp-3">{Category.Description}</p>
-                  <span className="mb-2 md:mb-3 inline-block text-xs font-medium text-white/80">{"10 Products"}</span>
+                  <span className="mb-2 md:mb-3 inline-block text-xs font-medium text-white/80"> {Category.ProductCount} Products</span>
                 </div>
 
                 <div className="sm:w-full sm:text-end">

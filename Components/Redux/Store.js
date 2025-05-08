@@ -6,6 +6,7 @@ import LoginSlice from "./ClientSlices/LoginSlice";
 import CartSlice from "./ClientSlices/CartSlice";
 import CheckoutSlice from "./ClientSlices/CheckoutSlice";
 import ApiStatusSlice from "./ClientSlices/ApiStatusSlice";
+import CategorySlice from "./ClientSlices/CategorySlice";
 import OrderDetailsSlice from "./AdminSlices/OrderDetailsSlice";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 const persistConfig = {
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   Cart: CartSlice,
   Checkout: CheckoutSlice,
   ApiStatus: ApiStatusSlice,
+  Categories: CategorySlice,
   AdminOrderDetails: OrderDetailsSlice,
 });
 

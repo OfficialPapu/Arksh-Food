@@ -9,11 +9,9 @@ export default function Footer() {
   ]
 
   const quickLinks = [
-    { name: "Home", url: "#" },
-    { name: "About Us", url: "#" },
-    { name: "Products", url: "#" },
-    { name: "Recipes", url: "#" },
-    { name: "Contact Us", url: "#" }
+    { name: "About Us", url: "/about-us" },
+    { name: "Privacy Policy", url: "/privacy-policy" },
+    { name: "Terms and Conditions", url: "/terms-and-conditions" },
   ]
 
   const categoryLinks = [
@@ -25,8 +23,8 @@ export default function Footer() {
   ]
 
   const contactInfo = [
-    { icon: MapPin, text: "123 Durbar Marg, Kathmandu, Nepal" },
-    { icon: Phone, text: "+977 1234567890" },
+    { icon: MapPin, text: "Arksh Food Lazimpat, Kathmandu, Nepal" },
+    { icon: Phone, text: "+977-9704591211" },
     { icon: Mail, text: "info@arkshfood.com" }
   ]
 
@@ -68,7 +66,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-6 text-lg font-semibold text-gray-900">Quick Links</h3>
+            <h3 className="!mb-6 text-lg font-semibold text-gray-900">Quick Links</h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
@@ -81,7 +79,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-6 text-lg font-semibold text-gray-900">Categories</h3>
+            <h3 className="!mb-6 text-lg font-semibold text-gray-900">Categories</h3>
             <ul className="space-y-3">
               {categoryLinks.map((category, index) => (
                 <li key={index}>
@@ -94,7 +92,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="mb-6 text-lg font-semibold text-gray-900">Contact Us</h3>
+            <h3 className="!mb-6 text-lg font-semibold text-gray-900">Contact Us</h3>
             <ul className="space-y-4">
               {contactInfo.map((contact, index) => (
                 <li key={index} className="flex items-start">

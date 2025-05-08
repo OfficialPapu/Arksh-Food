@@ -48,10 +48,9 @@ const FEATURED_ITEMS = [
 
 const RECENT_SEARCHES = ["Premium Chocolate", "Organic Coffee", "Gift Box", "Assorted Cookies"]
 const QUICK_LINKS = [
-  { name: "New Arrivals", href: "/new-arrivals" },
-  { name: "Best Sellers", href: "/best-sellers" },
-  { name: "Special Offers", href: "/special-offers" },
-  { name: "Seasonal Favorites", href: "/seasonal" },
+  { name: "About Us", href: "/about-us" },
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms and Conditions", href: "/terms-and-conditions" },
 ]
 
 // Memoized Components
@@ -247,20 +246,20 @@ export default function Navbar() {
                 <h3 className="font-semibold text-[#0056b3] !mb-4">Categories</h3>
                 <nav className="space-y-3">
                   {CATEGORIES.map(cat => (
-                    <CategoryButton key={cat.id} active={activeCategory===cat.id} onClick={()=>setActiveCategory(cat.id)} icon={cat.icon} color={cat.color} description={cat.description}>{cat.name}</CategoryButton>
+                    <CategoryButton key={cat.id} active={activeCategory === cat.id} onClick={() => setActiveCategory(cat.id)} icon={cat.icon} color={cat.color} description={cat.description}>{cat.name}</CategoryButton>
                   ))}
                 </nav>
               </motion.div>
               <motion.div variants={itemVariants} className="md:col-span-6 border-l border-r px-6">
                 <h3 className="font-semibold text-[#0056b3] !mb-4">Featured Products</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                  {FEATURED_ITEMS.map((it,i)=><FeaturedItem key={i} {...it}/>)}
+                  {FEATURED_ITEMS.map((it, i) => <FeaturedItem key={i} {...it} />)}
                 </div>
               </motion.div>
               <motion.div variants={itemVariants} className="md:col-span-3">
                 <h3 className="font-semibold text-[#0056b3] !mb-4">Quick Links</h3>
                 <nav className="space-y-2">
-                  {QUICK_LINKS.map(link=><QuickLink key={link.href} href={link.href}>{link.name}</QuickLink>)}
+                  {QUICK_LINKS.map(link => <QuickLink key={link.href} href={link.href}>{link.name}</QuickLink>)}
                 </nav>
               </motion.div>
             </div>
@@ -270,14 +269,14 @@ export default function Navbar() {
 
       {/* Backdrop */}
       <AnimatePresence>
-        {isOpen && <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setIsOpen(false)} className="fixed inset-0 bg-black/20 z-30 backdrop-blur-sm" style={{top:'64px'}} />}
+        {isOpen && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsOpen(false)} className="fixed inset-0 bg-black/20 z-30 backdrop-blur-sm" style={{ top: '64px' }} />}
       </AnimatePresence>
 
       {/* Search Overlay */}
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center pt-20 px-4" onClick={()=>setIsSearchOpen(false)}>
-            <motion.div initial={{y:-50,opacity:0}} animate={{y:0,opacity:1}} exit={{y:-50,opacity:0}} className="w-full max-w-2xl bg-white rounded-xl p-6 shadow-xl" onClick={e=>e.stopPropagation()}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center pt-20 px-4" onClick={() => setIsSearchOpen(false)}>
+            <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }} className="w-full max-w-2xl bg-white rounded-xl p-6 shadow-xl" onClick={e => e.stopPropagation()}>
               <form onSubmit={onSearchSubmit} className="relative">
                 <input ref={searchInputRef} type="text" placeholder="Search for products..." className="w-full px-6 py-4 pr-14 rounded-full border focus:outline-none focus:ring-2 focus:ring-[#0056b3]/50 transition-all duration-300" />
                 <button type="submit" className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full text-gray-500 hover:text-[#0056b3] hover:bg-gray-100 transition-all duration-200">
@@ -287,9 +286,9 @@ export default function Navbar() {
               <div className="pt-4">
                 <h4 className="text-lg font-medium text-[#0056b3] !mb-4">Popular Searches</h4>
                 <ul className="space-y-2">
-                  {RECENT_SEARCHES.map((term,i)=>(
+                  {RECENT_SEARCHES.map((term, i) => (
                     <li key={i} className="flex items-center justify-between bg-gray-50 hover:bg-[#f0f7ff] rounded-lg px-3 py-2 transition-colors duration-200">
-                      <button onClick={()=>{searchInputRef.current.value=term;onSearchSubmit({preventDefault:()=>{}})}} className="flex items-center text-gray-700 hover:text-[#0056b3]">
+                      <button onClick={() => { searchInputRef.current.value = term; onSearchSubmit({ preventDefault: () => { } }) }} className="flex items-center text-gray-700 hover:text-[#0056b3]">
                         <Search className="h-4 w-4 mr-2 text-gray-400" />{term}
                       </button>
                       <button className="p-1 hover:rotate-90 transition-transform"><X className="h-4 w-4 text-gray-400 hover:text-gray-600" /></button>
