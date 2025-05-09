@@ -195,9 +195,11 @@ const useCartActions = () => {
 
   const hasFetched = useRef(false);
   useEffect(() => {
-    if (!hasFetched.current) {
-      hasFetched.current = true;
-      GetCartItems();
+    if(isAuth){
+      if (!hasFetched.current) {
+        hasFetched.current = true;
+        GetCartItems();
+      }
     }
   }, []);
 

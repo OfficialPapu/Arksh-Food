@@ -62,7 +62,7 @@ export function AdminHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={Logoutfunction()}>
+              <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer" onClick={() => Logoutfunction()}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
               </DropdownMenuItem>
