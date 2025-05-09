@@ -52,7 +52,7 @@ const EditorOne = () => {
                             className="bg-gray-50 dark:bg-gray-700 p-4 flex items-center justify-center overflow-x-auto sticky bottom-0 mt-2"
                         >
                             {activeTab === "text" && (
-                                <div className="flex space-x-2">
+                                <div className="flex space-x-2 flex-wrap">
                                     {[1, 2, 3, 4, 5, 6].map((level) => (
                                         <Button
                                             type="button"
@@ -99,7 +99,7 @@ const EditorOne = () => {
                                 </div>
                             )}
                             {activeTab === "format" && (
-                                <div className="flex space-x-2">
+                                <div className="flex space-x-2 flex-wrap">
                                     <Button
                                         type="button"
                                         variant="outline"
@@ -216,7 +216,7 @@ const EditorOne = () => {
                                 </div>
                             )}
                             {activeTab === "insert" && (
-                                <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-4 flex-wrap">
                                     <div className="flex space-x-2">
                                         <label htmlFor="image-upload">
                                             <Button variant="outline" size="icon" asChild type="button">
@@ -269,7 +269,7 @@ const EditorOne = () => {
                                 </div>
                             )}
                             {activeTab === "style" && (
-                                <div className="flex items-center space-x-4">
+                                <div className="flex items-center space-x-4 flex-wrap">
                                     <div className="flex flex-col items-center">
                                         <span className="text-sm mb-2">Font Size</span>
                                         <Slider
@@ -332,7 +332,7 @@ const EditorOne = () => {
                 </div>
             </div>
             <div className="bg-gray-100 dark:bg-gray-800 p-4 flex justify-between items-center">
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 flex-wrap">
                     <Button type="button" variant="ghost" size="sm" onClick={() => editor.chain().focus().clearContent().run()}>
                         <X className="w-4 h-4 mr-2" /> Clear
                     </Button>
@@ -355,7 +355,7 @@ const EditorOne = () => {
                         <Redo className="w-4 h-4 mr-2" /> Redo
                     </Button>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 flex-wrap">
                     <div className="text-sm text-muted-foreground">{wordCount} words</div>
                 </div>
             </div>

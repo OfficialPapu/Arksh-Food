@@ -432,7 +432,7 @@ export default function UserList() {
                                     {user.Orders.length || "0"}
                                   </div>
                                   <div className="text-xs text-gray-500">
-                                    Last: {user.Orders.length ? formatDate(user.UpdateAt) : "N/A"}
+                                    Last: {user.Orders.length ? formatDate(user.CreatedAt) : "N/A"}
                                   </div>
                                 </div>
                                 <div>
@@ -462,7 +462,7 @@ export default function UserList() {
                                   <span className="text-xs text-gray-500 hidden sm:inline">•</span>
                                   <div className="hidden sm:flex items-center gap-1 text-xs text-gray-500">
                                     <Clock className="h-3 w-3 text-gray-400" />
-                                    {formatDate(user.UpdateAt)}
+                                    {formatDate(user.CreatedAt)}
                                   </div>
                                 </div>
                               </div>

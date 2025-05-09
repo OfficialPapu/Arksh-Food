@@ -48,6 +48,8 @@ export default function UserDetailsPage() {
       setIsLoading(true);
       const response = await axios.get(`api/users/${UserID}`);
       const data = response.data;
+      console.log(data);
+
       setUserDetails(data);
     } catch (error) {
     } finally {
@@ -165,12 +167,6 @@ export default function UserDetailsPage() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Button className="gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-md hover:shadow-lg transition-all duration-200">
-                <Edit className="h-4 w-4" />
-                Edit Profile
-              </Button>
-            </div>
           </div>
         </header>
 
@@ -221,7 +217,7 @@ export default function UserDetailsPage() {
                           <CardContent>
                             <div className="flex items-baseline">
                               <span className="text-3xl font-bold text-gray-900">
-                                Rs. {totalSpent.toLocaleString()}
+                                Rs. {totalSpent?.toLocaleString()}
                               </span>
                             </div>
                             <p className="mt-1 text-xs text-gray-500">
@@ -248,8 +244,11 @@ export default function UserDetailsPage() {
                           <CardContent>
                             <div className="flex items-baseline">
                               <span className="text-3xl font-bold text-gray-900">
-                                {userDetails.Orders.length}
+                                {
+                                  userDetails?.Orders?.filter(order => order.OrderID && order.CreatedAt).length || 0
+                                }
                               </span>
+
                             </div>
                             <p className="mt-1 text-xs text-gray-500">
                               Total orders placed
@@ -275,7 +274,7 @@ export default function UserDetailsPage() {
                           <CardContent>
                             <div className="flex items-baseline">
                               <span className="text-3xl font-bold text-gray-900">
-                                Rs. {avgOrderValue.toLocaleString()}
+                                Rs. {avgOrderValue?.toLocaleString()}
                               </span>
                             </div>
                             <p className="mt-1 text-xs text-gray-500">
@@ -305,9 +304,9 @@ export default function UserDetailsPage() {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-4">
-                            {userDetails.Orders.slice(0, 3).map((order) => (
+                            {userDetails?.Orders?.filter(order => order.OrderID && order.CreatedAt).slice(0, 3).map((order, index) => (
                               <div
-                                key={order._id}
+                                key={index}
                                 className="group flex items-center justify-between rounded-lg bg-gray-50 p-4 transition-all duration-200 hover:bg-gray-100 hover:shadow-md"
                               >
                                 <div className="flex items-center gap-3">
@@ -319,101 +318,29 @@ export default function UserDetailsPage() {
                                       {order.OrderID}
                                     </div>
                                     <div className="text-xs text-gray-500">
-                                      {formatDate(order.CreatedAt)} •{" "}
-                                      {order.Items.length} items
+                                      {formatDate(order.CreatedAt)} • {order?.Items?.length || 0} items
                                     </div>
                                   </div>
                                 </div>
+                                <div className="flex flex-col-reverse sm:items-center gap-4 ml-16 sm:ml-0">
+                                <Badge
+                                  className={`${order?.Shipping?.Status && getStatusColor(order?.Shipping?.Status)} px-2.5 py-0.5 text-xs font-medium w-[80px] text-center`}
+                                >
+                                  {order?.Shipping?.Status}
+                                </Badge>
                                 <div className="text-right">
                                   <div className="font-medium text-gray-900">
                                     Rs. {order.GrandTotal.toLocaleString()}
                                   </div>
-                                  <Badge
-                                    className={`${getStatusColor(
-                                      order?.Shipping?.Status
-                                    )} px-2.5 py-0.5 text-xs font-medium w-[80px] text-center`}
-                                  >
-                                    {order.Shipping.Status}
-                                  </Badge>
                                 </div>
+                              </div>
                               </div>
                             ))}
-                          </div>
-                        </CardContent>
-                      </Card>
 
-                      {/* Order summary */}
-                      <Card className="border border-gray-100/50 shadow-lg bg-white/90 backdrop-blur-sm">
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <CardTitle className="text-lg font-semibold text-gray-900">
-                                Order Summary
-                              </CardTitle>
-                              <CardDescription className="text-gray-500">
-                                Purchase breakdown
-                              </CardDescription>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <div className="rounded-full bg-green-100 p-1.5 text-green-600">
-                                  <CheckCircle2 className="h-3.5 w-3.5" />
-                                </div>
-                                <div className="text-sm font-medium text-gray-700">
-                                  Total Orders
-                                </div>
-                              </div>
-                              <div className="text-sm font-medium text-gray-700">
-                                {userDetails.Orders.length}
-                              </div>
-                            </div>
-                            <Progress value={100} className="h-2 bg-gray-100" />
+                            {userDetails?.Orders?.filter(order => order.OrderID && order.CreatedAt).length === 0 && (
+                              <p className="text-gray-500 text-sm">No orders available.</p>
+                            )}
 
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <div className="rounded-full bg-blue-100 p-1.5 text-blue-600">
-                                  <CreditCard className="h-3.5 w-3.5" />
-                                </div>
-                                <div className="text-sm font-medium text-gray-700">
-                                  Total Spent
-                                </div>
-                              </div>
-                              <div className="text-sm font-medium text-gray-700">
-                                Rs. {totalSpent.toLocaleString()}
-                              </div>
-                            </div>
-                            <Progress value={100} className="h-2 bg-gray-100" />
-
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <div className="rounded-full bg-purple-100 p-1.5 text-purple-600">
-                                  <ShoppingBag className="h-3.5 w-3.5" />
-                                </div>
-                                <div className="text-sm font-medium text-gray-700">
-                                  Total Items
-                                </div>
-                              </div>
-                              <div className="text-sm font-medium text-gray-700">
-                                {userDetails.Orders.reduce(
-                                  (sum, order) => sum + order.Items.length,
-                                  0
-                                )}
-                              </div>
-                            </div>
-                            <Progress value={100} className="h-2 bg-gray-100" />
-
-                            <div className="mt-2 flex items-center justify-between border-t border-gray-200 pt-4">
-                              <div className="font-medium text-gray-900">
-                                Average Order Value
-                              </div>
-                              <div className="font-bold text-gray-900">
-                                Rs. {avgOrderValue.toLocaleString()}
-                              </div>
-                            </div>
                           </div>
                         </CardContent>
                       </Card>
@@ -589,60 +516,58 @@ export default function UserDetailsPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {userDetails.Orders.length > 0 ? (
-                          userDetails.Orders.map((order) => (
-                            <div
-                              key={order._id}
-                              className="group flex flex-col sm:flex-row sm:items-center justify-between rounded-lg bg-gray-50 p-4 transition-all duration-200 hover:bg-gray-100 hover:shadow-md gap-4"
-                            >
-                              <div className="flex items-center gap-4">
-                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 transition-all duration-200 group-hover:bg-blue-200 group-hover:scale-105">
-                                  <ShoppingBag className="h-6 w-6 text-blue-600" />
+                        {userDetails?.Orders?.filter(order => order.OrderID && order.CreatedAt).length > 0 ? (
+                          userDetails.Orders
+                            .filter(order => order.OrderID && order.CreatedAt)
+                            .map((order) => (
+                              <div
+                                key={order._id}
+                                className="group flex flex-col sm:flex-row sm:items-center justify-between rounded-lg bg-gray-50 p-4 transition-all duration-200 hover:bg-gray-100 hover:shadow-md gap-4"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 transition-all duration-200 group-hover:bg-blue-200 group-hover:scale-105">
+                                    <ShoppingBag className="h-6 w-6 text-blue-600" />
+                                  </div>
+                                  <div>
+                                    <div className="font-medium text-gray-900">
+                                      {order.OrderID}
+                                    </div>
+                                    <div className="text-sm text-gray-500">
+                                      {formatDate(order.CreatedAt)} • {order.Items?.length || 0} items
+                                    </div>
+                                  </div>
                                 </div>
-                                <div>
-                                  <div className="font-medium text-gray-900">
-                                    {order.OrderID}
-                                  </div>
-                                  <div className="text-sm text-gray-500">
-                                    {formatDate(order.CreatedAt)} •{" "}
-                                    {order.Items.length} items
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex flex-col sm:flex-row sm:items-center gap-4 ml-16 sm:ml-0">
-                                <Badge
-                                  className={`${getStatusColor(
-                                    order?.Shipping?.Status
-                                  )} px-2.5 py-0.5 text-xs font-medium w-[80px] text-center`}
-                                >
-                                  {order.Shipping.Status}
-                                </Badge>
-                                <div className="text-right">
-                                  <div className="font-medium text-gray-900">
-                                    Rs. {order.GrandTotal.toLocaleString()}
-                                  </div>
-                                  <div className="text-xs text-gray-500">
-                                    <div className="flex items-center gap-1">
-                                      <CreditCard className="h-3 w-3" />
-                                      <span>{order.Payment.Method}</span>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-4 ml-16 sm:ml-0">
+                                  <Badge
+                                    className={`${order?.Shipping?.Status && getStatusColor(order?.Shipping?.Status)} px-2.5 py-0.5 text-xs font-medium w-[80px] text-center`}
+                                  >
+                                    {order?.Shipping?.Status}
+                                  </Badge>
+                                  <div className="text-right">
+                                    <div className="font-medium text-gray-900">
+                                      Rs. {order.GrandTotal?.toLocaleString() || "0"}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                      <div className="flex items-center gap-1">
+                                        <CreditCard className="h-3 w-3" />
+                                        <span>{order?.Payment?.Method || "N/A"}</span>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))
+                            ))
                         ) : (
                           <div className="flex flex-col items-center justify-center py-12 text-center">
                             <ShoppingBag className="h-12 w-12 text-gray-300 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-900 mb-1">
-                              No orders yet
-                            </h3>
+                            <h3 className="text-lg font-medium text-gray-900 mb-1">No orders yet</h3>
                             <p className="text-gray-500 max-w-sm">
                               This user hasn't placed any orders yet.
                             </p>
                           </div>
                         )}
                       </div>
+
                     </CardContent>
                   </Card>
                 </TabsContent>
