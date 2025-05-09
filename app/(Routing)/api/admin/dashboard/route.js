@@ -66,7 +66,7 @@ export async function GET(request) {
     );
     const TotalUsers = users.length || 0;
     const TotalProducts = products.length || 0;
-    const TotalOrders = orders[0]?.OrderItemsID.length || 0;
+    const TotalOrders = orders.length || 0;
     return NextResponse.json(
       { TotalRevenue, TotalUsers, TotalProducts, TotalOrders },
       { status: 200 }
