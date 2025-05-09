@@ -3,7 +3,7 @@ import { Upload, Trash2, Camera, Info, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 import { Badge } from "@/Components/ui/badge";
-import {useProductContext} from "../Context/ProductContext";
+import { useProductContext } from "../Context/ProductContext";
 const Media = () => {
     const { images, isDragging, fileInputRef, handleDragOver, handleDragLeave, handleDrop, processImageFiles, handleImageChange, removeImage, formatFileSize, } = useProductContext();
     return (

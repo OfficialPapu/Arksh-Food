@@ -5,6 +5,7 @@ import { Button } from "@/Components/ui/button"
 import { TabsContent } from "@radix-ui/react-tabs"
 import useOrderDetailsActions from "./useOrderDetailsActions"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card"
+import Link from "next/link"
 
 const UserInfo = () => {
     const { OrderData, BASE_IMAGES_PATH } = useOrderDetailsActions();
@@ -68,8 +69,10 @@ const UserInfo = () => {
                 </CardContent>
                 <CardFooter className="flex flex-col sm:flex-row justify-end gap-2 border-t bg-slate-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-slate-800 dark:bg-slate-900">
                     <Button variant="outline" size="sm">
-                        <User className="mr-2 h-4 w-4" />
-                        View Profile
+                        <Link href={`/admin/users/${OrderData?.UserID?._id}`} className="flex justify-center items-center gap-1">
+                            <User className="mr-2 h-4 w-4" />
+                            View Profile
+                        </Link>
                     </Button>
                 </CardFooter>
             </Card>

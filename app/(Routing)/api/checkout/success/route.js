@@ -29,9 +29,8 @@ export async function POST(request, { params }) {
             if (Product.Stock < Item.Quantity) {
                 return NextResponse.json({ message: `Insufficient stock for product: ${Product.Name}` }, { status: 400 });
             }
-            Product.Stock -= Item.Quantity;
+            Product.Quantity -= Item.Quantity;
             await Product.save();
-
             let UnitPrice = Item.PriceAfterDiscount ? Item.PriceAfterDiscount : Item.Price;
             let OrderItem = new OrderItemsSchema({
                 ProductID: Product._id,

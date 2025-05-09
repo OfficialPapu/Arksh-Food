@@ -4,7 +4,7 @@ import ProductSchema from "@/Models/ProductModel";
 
 export async function GET(req) {
     try {
-        const products = await ProductSchema.find().populate('Category');
+        const products = await ProductSchema.find().populate('Category').sort({ CreatedAt: -1 });
         if (products.length === 0) {
             return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }

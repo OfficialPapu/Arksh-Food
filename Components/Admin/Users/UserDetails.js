@@ -48,8 +48,6 @@ export default function UserDetailsPage() {
       setIsLoading(true);
       const response = await axios.get(`api/users/${UserID}`);
       const data = response.data;
-      console.log(data);
-
       setUserDetails(data);
     } catch (error) {
     } finally {

@@ -9,12 +9,13 @@ export const config = {
         bodyParser: false,
     },
 };
-
-export async function POST(req) {
+export async function PUT(req) {
     try {
         const formData = await req.formData();
         const getMultipleFiles = (field) => formData.getAll(field).filter(Boolean);
-        const images = getMultipleFiles('Images');
+        const newImageFiles = getMultipleFiles('Images');
+        const oldImagePaths = formData.getAll('OldImages');
+        const _id = formData.get('_id');
         const Name = formData.get('name');
         const Price = formData.get('price');
         const Excerpt = formData.get('excerpt');
@@ -32,36 +33,42 @@ export async function POST(req) {
             Keywords: formData.get('SEO[keywords]'),
         };
 
-        const Images = [];
-        for (const file of images) {
-            let { filePath, filename, year, month } = await GenerateFileName(file);
+        const Images = [...oldImagePaths];
+
+        for (const file of newImageFiles) {
+            const { filePath, filename, year, month } = await GenerateFileName(file);
             const buffer = Buffer.from(await file.arrayBuffer());
             await fs.writeFile(filePath, buffer);
             Images.push(`${year}/${month}/${filename}`);
         }
-        if (Images.length === 0) {
-            return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
+
+        const updatedProduct = await ProductSchema.findByIdAndUpdate(
+            _id,
+            {
+                Name,
+                Slug,
+                Excerpt,
+                Description,
+                Ingredients,
+                Category,
+                isNewArrival: isNew,
+                isBestSeller,
+                Price,
+                Discount: { Percentage: Discount },
+                Quantity: Stock,
+                Media: { Images },
+                SEO: meta,
+            },
+            { new: true }
+        );
+
+        if (!updatedProduct) {
+            return NextResponse.json({ error: "Product not found" }, { status: 404 });
         }
 
-        const newProduct = new ProductSchema({
-            Name,
-            Slug,
-            Excerpt,
-            Description,
-            Ingredients,
-            Category,
-            isNewArrival: isNew,
-            isBestSeller,
-            Price,
-            Discount: { Percentage: Discount },
-            Quantity: Stock,
-            Media: { Images },
-            SEO: meta,
-        });
+        return NextResponse.json({ success: true, message: "Product Updated!", product: updatedProduct }, { status: 200 });
 
-        await newProduct.save();
-        return NextResponse.json({ success: true, message: "Product created successfully!" }, { status: 200 });
     } catch (err) {
-        return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });
+        return NextResponse.json({ error: err.message || "Server error" }, { status: 500 });
     }
 }

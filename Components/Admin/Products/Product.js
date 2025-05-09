@@ -2,28 +2,28 @@
 import { Save, Camera, DollarSign, Tag, Layers } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import BasicInfo from "../Tabs/BasicInfo";
-import Media from "../Tabs/Media";
-import Details from "../Tabs/Details";
-import PricingInventory from "../Tabs/PricingInventory";
-import { ProductProvider, useProductContext } from "../Context/ProductContext";
-import { DescTipTapProvider } from "../Context/DescTipTapContext";
-import { IngredientsTipTapProvider } from "../Context/IngredientsTipTapContext";
+import BasicInfo from "./Tabs/BasicInfo";
+import Media from "./Tabs/Media";
+import Details from "./Tabs/Details";
+import PricingInventory from "./Tabs/PricingInventory";
+import { ProductProvider, useProductContext } from "./Context/ProductContext";
+import { DescTipTapProvider } from "./Context/DescTipTapContext";
+import { IngredientsTipTapProvider } from "./Context/IngredientsTipTapContext";
 
-export default function AddNewProduct() {
+export default function Product() {
   return (
     <DescTipTapProvider>
       <IngredientsTipTapProvider>
         <ProductProvider>
-          <NewProductForm />
+          <ProductForm />
         </ProductProvider>
       </IngredientsTipTapProvider>
     </DescTipTapProvider>
   );
 }
 
-function NewProductForm() {
-  const { handleSubmit, isSubmitting, activeTab, setActiveTab } = useProductContext();
+function ProductForm() {
+  const { handleSubmit, isSubmitting, activeTab, setActiveTab, ID } = useProductContext();
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-12 ProductPage">
       <div className="bg-white sm:border-b">
@@ -49,7 +49,7 @@ function NewProductForm() {
               ) : (
                 <>
                   <Save className="h-4 w-4" />
-                  <span>Add Product</span>
+                  <span>{ID ? "Update Product" : "Add Product"}</span>
                 </>
               )}
             </Button>

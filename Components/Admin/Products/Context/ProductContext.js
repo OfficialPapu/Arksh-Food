@@ -4,6 +4,7 @@ import axios from "@/lib/axios";
 import toast from "react-hot-toast";
 import { useDescTipTap } from "./DescTipTapContext";
 import { useIngredientsTipTap } from "./IngredientsTipTapContext";
+import { useParams } from "next/navigation";
 
 const ProductContext = createContext();
 
@@ -83,6 +84,7 @@ export const ProductProvider = ({ children }) => {
 
 
   //Media Tab
+  const [newUploadingImage, setnewUploadingImage] = useState([]);
   const [images, setImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
@@ -127,6 +129,7 @@ export const ProductProvider = ({ children }) => {
         loadedCount++;
         if (loadedCount === files.length) {
           setImages((prevImages) => [...prevImages, ...newImages]);
+          setnewUploadingImage((prevImages) => [...prevImages, ...newImages]);
         }
       };
       reader.readAsDataURL(file);
@@ -165,6 +168,7 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   const [productData, setProductData] = useState({
+    _id: "",
     name: "",
     excerpt: "",
     price: "",
@@ -182,36 +186,36 @@ export const ProductProvider = ({ children }) => {
 
   const validateForm = () => {
     const { name, price, category, stock } = productData;
-  
+
     if (!name.trim()) {
       toast.error("Product name is required.");
       return false;
     }
-  
+
     if (!price || isNaN(price) || Number(price) <= 0) {
       toast.error("Valid price is required.");
       return false;
     }
-  
+
     if (!category) {
       toast.error("Product category is required.");
       return false;
     }
-  
+
     if (stock && (isNaN(stock) || Number(stock) < 0)) {
       toast.error("Stock must be a non-negative number.");
       return false;
     }
-  
+
     if (images.length === 0) {
       toast.error("At least one product image is required.");
       return false;
     }
-  
+
     return true;
   };
 
-  
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setProductData({
@@ -237,6 +241,55 @@ export const ProductProvider = ({ children }) => {
       [name]: value,
     });
   };
+
+  const { ID } = useParams();
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      if (!ID) return;
+      try {
+        const res = await axios.get("api/admin/product/" + ID);
+        const data = res.data[0];
+        setProductData({
+          _id: data._id,
+          name: data.Name,
+          excerpt: data.Excerpt,
+          price: data.Price,
+          discountPercentage: data.Discount?.Percentage || 0,
+          category: data.Category?._id || "",
+          isNew: data.isNewArrival,
+          isBestSeller: data.isBestSeller,
+          stock: data.Quantity,
+          SEO: {
+            title: data.SEO?.Title || "",
+            description: data.SEO?.Description || "",
+            keywords: data.SEO?.Keywords || "",
+          },
+        });
+
+        const formattedImages = data.Media?.Images?.map((imgPath) => ({
+          id: Date.now() + Math.random().toString(36).substring(2, 9),
+          src: `${process.env.NEXT_PUBLIC_IMAGE_URL + imgPath}`,
+          name: imgPath.split("/").pop(),
+          size: 0,
+          file: null,
+        })) || [];
+        setImages(formattedImages);
+
+        DescEditor?.commands.setContent(data.Description || "<p></p>");
+        IngredientsEditor?.commands.setContent(data.Ingredients || "<p></p>");
+
+      } catch (error) {
+        toast.error("Failed to fetch product details.");
+      }
+    };
+
+    fetchProductDetails();
+  }, [ID, DescEditor, IngredientsEditor]);
+
+
+
+
 
 
 
@@ -308,26 +361,42 @@ export const ProductProvider = ({ children }) => {
         return;
       }
     }
-
     formData.append("Description", DescEditor.getHTML());
     formData.append("Ingredients", IngredientsEditor.getHTML());
     convertObjectToFormData(productData, formData);
-    images.forEach((image) => {
+
+    const trimmedImages = images
+      .filter((img) => !img.src.startsWith("data:image"))
+      .map((img) => img.src.replace(process.env.NEXT_PUBLIC_IMAGE_URL, ""));
+
+    trimmedImages.forEach((image) => {
+      formData.append("OldImages", image);
+    });
+
+    newUploadingImage.forEach((image) => {
       formData.append("Images", image.file);
     });
 
     try {
-      const response = await axios.post(`api/admin/product/new`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      if (response.data.success) {
-        resetForm();
-        toast.success("Product created successfully!");
+      let response;
+      if (ID) {
+        formData.append("_id", productData._id);
+        response = await axios.put(`/api/admin/product/update`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
       } else {
-        toast.error("Failed to create product.");
+        response = await axios.post(`api/admin/product/new`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (response.data.success) {
+          resetForm();
+        }
+      }
+      if (response.data.success) {
+        toast.success(response.data.message);
       }
     } catch (error) {
-      toast.error("Failed to create product.");
+      toast.error("Something went wrong.");
     } finally {
       setIsSubmitting(false);
     }
@@ -357,6 +426,7 @@ export const ProductProvider = ({ children }) => {
         handleInputChange,
         handleSelectChange,
         handlemetaChange,
+        ID
       }}
     >
       {children}
