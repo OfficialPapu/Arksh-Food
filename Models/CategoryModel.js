@@ -15,6 +15,11 @@ let CategoriesSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    SEO: {
+        Title: { type: String },
+        Description: { type: String },
+        Keywords: { type: String },
+    },
 }, { timestamps: { createdAt: 'CreatedAt', updatedAt: 'UpdatedAt' } })
 
 CategoriesSchema = mongoose.models.Categories || mongoose.model("Categories", CategoriesSchema, "Categories");
