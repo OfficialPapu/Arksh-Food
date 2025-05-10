@@ -79,6 +79,29 @@ const UseProductDetails = () => {
   useEffect(() => {
     Product.Quantity = quantity;
   }, [quantity]);
+
+
+
+  const [loading, setLoading] = useState(true);
+  const hasFetchedRef = useRef(false);
+
+  useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
+    (async () => {
+      try {
+        const productData = await GetProductInfo();
+        if (productData?._id) {
+          await GetReviews(productData._id);
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [Slug]);
+
   return {
     quantity,
     GetProductInfo,
@@ -96,6 +119,7 @@ const UseProductDetails = () => {
     Reviews,
     BASE_IMAGES_PATH,
     GetReviews,
+    loading
   };
 };
 

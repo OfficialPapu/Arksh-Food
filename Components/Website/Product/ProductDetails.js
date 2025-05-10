@@ -21,28 +21,8 @@ import ReviewTab from "./ReviewTab";
 import PreLoader from "./PreLoader";
 const ProductDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { BreadcrumbItems, Product, GetProductInfo, GetReviews, Reviews } =
+  const { BreadcrumbItems, Product, loading } =
     UseProductDetails();
-  const [loading, setLoading] = useState(true);
-  const hasFetchedRef = useRef(false);
-
-  useEffect(() => {
-    if (hasFetchedRef.current) return;
-    hasFetchedRef.current = true;
-
-    (async () => {
-      try {
-        const productData = await GetProductInfo();
-        if (productData?._id) {
-          await GetReviews(productData._id);
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [GetProductInfo]);
-
   if (loading) return <PreLoader />;
 
   return (
@@ -73,8 +53,8 @@ const ProductDetails = () => {
           <main className="pb-8">
             <div className="relative">
               <div className="grid SliderWrapper">
-                <ProductCarousel Product={Product} />
-                <ActionSection Product={Product} />
+                <ProductCarousel />
+                <ActionSection />
               </div>
             </div>
 
@@ -91,8 +71,8 @@ const ProductDetails = () => {
                         {tab === "description"
                           ? "Description"
                           : tab === "ingredients"
-                          ? "Ingredients"
-                          : "Review"}
+                            ? "Ingredients"
+                            : "Review"}
                       </TabsTrigger>
                     ))}
                   </TabsList>
@@ -119,7 +99,7 @@ const ProductDetails = () => {
                     value="Review"
                     className="focus-visible:outline-none focus-visible:ring-0 ProductPage"
                   >
-                    <ReviewTab Product={Product} Reviews={Reviews} />
+                    <ReviewTab />
                   </TabsContent>
                 </Tabs>
               </div>

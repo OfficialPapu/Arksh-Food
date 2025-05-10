@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin/*
+Disallow: /api/*
+
+# Host
+Host: https://www.food.arkshfood.com
+
+# Sitemaps
+Sitemap: https://www.food.arkshfood.com/sitemap.xml

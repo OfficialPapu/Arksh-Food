@@ -6,8 +6,8 @@ import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Avatar } from "@/Components/ui/avatar";
 import UseProductDetails from "./UseProductDetails";
-const ReviewTab = ({ Product, Reviews }) => {
-  const { AddReview, Rating, setRating, Comment, setComment } =
+const ReviewTab = () => {
+  const { AddReview, Rating, setRating, Comment, setComment, Product, Reviews } =
     UseProductDetails();
   return (
     <div className="space-y-8">
@@ -21,11 +21,10 @@ const ReviewTab = ({ Product, Reviews }) => {
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-6 h-6 cursor-pointer transition-colors ${
-                      i < Rating
+                    className={`w-6 h-6 cursor-pointer transition-colors ${i < Rating
                         ? "fill-yellow-400 text-yellow-400"
                         : "fill-gray-200 text-gray-200 hover:fill-yellow-200 hover:text-yellow-200"
-                    }`}
+                      }`}
                     onClick={() => setRating(i + 1)}
                   />
                 ))}
@@ -86,11 +85,10 @@ const ReviewTab = ({ Product, Reviews }) => {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-4 h-4 ${
-                              i < Review?.Rating
+                            className={`w-4 h-4 ${i < Review?.Rating
                                 ? "fill-yellow-400 text-yellow-400"
                                 : "fill-gray-200 text-gray-200"
-                            }`}
+                              }`}
                           />
                         ))}
                       </div>

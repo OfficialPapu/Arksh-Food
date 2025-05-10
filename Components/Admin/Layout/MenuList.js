@@ -56,16 +56,6 @@ const navItems = [
     href: "/admin/users",
     icon: <Users className="h-4 w-4" />,
   },
-  {
-    title: "Analytics",
-    href: "/admin/analytics",
-    icon: <BarChart3 className="h-4 w-4" />,
-  },
-  {
-    title: "Settings",
-    href: "/admin/settings",
-    icon: <Settings className="h-4 w-4" />,
-  },
 ]
 
 export function MenuList() {

@@ -16,14 +16,14 @@ import { Button } from "@/Components/ui/button";
 import UseProductDetails from "./UseProductDetails";
 import useCartActions from "@/Components/Hooks/Cart";
 import ShareButton from "./ShareBtn";
-const ActionSection = ({ Product }) => {
+const ActionSection = () => {
   const productBenefits = [
     { icon: <Leaf className="h-5 w-5" />, text: "100% Organic" },
     { icon: <Award className="h-5 w-5" />, text: "High Protein" },
     { icon: <Clock className="h-5 w-5" />, text: "Ready in 5 mins" },
   ];
 
-  const { incrementQuantity, decrementQuantity, quantity } =
+  const { incrementQuantity, decrementQuantity, quantity, Product } =
     UseProductDetails();
   const { HandleAddToCart, IsProductInCart, loading, setLoading } =
     useCartActions();
