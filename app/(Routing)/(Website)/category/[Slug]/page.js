@@ -128,7 +128,7 @@ const CategoryPage = () => {
               ></div>
             </div>
             <div className="absolute -bottom-14 left-6 w-28 h-28 rounded-full bg-white p-2 shadow-lg">
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-[#0055a4] to-[#39a9db] flex items-center justify-center shadow-inner overflow-hidden">
+              <div className="w-full h-full rounded-full flex items-center justify-center shadow-inner overflow-hidden">
                 <Image
                   width={100}
                   height={100}
@@ -159,11 +159,10 @@ const CategoryPage = () => {
                 <div className="relative w-full md:w-auto" ref={sortRef}>
                   <Button
                     id="sort-button"
-                    variant="outline"
                     onClick={() => setShowSortOptions((v) => !v)}
                     aria-expanded={showSortOptions}
                     aria-haspopup="true"
-                    className="w-full md:w-auto bg-white border border-gray-200 hover:bg-gray-50 hover:border-[#0055a4]/30 text-gray-700 shadow-sm rounded-full px-4 py-2.5 h-auto transition-all"
+                    className="w-full md:w-auto bg-white hover:bg-gray-50 hover:border-[#0055a4]/30 text-gray-700 shadow-sm rounded-full px-4 py-2.5 h-auto transition-all"
                   >
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-2">
@@ -191,8 +190,8 @@ const CategoryPage = () => {
                             <button
                               key={opt.value}
                               className={`w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg transition-colors duration-150 ${sortOption === opt.value
-                                  ? "bg-[#0055a4]/10 text-[#0055a4] font-medium"
-                                  : "text-gray-700 hover:bg-gray-50"
+                                ? "bg-[#0055a4]/10 text-[#0055a4] font-medium"
+                                : "text-gray-700 hover:bg-gray-50"
                                 }`}
                               onClick={() => handleSortChange(opt.value)}
                             >

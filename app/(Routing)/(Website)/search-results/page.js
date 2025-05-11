@@ -14,6 +14,11 @@ export default function SearchResults() {
   const searchParams = useSearchParams()
   const query = searchParams.get("q") || ""
   const [searchQuery, setSearchQuery] = useState(query || "")
+  useEffect(() => {
+    const q = searchParams.get("q") || ""
+    setSearchQuery(q)
+  }, [searchParams])
+
   const [sortOption, setSortOption] = useState("relevance")
   const [showSortOptions, setShowSortOptions] = useState(false)
   const sortRef = useRef(null)
@@ -135,8 +140,8 @@ export default function SearchResults() {
                       <button
                         key={opt.value}
                         className={`w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg transition-colors duration-150 ${sortOption === opt.value
-                            ? "bg-[#0A4D9C]/10 text-[#0A4D9C] font-medium"
-                            : "text-gray-700 hover:bg-gray-50"
+                          ? "bg-[#0A4D9C]/10 text-[#0A4D9C] font-medium"
+                          : "text-gray-700 hover:bg-gray-50"
                           }`}
                         onClick={() => handleSortChange(opt.value)}
                       >

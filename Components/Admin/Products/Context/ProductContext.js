@@ -77,7 +77,6 @@ export const ProductProvider = ({ children }) => {
     IngredientsEditor.commands.setContent("<p></p>");
     DescEditor.commands.focus("end");
     IngredientsEditor.commands.focus("end");
-    setActiveTab("basic");
   };
 
 

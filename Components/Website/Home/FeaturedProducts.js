@@ -5,49 +5,6 @@ import { ProductCard } from "@/Components/ui/ProductCard";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 
-const Products = [
-  {
-    ID: 1,
-    Name: "Nepali Masala Mix",
-    Price: 350,
-    DiscountedPrice: 297,
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/d3855852984beb492053962461a4e00f.png_400x400q75.png_.webp",
-    Slug: "loream-ipsum-nice-hello-hi",
-    isNew: false,
-    isBestSeller: true,
-  },
-  {
-    ID: 2,
-    Name: "Traditional Pickle",
-    Price: 280,
-    DiscountedPrice: null,
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/da0079aa351e900dd15a765a37425d42.jpg_400x400q75.jpg_.webp",
-    Slug: "loream-ipsum-nice-hello-hi",
-    isNew: false,
-    isBestSeller: false,
-  },
-  {
-    ID: 3,
-    Name: "Himalayan Tea",
-    Price: 420,
-    DiscountedPrice: 378,
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/e983ad3dd92378e03e4a5cbd4585b93d.png_400x400q75.png_.webp",
-    Slug: "loream-ipsum-nice-hello-hi",
-    isNew: true,
-    isBestSeller: false,
-  },
-  {
-    ID: 4,
-    Name: "Organic Honey",
-    Price: 550,
-    DiscountedPrice: null,
-    ImageUrl: "https://img.drz.lazcdn.com/static/np/p/49df54f7124c966bbcd4c3ae5232e498.png_400x400q75.png_.webp",
-    Slug: "loream-ipsum-nice-hello-hi",
-    isNew: false,
-    isBestSeller: false,
-  },
-];
-
 export default function FeaturedProducts() {
 
   const [Products, setProducts] = useState([]);

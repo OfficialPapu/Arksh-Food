@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "./button";
 import useCartActions from "../Hooks/Cart";
 export function ProductCard({ Product }) {
-  Product.Quantity = 1;
+  const isOutOfStock = Product.Quantity <= 0;
   let PriceAfterDiscount =
     Product.Price - (Product.Price / 100) * Product.Discount.Percentage <
     Product.Price
@@ -17,7 +17,7 @@ export function ProductCard({ Product }) {
   const isInCart = IsProductInCart(Product._id);
   return (
     <div className="group h-full overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md flex flex-col">
-      <Link href={`/product/${Product.Slug}`}>
+      <Link href={`/product/${Product.Slug}`} className="relative">
         <div className="relative">
           <div className="absolute left-2 top-2 z-10 flex flex-col gap-1.5 sm:left-3 sm:top-3">
             {Product.isNewArrival && (
@@ -75,13 +75,25 @@ export function ProductCard({ Product }) {
             )}
           </div>
         </div>
+        {isOutOfStock && (
+          <div className="absolute inset-0 flex items-center justify-center z-50 top-1/2 -translate-y-1/2">
+            <div className="relative sm:px-8 px-4 sm:py-2 py-1 bg-white border border-gray-100 shadow-lg rounded-lg group hover:shadow-xl transition-shadow duration-300">
+              <div className="flex items-center justify-center gap-4">
+                <p className="text-[#0055a4] font-bold">Out of Stock</p>
+              </div>
+              <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-[#0055a4] transform -translate-x-1/2 group-hover:w-16 transition-all duration-300"></div>
+            </div>
+          </div>
+        )}
       </Link>
       <div className="border-t border-gray-100 p-3 mt-auto sm:p-4">
         <Button
           className="flex w-full items-center justify-center rounded-lg bg-gray-100 px-3 py-2.5 text-xs font-medium text-gray-800 hover:text-white transition-colors hover:bg-[#004a8f] active:bg-[#003d76] sm:text-sm cursor-pointer"
           onClick={async () => {
+            Product.Quantity = 1;
             await HandleAddToCart(Product);
           }}
+          disabled={isOutOfStock}
         >
           {loading ? (
             <>

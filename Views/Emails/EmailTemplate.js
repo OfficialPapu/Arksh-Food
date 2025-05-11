@@ -5,7 +5,7 @@ import Style from "./Layout/Style";
 import { GreetingSection, IntorSection } from "./Layout/HeaderSection";
 
 export default function EmailTemplate(OrderData) {
-  return `<!DOCTYPE html>
+    return `<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,13 +20,13 @@ export default function EmailTemplate(OrderData) {
         <table width="100%" cellpadding="0" cellspacing="0" border="0"
             style="max-width: 650px; margin: 0 auto; background-color: #ffffff; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
             <!-- Header Section -->
-           ${IntorSection(OrderData)};
+           ${IntorSection(OrderData)}
 
             <!-- Content Section -->
             <tr>
                 <td class="ContentSecion">
                     <!-- Greeting -->
-                   ${GreetingSection(OrderData)};
+                   ${GreetingSection(OrderData)}
 
                     <!-- Order Info Box -->
                     <div
@@ -36,9 +36,9 @@ export default function EmailTemplate(OrderData) {
                             Order ID ${OrderData.OrderID}</p>
                         <p style="font-size: 14px; color: #666666; margin: 0; padding: 0; line-height: 1.6;">Placed on
                         ${format(
-                          new Date(OrderData.CreatedAt),
-                          "MMMM d, yyyy 'at' h:mm a"
-                        )}</p>
+        new Date(OrderData.CreatedAt),
+        "MMMM d, yyyy 'at' h:mm a"
+    )}</p>
                     </div>
 
                     <!-- COMPLETELY NEW DESIGN: Products Section -->
@@ -54,9 +54,8 @@ export default function EmailTemplate(OrderData) {
                                 <td width="30%" align="right" style="vertical-align: middle;">
                                     <div
                                         style="display: inline-block; background: linear-gradient(135deg, #0055a4 0%, #29abe2 100%); color: white; font-weight: 600; padding: 5px 12px; border-radius: 30px; font-size: 14px;">
-                                        ${
-                                          OrderData.OrderItemsID.length
-                                        } items</div>
+                                        ${OrderData.OrderItemsID.length
+        } items</div>
                                 </td>
                             </tr>
                         </table>
@@ -86,9 +85,8 @@ export default function EmailTemplate(OrderData) {
                                 Shipping Address:</p>
                             <p style="color: #555555; font-size: 14px; line-height: 1.5; margin: 0; padding: 0;">
                                ${OrderData.Shipping.Address.Name}<br>
-                                ${OrderData.Shipping.Address.Address},  ${
-    OrderData.Shipping.Address.City
-  }
+                                ${OrderData.Shipping.Address.Address},  ${OrderData.Shipping.Address.City
+        }
                             </p>
                         </div>
                     </div>

@@ -207,7 +207,7 @@ const Dashboard = ({ userDetails, fetchData }) => {
                     <CardContent className="p-0 bg-white">
                         <Tabs defaultValue="personal" className="w-full">
                             <div className="border-b border-gray-200">
-                                <div className="px-6">
+                                <div>
                                     <TabsList className="h-12 bg-transparent border-b-0 p-0 w-full justify-start gap-8">
                                         <TabsTrigger
                                             value="personal"

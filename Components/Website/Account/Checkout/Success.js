@@ -60,8 +60,8 @@ const Success = () => {
     if (loading) return <SuccessPreLoader />;
     return (
         <div className="min-h-screen bg-white">
-            <div className="max-w-5xl mx-auto px-4 ">
-                <div className="bg-white rounded-3xl shadow-2xl p-8 mb-12 relative overflow-hidden">
+            <div className="max-w-5xl mx-auto">
+                <div className="bg-white rounded-3xl shadow-2xl sm:p-8 py-8 px-4 mb-12 relative overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-40 h-40 text-[#39b0e5]/10">
                         <LargeStar />
                     </div>

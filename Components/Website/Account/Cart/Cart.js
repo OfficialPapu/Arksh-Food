@@ -15,7 +15,7 @@ export default function Cart() {
     if (CartItems.length === 0) {
         return (
             <div className="bg-gradient-to-b from-white to-blue-50 min-h-screen">
-                <div className="max-w-6xl mx-auto p-6">
+                <div className="sm:max-w-6xl mx-auto sm:p-6 py-6 px-3">
                     <div className="flex items-center justify-between mb-8">
                         <h1 className="text-3xl font-bold text-[#0055a4]">Your Cart</h1>
                     </div>
@@ -28,7 +28,7 @@ export default function Cart() {
                         <p className="text-gray-500 mb-8 max-w-md mx-auto text-lg">
                             Looks like you haven't added any delicious items to your cart yet.
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center sm:px-0 px-6">
                             <Button className="bg-[#0055a4] hover:bg-[#003d7a] rounded-full px-8 py-6 text-base font-medium">
                                 Browse Our Menu
                             </Button>

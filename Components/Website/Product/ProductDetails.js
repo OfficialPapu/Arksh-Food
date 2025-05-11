@@ -29,7 +29,7 @@ const ProductDetails = () => {
     <>
       {Product && Product.Name ? (
         <div className="min-h-screen bg-gradient-to-b from-white to-blue-50/30 sm:px-24 px-2">
-          <Breadcrumb className="pt-4 pb-5">
+          <Breadcrumb className="sm:pt-8 pt-4 pb-5">
             <BreadcrumbList>
               {BreadcrumbItems.map((item, index) => (
                 <React.Fragment key={index}>
@@ -39,7 +39,14 @@ const ProductDetails = () => {
                         <Link href={item.href}>{item.name}</Link>
                       </BreadcrumbLink>
                     ) : (
-                      <BreadcrumbPage>{item.name}</BreadcrumbPage>
+                      <BreadcrumbPage>
+
+                        <span className="hidden sm:inline">{item.name}</span>
+                        <span className="sm:hidden">
+                          {item.name.length > 30 ? item.name.substring(0, 30) + "..." : item.name}
+                        </span>
+
+                      </BreadcrumbPage>
                     )}
                   </BreadcrumbItem>
                   {index < BreadcrumbItems.length - 1 && (
