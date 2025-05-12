@@ -218,7 +218,7 @@ export default function CheckoutPage() {
                           <div className="flex flex-col items-center justify-center gap-2">
                             <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-sm">
                               <img
-                                src="/Prabhu Bank Qr.jpg"
+                                src="/Media/Images/Logo/Prabhu Bank Qr.jpg"
                                 alt="Payment QR Code"
                                 width={160}
                                 height={160}
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                             </div>
                             <p className="text-xs text-gray-500 text-center">Scan to pay directly</p>
                             <a
-                              href="/Prabhu Bank Qr.jpg"
+                              href="/Media/Images/Logo/Prabhu Bank Qr.jpg"
                               download="Arksh_Food_Prabhu_Bank_QR"
                               className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-[#0055a4] rounded-lg shadow hover:bg-[#004080] transition-colors"
                             >
@@ -256,7 +256,7 @@ export default function CheckoutPage() {
                                 <div className="flex flex-col items-center">
                                   <div className="relative w-full h-40 mb-2 rounded overflow-hidden">
                                     <img
-                                      src={filePreview || "/placeholder.svg"}
+                                      src={filePreview || "/Media/Images/Logo/placeholder.svg"}
                                       alt="Receipt preview"
                                       className="object-contain w-full h-full"
                                     />
@@ -350,7 +350,7 @@ export default function CheckoutPage() {
                           <div className="flex flex-col items-center justify-center gap-2">
                             <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-sm">
                               <img
-                                src="/Prabhu Bank Qr.jpg"
+                                src="/Media/Images/Logo/Prabhu Bank Qr.jpg"
                                 alt="eSewa QR Code"
                                 width={160}
                                 height={160}
@@ -359,7 +359,7 @@ export default function CheckoutPage() {
                             </div>
                             <p className="text-xs text-gray-500 text-center">Scan to pay with eSewa</p>
                             <a
-                              href="/Prabhu Bank Qr.jpg"
+                              href="/Media/Images/Logo/Prabhu Bank Qr.jpg"
                               download="Arksh_Food_Prabhu_Bank_QR"
                               className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-[#0055a4] rounded-lg shadow hover:bg-[#004080] transition-colors"
                             >
@@ -388,7 +388,7 @@ export default function CheckoutPage() {
                                 <div className="flex flex-col items-center">
                                   <div className="relative w-full h-40 mb-2 rounded overflow-hidden">
                                     <img
-                                      src={filePreview || "/placeholder.svg"}
+                                      src={filePreview || "/Media/Images/Logo/placeholder.svg"}
                                       alt="Receipt preview"
                                       className="object-contain w-full h-full"
                                     />
@@ -454,7 +454,7 @@ export default function CheckoutPage() {
                     return (
                       <div key={item.ProductID} className="flex gap-4 group">
                         <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 group-hover:border-[#0055a4] transition-all">
-                          <Image src={item.Image || "/placeholder.svg"} alt={item.Name} fill className="object-cover" />
+                          <Image src={item.Image || "/Media/Images/Logo/placeholder.svg"} alt={item.Name} fill className="object-cover" />
                           <div className="absolute -top-1 -right-1 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center bg-[#0055a4]">
                             {item.Quantity}
                           </div>

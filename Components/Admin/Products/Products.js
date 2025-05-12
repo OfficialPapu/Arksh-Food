@@ -215,8 +215,8 @@ export default function Products() {
                               <Image
                                 src={
                                   process.env.NEXT_PUBLIC_IMAGE_URL +
-                                  `${product.Media?.Images?.[0] || "/placeholder.svg"}` ||
-                                  "/placeholder.svg?height=48&width=48"
+                                  `${product.Media?.Images?.[0] || "/Media/Images/Logo/placeholder.svg"}` ||
+                                  "/Media/Images/Logo/placeholder.svg?height=48&width=48"
                                 }
                                 alt={product.Name || "Product"}
                                 fill
@@ -305,8 +305,8 @@ export default function Products() {
                           <Image
                             src={
                               process.env.NEXT_PUBLIC_IMAGE_URL +
-                              `${product.Media?.Images?.[0] || "/placeholder.svg"}` ||
-                              "/placeholder.svg?height=64&width=64"
+                              `${product.Media?.Images?.[0] || "/Media/Images/Logo/placeholder.svg"}` ||
+                              "/Media/Images/Logo/placeholder.svg?height=64&width=64"
                             }
                             alt={product.Name || "Product"}
                             fill

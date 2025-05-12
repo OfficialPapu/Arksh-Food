@@ -34,7 +34,7 @@ export default function Categories() {
                   height={400}
                   src={
                     process.env.NEXT_PUBLIC_IMAGE_URL +
-                    Category.Image || "/Arksh Food.png"
+                    Category.Image || "/Media/Images/Logo/Arksh Food.png"
                   }
                   alt={`${Category.Category || "Category"} image`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

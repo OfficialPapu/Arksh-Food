@@ -89,7 +89,7 @@ export function RegisterForm() {
         <div className="relative mb-8 flex flex-col items-center">
           <div className="absolute -top-24 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#0055a4] to-[#39b0e5] p-[3px]">
             <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
-              <Image src="/Arksh Food.png" alt="ARKSH Logo" width={90} height={90} className="rounded-full !m-0" />
+              <Image src="/Media/Images/Logo/Arksh Food.png" alt="ARKSH Logo" width={90} height={90} className="rounded-full !m-0" />
             </div>
           </div>
 

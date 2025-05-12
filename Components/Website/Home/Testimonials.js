@@ -6,7 +6,7 @@ const UserTestimonials = [
     ID: 1,
     Name: "Aarav Sharma",
     Location: "Kathmandu",
-    Avatar: "/placeholder.svg?height=100&width=100",
+    Avatar: "/Media/Images/Logo/placeholder.svg?height=100&width=100",
     Rating: 5,
     Text: "The spices from Arksh Food are absolutely authentic. They bring back memories of my grandmother's cooking. Highly recommended!",
   },
@@ -14,7 +14,7 @@ const UserTestimonials = [
     ID: 2,
     Name: "Priya Thapa",
     Location: "Pokhara",
-    Avatar: "/placeholder.svg?height=100&width=100",
+    Avatar: "/Media/Images/Logo/placeholder.svg?height=100&width=100",
     Rating: 5,
     Text: "I've been ordering their pickles for months now. The quality is consistent and the taste is exactly like homemade. Love it!",
   },
@@ -22,7 +22,7 @@ const UserTestimonials = [
     ID: 3,
     Name: "Rajesh Gurung",
     Location: "Butwal",
-    Avatar: "/placeholder.svg?height=100&width=100",
+    Avatar: "/Media/Images/Logo/placeholder.svg?height=100&width=100",
     Rating: 4,
     Text: "Fast delivery and excellent packaging. The Himalayan tea collection is my favorite. Will definitely order again.",
   },
@@ -61,7 +61,7 @@ export default function Testimonials() {
               <div className="flex items-center">
                 <div className="mr-4 h-12 w-12 overflow-hidden rounded-full">
                   <Image
-                    src={Testimonial.Avatar || "/placeholder.svg"}
+                    src={Testimonial.Avatar || "/Media/Images/Logo/placeholder.svg"}
                     alt={Testimonial.Name}
                     width={100}
                     height={100}

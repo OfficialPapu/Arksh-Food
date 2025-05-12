@@ -1,10 +1,15 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import axios from "@/lib/axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import Hashids from "hashids";
 const UseProductDetails = () => {
+  const hashids = new Hashids(process.env.NEXT_PUBLIC_HASH_SALT, 10);
+  const pathname = usePathname();
+  const encodedPath = hashids.encodeHex(Buffer.from(pathname).toString('hex'));
+  const loginPath = `/auth/login?r=${encodedPath}`;
   const { Slug } = useParams();
   const [Product, setProduct] = useState([]);
   const BASE_IMAGES_PATH = process.env.NEXT_PUBLIC_IMAGE_URL;
@@ -29,7 +34,7 @@ const UseProductDetails = () => {
   const AddReview = async (ProductID) => {
     try {
       if (!isAuth) {
-        router.push("/auth/login");
+        router.push(loginPath || "/auth/login");
         return;
       }
       if (Rating == 0 || Comment == "") {

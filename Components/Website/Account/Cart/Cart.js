@@ -89,7 +89,7 @@ export default function Cart() {
                                         <div key={item.CartItemID} className="p-5 lg:p-6 hover:bg-blue-50/30 transition-colors">
                                             <div className="flex gap-4">
                                                 <div className="relative w-20 h-20 lg:w-28 lg:h-28 rounded-xl overflow-hidden bg-blue-50 flex-shrink-0">
-                                                    <Image src={item.Image || "/placeholder.svg"} alt={item.Name} fill className="object-cover" />
+                                                    <Image src={item.Image || "/Media/Images/Logo/placeholder.svg"} alt={item.Name} fill className="object-cover" />
                                                     {item.Discount && (
                                                         <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-bl-md">
                                                             {item.Discount}% OFF

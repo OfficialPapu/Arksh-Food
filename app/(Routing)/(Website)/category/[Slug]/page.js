@@ -132,7 +132,7 @@ const CategoryPage = () => {
                 <Image
                   width={100}
                   height={100}
-                  src={Products?.Image ? process.env.NEXT_PUBLIC_IMAGE_URL + Products?.Image : "/Arksh Food.png"}
+                  src={Products?.Image ? process.env.NEXT_PUBLIC_IMAGE_URL + Products?.Image : "/Media/Images/Logo/Arksh Food.png"}
                   alt={`${Products?.Category || "Category"} image`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   priority

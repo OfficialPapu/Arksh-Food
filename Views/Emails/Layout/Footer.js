@@ -1,8 +1,8 @@
-const Footer = ( OrderData ) => {
+const Footer = (OrderData) => {
     const isAdmin = OrderData?.Email?.isAdminNotification;
     return (
         `<div style="text-align: center; margin: 30px 0;">
-            <a href="${isAdmin ? `https://www.food.arkshgroup.com/admin/orders/${OrderData._id}` : 'https://www.food.arkshgroup.com/account'}"
+            <a href="${process.env.NEXT_PUBLIC_APP_URL}${isAdmin ? `/admin/orders/${OrderData._id}` : '/account/orders'}"
                 style="display: inline-block; background: linear-gradient(135deg, #0055a4 0%, #29abe2 100%); color: #ffffff !important; text-decoration: none; padding: 14px 30px; font-weight: 600; font-size: 16px; border-radius: 30px; box-shadow: 0 4px 10px rgba(0, 85, 164, 0.3);">
                 ${isAdmin ? 'View Order Details' : 'Track Your Order'}
             </a>
@@ -34,20 +34,20 @@ const Footer = ( OrderData ) => {
             <td align="center"
                 style="background: linear-gradient(135deg, #0055a4 0%, #29abe2 100%); padding: 30px 20px; text-align: center;">
                 <div style="margin: 20px 0;">
-                    <a href="https://www.facebook.com/Arksh.Food"
+                    <a href="${process.env.NEXT_PUBLIC_FACEBOOK}"
                         style="display: inline-block; margin: 0 10px; color: #ffffff; font-weight: 600; font-size: 14px; text-decoration: none;">Facebook</a>
-                    <a href="https://www.instagram.com/arksh.food/"
+                    <a href="${process.env.NEXT_PUBLIC_INSTAGRAM}"
                         style="display: inline-block; margin: 0 10px; color: #ffffff; font-weight: 600; font-size: 14px; text-decoration: none;">Instagram</a>
-                    <a href="https://www.tiktok.com/@arksh.food"
+                    <a href="${process.env.NEXT_PUBLIC_TIKTOK}"
                         style="display: inline-block; margin: 0 10px; color: #ffffff; font-weight: 600; font-size: 14px; text-decoration: none;">TikTok</a>
                 </div>
 
                 <div style="margin: 20px 0;">
-                    <a href="https://www.food.arkshgroup.com/privacy-policy"
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/privacy-policy"
                         style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">Privacy Policy</a>
-                    <a href="https://www.food.arkshgroup.com/terms-and-conditions"
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/terms-and-conditions"
                         style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">Terms of Service</a>
-                    <a href="https://www.food.arkshgroup.com/about-us"
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/about-us"
                         style="color: #ffffff; text-decoration: none; margin: 0 10px; font-size: 14px;">About Us</a>
                 </div>
 

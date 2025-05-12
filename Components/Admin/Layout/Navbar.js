@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux"
 import { Logout } from "@/Components/Redux/ClientSlices/LoginSlice"
 import axios from "@/lib/axios"
 import { useRouter } from "next/navigation"
+import { ClearCart } from "@/Components/Redux/ClientSlices/CartSlice"
 
 export function AdminHeader() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export function AdminHeader() {
     const response = await axios.get("api/auth/logout");
     if (response.status === 200) {
       dispatch(Logout());
+      dispatch(ClearCart());
       router.push("/");
     } else {
       toast.error("Something went wrong");
@@ -42,7 +44,7 @@ export function AdminHeader() {
 
           <Link href="/admin" className="flex items-center gap-2">
             <Image
-              src="/Arksh Food.png"
+              src="/Media/Images/Logo/Arksh Food.png"
               alt="ARKSH Logo"
               width={36}
               height={36}

@@ -274,7 +274,7 @@ const CategoryDashboard = () => {
                         <Image
                           width={56}
                           height={56}
-                          src={process.env.NEXT_PUBLIC_IMAGE_URL + category.Image || "/Arksh Food.png"}
+                          src={process.env.NEXT_PUBLIC_IMAGE_URL + category.Image || "/Media/Images/Logo/Arksh Food.png"}
                           alt={`${category.Category || "Category"} image`}
                           className="w-10 h-10 object-contain"
                           priority
@@ -323,7 +323,7 @@ const CategoryDashboard = () => {
                 <Image
                   width={56}
                   height={56}
-                  src="/Arksh Food.png"
+                  src="/Media/Images/Logo/Arksh Food.png"
                   alt="ARKSH Logo"
                   className="w-16 h-16 object-contain !m-0"
                 />
@@ -438,7 +438,7 @@ const CategoryDashboard = () => {
                         <div className="relative">
                           <div className="relative mx-auto w-32 h-32 rounded-lg overflow-hidden border-2 border-[#cce0ff]">
                             <Image
-                              src={imagePreview || "/placeholder.svg"}
+                              src={imagePreview || "/Media/Images/Logo/placeholder.svg"}
                               alt="Category preview"
                               fill
                               className="object-cover"

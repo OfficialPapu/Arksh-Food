@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { LayoutDashboard, ShoppingCart, Package, Users, Settings, BarChart3, Tag, CreditCard, Truck, CheckCircle, UserIcon as UserGroup, MessageSquare, ChevronDown } from "lucide-react"
+import { LayoutDashboard, ShoppingCart, Package, Users, Settings, BarChart3, Tag, CreditCard, Truck, CheckCircle, UserIcon as UserGroup, MessageSquare, ChevronDown, MessageSquareMore } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/Components/ui/scroll-area"
 
@@ -56,6 +56,11 @@ const navItems = [
     href: "/admin/users",
     icon: <Users className="h-4 w-4" />,
   },
+  {
+    title: "Contact Us",
+    href: "/admin/contact-us",
+    icon: <MessageSquareMore className="h-4 w-4" />,
+  },
 ]
 
 export function MenuList() {
@@ -64,7 +69,7 @@ export function MenuList() {
       <div className="flex h-14 items-center border-b px-4">
         <Link href="/admin" className="flex items-center gap-2">
           <Image
-            src="/Arksh Food.png"
+            src="/Media/Images/Logo/Arksh Food.png"
             alt="ARKSH Logo"
             width={36}
             height={36}

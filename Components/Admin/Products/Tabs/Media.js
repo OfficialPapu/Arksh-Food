@@ -71,7 +71,7 @@ const Media = () => {
                                     >
                                         <div className="aspect-square relative">
                                             <img
-                                                src={image.src || "/placeholder.svg"}
+                                                src={image.src || "/Media/Images/Logo/placeholder.svg"}
                                                 alt={`Product image ${index + 1}`}
                                                 className="object-cover w-full h-full"
                                             />

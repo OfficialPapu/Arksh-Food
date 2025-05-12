@@ -398,7 +398,7 @@ export default function UserList() {
                                         src={
                                           user?.ProfilePic
                                             ? `${process.env.NEXT_PUBLIC_IMAGE_URL + user?.ProfilePic}`
-                                            : "/Arksh Food.png"
+                                            : "/Media/Images/Logo/Arksh Food.png"
                                         }
                                         alt={user?.Name}
                                         className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-white shadow-md ring-2 ring-[#f3f7fa] transition-all duration-200 group-hover:ring-blue-100 object-cover rounded-full"

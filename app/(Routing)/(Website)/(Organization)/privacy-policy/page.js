@@ -23,14 +23,14 @@ export default function PrivacyPolicy() {
         <div className="flex flex-col items-center mb-10">
           <div className="relative w-[120px] h-[120px] mb-4">
             <div className="absolute inset-0 bg-white rounded-full shadow-md"></div>
-            <Image src="/Arksh Food.png" alt="Arksh Food Logo" width={120} height={120} className="relative z-10" />
+            <Image src="/Media/Images/Logo/Arksh Food.png" alt="Arksh Food Logo" width={120} height={120} className="relative z-10" />
           </div>
           <h1 className="text-4xl font-bold text-[#0055a4] text-center">Privacy Policy</h1>
         </div>
 
         {/* Main Content */}
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 relative overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-lg sm:p-8 md:p-12 py-8 px-4 relative overflow-hidden">
             {/* Decorative corner elements */}
             <div className="absolute top-0 left-0 w-20 h-20 bg-[#0055a4]/5 rounded-br-3xl"></div>
             <div className="absolute bottom-0 right-0 w-20 h-20 bg-[#39b7e8]/5 rounded-tl-3xl"></div>
@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Introduction</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed">
                     Welcome to Arksh Food's Privacy Policy. At Arksh Food, we respect your privacy and are committed to
                     protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and
@@ -64,7 +64,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Information We Collect</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-3">We may collect the following types of information:</p>
                   <ul className="space-y-3">
                     <li className="flex">
@@ -124,7 +124,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">How We Use Your Information</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-3">We use your information for the following purposes:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="bg-[#f0f7ff] p-4 rounded-lg flex">
@@ -191,7 +191,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Cookies and Tracking Technologies</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="p-5 border-l-4 border-[#39b7e8] bg-[#f0f7ff]">
                     <p className="leading-relaxed">
                       We use cookies and similar tracking technologies to track activity on our website and to hold
@@ -214,7 +214,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Sharing Your Information</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-3">We may share your information with:</p>
                   <div className="space-y-3">
                     <div className="flex p-4 bg-white border border-[#e0e0e0] rounded-lg shadow-sm">
@@ -271,7 +271,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Data Security</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="bg-gradient-to-r from-[#0055a4]/5 to-[#39b7e8]/5 p-5 rounded-lg">
                     <p className="leading-relaxed">
                       We implement appropriate security measures to protect your personal information from unauthorized
@@ -294,7 +294,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Your Rights</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-3">
                     Depending on your location, you may have the following rights regarding your personal information:
                   </p>
@@ -349,7 +349,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Children's Privacy</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="bg-[#f0f7ff] p-5 rounded-lg border-l-4 border-[#0055a4]">
                     <p className="leading-relaxed">
                       While our food products may be enjoyed by people of all ages, our website and online services are
@@ -368,7 +368,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Changes to This Privacy Policy</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed">
                     We may update our Privacy Policy from time to time to reflect changes in our practices or for other
                     operational, legal, or regulatory reasons. We will notify you of any material changes by posting the
@@ -388,7 +388,7 @@ export default function PrivacyPolicy() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Contact Us</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-4">
                     If you have any questions about this Privacy Policy or our data practices, please contact us at:
                   </p>
@@ -402,7 +402,7 @@ export default function PrivacyPolicy() {
                       </div>
                       <div className="mt-4 md:mt-0">
                         <Image
-                          src="/Arksh Food.png"
+                          src="/Media/Images/Logo/Arksh Food.png"
                           alt="Arksh Food Logo"
                           width={80}
                           height={80}

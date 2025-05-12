@@ -23,14 +23,14 @@ export default function TermsAndConditions() {
         <div className="flex flex-col items-center mb-10">
           <div className="relative w-[120px] h-[120px] mb-4">
             <div className="absolute inset-0 bg-white rounded-full shadow-md"></div>
-            <Image src="/Arksh Food.png" alt="Arksh Food Logo" width={120} height={120} className="relative z-10" />
+            <Image src="/Media/Images/Logo/Arksh Food.png" alt="Arksh Food Logo" width={120} height={120} className="relative z-10" />
           </div>
           <h1 className="text-4xl font-bold text-[#0055a4] text-center">Terms and Conditions</h1>
         </div>
 
         {/* Main Content */}
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 relative overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-lg sm:p-8 md:p-12 py-8 px-4 relative overflow-hidden">
             {/* Decorative corner elements */}
             <div className="absolute top-0 left-0 w-20 h-20 bg-[#0055a4]/5 rounded-br-3xl"></div>
             <div className="absolute bottom-0 right-0 w-20 h-20 bg-[#39b7e8]/5 rounded-tl-3xl"></div>
@@ -43,7 +43,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Acceptance of Terms</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed">
                     Welcome to Arksh Food. By accessing and using our website, purchasing our products, or engaging with our services, 
                     you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, 
@@ -62,7 +62,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Products and Services</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-3">Arksh Food offers a variety of food products including but not limited to:</p>
                   <ul className="space-y-3">
                     <li className="flex">
@@ -112,7 +112,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Ordering and Payment</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="bg-[#f0f7ff] p-4 rounded-lg flex">
                       <div className="mr-3 text-[#0055a4] mt-1">
@@ -155,7 +155,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Shipping and Delivery</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="p-5 border-l-4 border-[#39b7e8] bg-[#f0f7ff]">
                     <p className="leading-relaxed">
                       Arksh Food ships products to locations within our service area. Delivery times may vary depending on your location 
@@ -180,7 +180,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Returns and Refunds</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="space-y-3">
                     <div className="flex p-4 bg-white border border-[#e0e0e0] rounded-lg shadow-sm">
                       <div className="w-10 h-10 rounded-full bg-[#0055a4]/10 flex items-center justify-center mr-4 shrink-0">
@@ -229,7 +229,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Intellectual Property</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="bg-gradient-to-r from-[#0055a4]/5 to-[#39b7e8]/5 p-5 rounded-lg">
                     <p className="leading-relaxed">
                       All content on our website, including text, graphics, logos, images, product designs, and software, 
@@ -250,7 +250,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Limitation of Liability</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed">
                     Arksh Food and its affiliates shall not be liable for any indirect, incidental, special, consequential, 
                     or punitive damages resulting from your use of or inability to use our products or services.
@@ -272,7 +272,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Allergen Information</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <div className="bg-[#f0f7ff] p-5 rounded-lg border-l-4 border-[#0055a4]">
                     <p className="leading-relaxed">
                       While we make every effort to accurately list ingredients and allergen information for our products, 
@@ -294,7 +294,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Governing Law</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed">
                     These Terms and Conditions shall be governed by and construed in accordance with the laws of Nepal, 
                     without regard to its conflict of law provisions.
@@ -313,7 +313,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Changes to Terms</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed">
                     We reserve the right to modify these Terms and Conditions at any time. Changes will be effective immediately 
                     upon posting on our website. Your continued use of our services after any changes indicates your acceptance 
@@ -332,7 +332,7 @@ export default function TermsAndConditions() {
                   </div>
                   <h2 className="text-2xl font-bold text-[#0055a4]">Contact Us</h2>
                 </div>
-                <div className="pl-11">
+                <div className="sm:pl-11">
                   <p className="leading-relaxed mb-4">
                     If you have any questions about these Terms and Conditions, please contact us at:
                   </p>
@@ -346,7 +346,7 @@ export default function TermsAndConditions() {
                       </div>
                       <div className="mt-4 md:mt-0">
                         <Image
-                          src="/Arksh Food.png"
+                          src="/Media/Images/Logo/Arksh Food.png"
                           alt="Arksh Food Logo"
                           width={80}
                           height={80}

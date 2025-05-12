@@ -1,19 +1,21 @@
 "use client"
 import Image from "next/image"
-import { Facebook, Instagram, Twitter, Youtube, MapPin, Phone, Mail } from "lucide-react"
-import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { fetchCategories } from "@/Components/Redux/ClientSlices/CategorySlice"
-
+import { MapPin, Phone, Mail } from "lucide-react"
+import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 export default function Footer() {
+
   const socialLinks = [
-    { icon: Facebook, url: "#" },
-    { icon: Instagram, url: "#" },
-    { icon: Youtube, url: "#" }
+    { icon: FaFacebookF, url: process.env.NEXT_PUBLIC_FACEBOOK },
+    { icon: FaInstagram, url: process.env.NEXT_PUBLIC_INSTAGRAM },
+    { icon: FaTiktok, url: process.env.NEXT_PUBLIC_TIKTOK }
   ]
 
   const quickLinks = [
     { name: "About Us", url: "/about-us" },
+    { name: "Contact Us", url: "/contact-us" },
     { name: "Privacy Policy", url: "/privacy-policy" },
     { name: "Terms and Conditions", url: "/terms-and-conditions" },
   ]
@@ -44,7 +46,7 @@ export default function Footer() {
           <div>
             <div className="mb-6">
               <Image
-                src="/Arksh Food.png"
+                src="/Media/Images/Logo/Arksh Food.png"
                 alt="Arksh Food"
                 width={100}
                 height={100}

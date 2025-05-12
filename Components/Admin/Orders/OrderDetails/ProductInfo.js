@@ -30,7 +30,7 @@ const ProductInfo = () => {
                   <div className="flex items-center gap-3 mb-3">
                     <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md borde bg-slate-50">
                       <img
-                        src={firstImage ? `${BASE_IMAGES_PATH + firstImage}` : "/placeholder.svg"}
+                        src={firstImage ? `${BASE_IMAGES_PATH + firstImage}` : "/Media/Images/Logo/placeholder.svg"}
                         alt={item?.ProductID?.Name}
                         className="h-full w-full object-cover object-center"
                       />
@@ -77,7 +77,7 @@ const ProductInfo = () => {
                         <div className="flex items-center gap-3">
                           <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
                             <img
-                              src={firstImage ? `${BASE_IMAGES_PATH}/${firstImage}` : "/placeholder.svg"}
+                              src={firstImage ? `${BASE_IMAGES_PATH}/${firstImage}` : "/Media/Images/Logo/placeholder.svg"}
                               alt={item?.ProductID?.Name}
                               className="h-full w-full object-cover object-center"
                             />

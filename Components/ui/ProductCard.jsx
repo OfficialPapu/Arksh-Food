@@ -42,7 +42,7 @@ export function ProductCard({ Product }) {
             <Image
               src={
                 process.env.NEXT_PUBLIC_IMAGE_URL +
-                  `${Product.Media.Images[0]}` || "/placeholder.svg"
+                  `${Product.Media.Images[0]}` || "/Media/Images/Logo/placeholder.svg"
               }
               alt={Product.Name}
               width={500}
@@ -76,7 +76,7 @@ export function ProductCard({ Product }) {
           </div>
         </div>
         {isOutOfStock && (
-          <div className="absolute inset-0 flex items-center justify-center z-50 top-1/2 -translate-y-1/2">
+          <div className="absolute inset-0 flex items-center justify-center z-1 top-1/2 -translate-y-1/2">
             <div className="relative sm:px-8 px-4 sm:py-2 py-1 bg-white border border-gray-100 shadow-lg rounded-lg group hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center justify-center gap-4">
                 <p className="text-[#0055a4] font-bold">Out of Stock</p>

@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import Hashids from 'hashids';
 import {
   AddToCart,
   RemoveFromCart,
@@ -6,13 +7,17 @@ import {
   ClearCart,
   UpdatePickup,
 } from "@/Components/Redux/ClientSlices/CartSlice";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import { useEffect, useRef, useState } from "react";
 import { MapPin, Store, Truck, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 
 const useCartActions = () => {
+  const hashids = new Hashids(process.env.NEXT_PUBLIC_HASH_SALT, 10);
+  const pathname = usePathname();
+  const encodedPath = hashids.encodeHex(Buffer.from(pathname).toString('hex'));
+  const loginPath = `/auth/login?r=${encodedPath}`;
   const dispatch = useDispatch();
   const CartItems = useSelector((state) => state.Cart.CartItems);
   const isAuth = useSelector((state) => state.Login.isAuth);
@@ -59,6 +64,7 @@ const useCartActions = () => {
   const PickupLocation =
     useSelector((state) => state.Cart.Pickup.Location) || 0;
   const router = useRouter();
+  
 
   const StoreItemInDB = async (Product, UserID) => {
     try {
@@ -95,7 +101,7 @@ const useCartActions = () => {
     }
     const isAlreadyInCart = IsProductInCart(Product._id);
     if (!isAuth) {
-      router.push("/auth/login");
+      router.push(loginPath || "/auth/login");
       return;
     }
     if (isAlreadyInCart && !ReAddingItem && !BuyNow) {

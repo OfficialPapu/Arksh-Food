@@ -104,7 +104,7 @@ const UpdateStatusDialog = () => {
 
                                             <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 mr-3">
                                                 <img
-                                                    src={firstImage ? `${BASE_IMAGES_PATH}/${firstImage}` : "/placeholder.svg"}
+                                                    src={firstImage ? `${BASE_IMAGES_PATH}/${firstImage}` : "/Media/Images/Logo/placeholder.svg"}
                                                     alt={item?.ProductID?.Name}
                                                     className="h-full w-full object-cover object-center"
                                                 />
@@ -151,7 +151,7 @@ const UpdateStatusDialog = () => {
 
                                                             <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 mr-3">
                                                                 <img
-                                                                    src={firstImage ? `${BASE_IMAGES_PATH}/${firstImage}` : "/placeholder.svg"}
+                                                                    src={firstImage ? `${BASE_IMAGES_PATH}/${firstImage}` : "/Media/Images/Logo/placeholder.svg"}
                                                                     alt={item?.ProductID?.Name}
                                                                     className="h-full w-full object-cover object-center"
                                                                 />

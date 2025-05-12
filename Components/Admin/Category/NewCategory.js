@@ -265,7 +265,7 @@ export default function AddNewCategory() {
                     <div className="flex flex-col md:flex-row gap-6 items-center">
                       <div className="relative w-full max-w-[200px] aspect-square rounded-lg overflow-hidden border border-gray-200 bg-white shadow-sm">
                         <img
-                          src={image.src || "/placeholder.svg"}
+                          src={image.src || "/Media/Images/Logo/placeholder.svg"}
                           alt="Category preview"
                           className="w-full h-full object-cover"
                         />

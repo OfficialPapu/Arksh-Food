@@ -7,7 +7,7 @@ export default function NotFound() {
       <div className="max-w-3xl w-full text-center">
         <div className="mb-8">
           <Image
-            src="/Arksh Food.png"
+            src="/Media/Images/Logo/Arksh Food.png"
             alt="ARKSH Logo"
             width={150}
             height={150}

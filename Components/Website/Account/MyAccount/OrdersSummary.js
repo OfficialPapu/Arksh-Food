@@ -72,7 +72,7 @@ const OrdersSummary = ({ userDetails }) => {
                                             <div className="flex items-center">
                                                 <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 group-hover:border-[#0055a4] transition-all">
                                                     <img
-                                                        src={process.env.NEXT_PUBLIC_IMAGE_URL + item.ProductImage || "/placeholder.svg"}
+                                                        src={process.env.NEXT_PUBLIC_IMAGE_URL + item.ProductImage || "/Media/Images/Logo/placeholder.svg"}
                                                         alt={item.ProductName}
                                                         fill
                                                         className="object-cover"

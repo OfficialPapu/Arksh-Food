@@ -11,6 +11,7 @@ import AddressData from "@/Components/Website/Account/MyAccount/AddressData";
 import axios from "@/lib/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "@/Components/Redux/ClientSlices/LoginSlice";
+import { ClearCart } from "@/Components/Redux/ClientSlices/CartSlice";
 
 export default function Account() {
     const [userDetails, setUserDetails] = useState(null);
@@ -57,9 +58,10 @@ export default function Account() {
         const response = await axios.get("api/auth/logout");
         if (response.status === 200) {
             dispatch(Logout());
+            dispatch(ClearCart());
             router.push("/");
         } else {
-           toast.error("Something went wrong");
+            toast.error("Something went wrong");
         }
     }
 

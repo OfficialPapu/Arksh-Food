@@ -25,7 +25,7 @@ const UserInfo = () => {
                             <div className="mb-4 flex items-center gap-4">
                                 <div className="h-16 w-16 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                                     <img
-                                        src={OrderData?.UserID?.ProfilePic ? `${BASE_IMAGES_PATH + OrderData?.UserID?.ProfilePic}` : "/Arksh Food.png"}
+                                        src={OrderData?.UserID?.ProfilePic ? `${BASE_IMAGES_PATH + OrderData?.UserID?.ProfilePic}` : "/Media/Images/Logo/Arksh Food.png"}
                                         alt={OrderData?.UserID?.Name}
                                         className="h-full w-full object-cover"
                                     />

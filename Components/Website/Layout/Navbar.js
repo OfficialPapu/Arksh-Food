@@ -15,7 +15,7 @@ const FEATURED_ITEMS = [
     title: "Premium Biscuits",
     description: "Handcrafted with premium ingredients",
     price: "$12.99",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/Media/Images/Logo/placeholder.svg?height=200&width=200",
     href: "/biscuit/premium",
     badge: "Best Seller",
     discount: "15% OFF",
@@ -24,7 +24,7 @@ const FEATURED_ITEMS = [
     title: "Arabica Coffee",
     description: "Sourced from the finest farms",
     price: "$18.99",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/Media/Images/Logo/placeholder.svg?height=200&width=200",
     href: "/coffee/arabica",
     badge: "New",
   },
@@ -32,7 +32,7 @@ const FEATURED_ITEMS = [
     title: "Dark Chocolate",
     description: "Rich and intense flavor",
     price: "$9.99",
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/Media/Images/Logo/placeholder.svg?height=200&width=200",
     href: "/chocolate/dark",
     badge: "Popular",
     discount: "Buy 2 Get 1",
@@ -42,6 +42,7 @@ const FEATURED_ITEMS = [
 const RECENT_SEARCHES = ["Premium Chocolate", "Organic Coffee", "Gift Box", "Assorted Cookies"]
 const QUICK_LINKS = [
   { name: "About Us", href: "/about-us" },
+  { name: "Contact Us", href: "/contact-us" },
   { name: "Privacy Policy", href: "/privacy-policy" },
   { name: "Terms and Conditions", href: "/terms-and-conditions" },
 ]
@@ -209,7 +210,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <motion.div whileHover={{ rotate: [0, -10, 10, -10, 0] }} transition={{ duration: 0.5 }} className="relative h-10 w-10 overflow-hidden rounded-xl bg-white p-1">
-              <Image src="/Arksh Food.png" alt="ARKSH Logo" fill className="object-contain" />
+              <Image src="/Media/Images/Logo/Arksh Food.png" alt="ARKSH Logo" fill className="object-contain" />
             </motion.div>
             <div className="flex flex-col">
               <span className="font-bold text-md text-[#0056b3] hidden sm:block group-hover:text-[#39b9ef] transition-colors duration-300">ARKSH FOOD</span>
@@ -243,48 +244,48 @@ export default function Navbar() {
               <motion.div variants={itemVariants} className="md:col-span-3">
                 <h3 className="font-semibold text-[#0056b3] !my-4">Categories</h3>
                 <nav className="space-y-3">
-                  {Categories.slice(0,4).map(cat => (
+                  {Categories.slice(0, 4).map(cat => (
                     <Link href={`/category/${cat.Slug}`}>
-                    <motion.button
-                      transition={{ duration: 0.01 }}
-                      whileHover={{ x: 10 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={cn(
-                        "w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium flex items-center gap-3 text-gray-700 hover:bg-gray-50 hover:text-[#0056b3]",
-                      )}
-                    >
-                      <span
+                      <motion.button
+                        transition={{ duration: 0.01 }}
+                        whileHover={{ x: 10 }}
+                        whileTap={{ scale: 0.98 }}
                         className={cn(
-                          "flex items-center justify-center w-10 h-10 rounded-full text-lg shadow-sm transition-all duration-300 text-[#0056b3]",
+                          "w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium flex items-center gap-3 text-gray-700 hover:bg-gray-50 hover:text-[#0056b3]",
                         )}
-                        style={{
-                          background: "rgba(255, 255, 255, 0.2)",
-                        }}
                       >
+                        <span
+                          className={cn(
+                            "flex items-center justify-center w-10 h-10 rounded-full text-lg shadow-sm transition-all duration-300 text-[#0056b3]",
+                          )}
+                          style={{
+                            background: "rgba(255, 255, 255, 0.2)",
+                          }}
+                        >
 
 
-                        <div className="aspect-square w-full overflow-hidden">
-                          <Image
-                            width={400}
-                            height={400}
-                            src={
-                              process.env.NEXT_PUBLIC_IMAGE_URL +
-                              cat.Image || "/Arksh Food.png"
-                            }
-                            alt={`${cat.Category || "Category"} image`}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            priority
-                          />
+                          <div className="aspect-square w-full overflow-hidden">
+                            <Image
+                              width={400}
+                              height={400}
+                              src={
+                                process.env.NEXT_PUBLIC_IMAGE_URL +
+                                cat.Image || "/Media/Images/Logo/Arksh Food.png"
+                              }
+                              alt={`${cat.Category || "Category"} image`}
+                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              priority
+                            />
+                          </div>
+                        </span>
+                        <div className="flex flex-col">
+                          <span className="font-semibold">{cat.Category}</span>
+                          <span className="text-xs opacity-80 font-normal">{cat.Description.split(" ").slice(0, 5).join(" ") + (cat.Description.split(" ").length > 5 ? "..." : "")}</span>
                         </div>
-                      </span>
-                      <div className="flex flex-col">
-                        <span className="font-semibold">{cat.Category}</span>
-                        <span className="text-xs opacity-80 font-normal">{cat.Description.split(" ").slice(0, 5).join(" ") + (cat.Description.split(" ").length > 5 ? "..." : "")}</span>
-                      </div>
-                      <motion.div className="ml-auto" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0 }}>
-                        <ChevronRight className="h-4 w-4" />
-                      </motion.div>
-                    </motion.button>
+                        <motion.div className="ml-auto" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0 }}>
+                          <ChevronRight className="h-4 w-4" />
+                        </motion.div>
+                      </motion.button>
                     </Link>
                   ))}
                 </nav>
