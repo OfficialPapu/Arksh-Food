@@ -1,4 +1,4 @@
-import ContactUs from '@/Components/Admin/Contact/ContactUs'
+import ContactUs from '@/Components/Admin/Pages/ContactUs'
 import React from 'react'
 export const metadata = {
     title: 'Contact Submissions - Admin Panel | Arksh Food',

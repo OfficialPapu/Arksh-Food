@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { LayoutDashboard, ShoppingCart, Package, Users, Settings, BarChart3, Tag, CreditCard, Truck, CheckCircle, UserIcon as UserGroup, MessageSquare, ChevronDown, MessageSquareMore } from "lucide-react"
+import { LayoutDashboard, ShoppingCart, Package, Users, Settings, BarChart3, Tag, CreditCard, Truck, CheckCircle, UserIcon as UserGroup, MessageSquare, ChevronDown, MessageSquareMore, Settings2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/Components/ui/scroll-area"
 
@@ -60,6 +60,11 @@ const navItems = [
     title: "Contact Us",
     href: "/admin/contact-us",
     icon: <MessageSquareMore className="h-4 w-4" />,
+  },
+  {
+    title: "SEO",
+    href: "/admin/seo",
+    icon: <Settings2 className="h-4 w-4" />,
   },
 ]
 

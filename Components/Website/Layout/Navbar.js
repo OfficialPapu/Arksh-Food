@@ -123,9 +123,9 @@ const FeaturedItem = memo(({ title, image, href, badge, description, price, disc
   </motion.div>
 ))
 
-const QuickLink = memo(({ href, children }) => (
+const QuickLink = memo(({ href, children, Click  }) => (
   <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.98 }}>
-    <Link href={href} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-[#0056b3] hover:bg-[#f0f7ff] rounded-xl transition-all duration-200">
+    <Link href={href} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-[#0056b3] hover:bg-[#f0f7ff] rounded-xl transition-all duration-200" onClick={Click}>
       <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#e6f4ff] to-[#cce7ff] text-[#0056b3]">
         <Star className="h-4 w-4" />
       </span>
@@ -196,6 +196,9 @@ export default function Navbar() {
     if (q) router.push(`/search-results?q=${encodeURIComponent(q)}`)
   }, [router])
 
+  const closeMenu = useCallback(() => {
+    setIsOpen(false);
+  }, []);
   const toggleMenu = useCallback(() => setIsOpen(v => !v), [])
   const toggleSearch = useCallback(() => setIsSearchOpen(v => !v), [])
 
@@ -245,7 +248,7 @@ export default function Navbar() {
                 <h3 className="font-semibold text-[#0056b3] !my-4">Categories</h3>
                 <nav className="space-y-3">
                   {Categories.slice(0, 4).map(cat => (
-                    <Link href={`/category/${cat.Slug}`}>
+                    <Link href={`/category/${cat.Slug}`} onClick={closeMenu}>
                       <motion.button
                         transition={{ duration: 0.01 }}
                         whileHover={{ x: 10 }}
@@ -299,7 +302,7 @@ export default function Navbar() {
               <motion.div variants={itemVariants} className="md:col-span-3">
                 <h3 className="font-semibold text-[#0056b3] !my-4">Quick Links</h3>
                 <nav className="space-y-2">
-                  {QUICK_LINKS.map(link => <QuickLink key={link.href} href={link.href}>{link.name}</QuickLink>)}
+                  {QUICK_LINKS.map(link => <QuickLink key={link.href} href={link.href} Click={closeMenu}>{link.name}</QuickLink>)}
                 </nav>
               </motion.div>
             </div>

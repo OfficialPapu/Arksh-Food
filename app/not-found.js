@@ -50,7 +50,7 @@ export default function NotFound() {
 
         <div className="mt-12 text-sm text-gray-500">
           <p>© {new Date().getFullYear()} ARKSH. All rights reserved.</p>
-          <p className="text-[#29abe2]">www.food.arkshgroup.com</p>
+          <p className="text-[#29abe2]">{process.env.NEXT_PUBLIC_APP_URL}</p>
         </div>
       </div>
     </div>
