@@ -4,7 +4,7 @@ import { CartItemSchema } from "@/Models/CartModel";
 import { OrderItemsSchema, OrderSchema } from "@/Models/OrderModel";
 import ProductSchema from "@/Models/ProductModel";
 import UserSchema from "@/Models/UserModel";
-import EmailTemplate from "@/Views/Emails/EmailTemplate";
+import EmailTemplate from "@/Views/Emails/OrderEmailTemplate";
 import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {

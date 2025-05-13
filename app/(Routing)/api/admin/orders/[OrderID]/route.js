@@ -2,7 +2,7 @@ import ConnectDB from "@/lib/MongoDB";
 import { NextResponse } from "next/server";
 import CategoriesSchema from "@/Models/CategoryModel";
 import { OrderItemsSchema, OrderSchema } from "@/Models/OrderModel";
-import EmailTemplate from "@/Views/Emails/EmailTemplate";
+import EmailTemplate from "@/Views/Emails/OrderEmailTemplate";
 import SendEmail from "@/lib/EmailService";
 export async function GET(request, { params }) {
   try {

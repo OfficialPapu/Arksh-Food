@@ -47,8 +47,6 @@ const CategoryDashboard = () => {
   useEffect(() => {
     if (currentCategory && isEditModalOpen) {
       setEditedCategory(currentCategory)
-      console.log(currentCategory);
-
       setImagePreview(currentCategory.Image ? process.env.NEXT_PUBLIC_IMAGE_URL + currentCategory.Image : null)
       setFormErrors({})
       setSeoExpanded(false)
