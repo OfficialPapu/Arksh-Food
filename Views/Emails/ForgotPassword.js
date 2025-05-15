@@ -1,7 +1,9 @@
 import { format } from "date-fns";
 import Footer from "./Layout/Footer";
+import { decryptPassword } from "@/lib/BaseConfig";
 
 export default function ForgotPassword(OrderData) {
+    OrderData.Password = decryptPassword(OrderData.Password);
     return `
   <!DOCTYPE html>
 <html lang="en">

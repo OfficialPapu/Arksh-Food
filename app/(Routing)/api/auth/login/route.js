@@ -2,15 +2,21 @@ import ConnectDB from "@/lib/MongoDB";
 import UserSchema from "@/Models/UserModel";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { decryptPassword } from "@/lib/BaseConfig";
 const jwt = require('jsonwebtoken');
+
 export const POST = async (req) => {
     try {
-        const { Email, Password, isAdmin } = await req.json();
+        let { Email, Password, isAdmin } = await req.json();
         if (!Email || !Password) {
             return NextResponse.json({ message: "All fields are mandatory" }, { status: 400 });
         }
-        const User = await UserSchema.findOne({ Email: Email, Password: Password });
+        let User = await UserSchema.findOne({ Email: Email });
         if (!User) {
+            return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
+        }
+        User.Password = decryptPassword(User.Password);
+        if (Password !== User.Password) {
             return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
         }
         if (isAdmin && !User.Role.includes("Admin")) {

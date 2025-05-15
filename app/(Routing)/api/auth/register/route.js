@@ -1,13 +1,13 @@
 import ConnectDB from "@/lib/MongoDB";
 import UserSchema from "@/Models/UserModel";
 import { NextResponse } from "next/server";
-import { CountryInfo } from "@/lib/BaseConfig";
+import { CountryInfo, encryptPassword } from "@/lib/BaseConfig";
 
 export const POST = async (req) => {
     try {
         let ip = req.headers.get('x-forwarded-for') || req.ip || "127.0.0.1";
         const { Country, City } = await CountryInfo(ip);
-        const { Name, Email, Mobile, Password } = await req.json();
+        let { Name, Email, Mobile, Password } = await req.json();
         if (!Name || !Email || !Mobile || !Password) {
             return NextResponse.json({ message: "All fields are mandatory" }, { status: 400 });
         }
@@ -23,6 +23,7 @@ export const POST = async (req) => {
         if (IsUserExist) {
             return NextResponse.json({ message: "User alredy exist" }, { status: 401 });
         }
+        Password = encryptPassword(Password);
         const NewUser = new UserSchema({ UID, Name, Email, Mobile, Password, Country, City });
         await NewUser.save();
         return NextResponse.json({ success: true }, { status: 201 });
