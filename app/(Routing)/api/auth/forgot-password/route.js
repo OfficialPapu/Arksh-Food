@@ -1,6 +1,5 @@
 import ConnectDB from "@/lib/MongoDB";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import ForgotPassword from "@/Views/Emails/ForgotPassword";
 import SendEmail from "@/lib/EmailService";
 import UserSchema from "@/Models/UserModel";

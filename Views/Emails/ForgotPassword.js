@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import Footer from "./Layout/Footer";
 import { decryptPassword } from "@/lib/BaseConfig";
 
 export default function ForgotPassword(OrderData) {
