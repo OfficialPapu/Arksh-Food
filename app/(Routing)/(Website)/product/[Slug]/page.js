@@ -1,80 +1,89 @@
 import React from 'react';
 import ProductDetails from '@/Components/Website/Product/ProductDetails';
 import axios from '@/lib/axios';
+
+const BASEURL = process.env.NEXT_PUBLIC_APP_URL;
+const BASEIMAGEURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+const FALLBACK_IMAGE = `${BASEURL}/Media/Images/Logo/Arksh Food.png`;
+
+const DEFAULT_META = {
+  title: "Arksh Food - Delicious Food Items",
+  description: "Find the best food at Arksh Food",
+  keywords: "Arksh Food, food delivery, best online food, Nepal foods",
+};
+
 export async function generateMetadata({ params }) {
   try {
-    const response = await axios.get('http://localhost:3000/api/product/' + params.Slug);  // Full URL for dev, use relative in prod
-    const Product = response.data[0]; 
-    
+    const { data } = await axios.get(`${BASEURL}/api/product/${params.Slug}`);
+    const product = data[0];
+
+    const seo = product?.SEO || {};
+    const metaTitle = seo.Title || product?.Name || DEFAULT_META.title;
+    const metaDesc = seo.Description || product?.Excerpt || DEFAULT_META.description;
+    const metaKeywords = seo.Keywords || product?.Tags?.join(', ') || DEFAULT_META.keywords;
+
+    const imageUrl = product?.Media?.Images?.[0]
+      ? `${BASEIMAGEURL}${product.Media.Images[0]}`
+      : FALLBACK_IMAGE;
+
+    const pageUrl = `${BASEURL}/product/${params.Slug}`;
+
     return {
-      title: Product.Name || "Arksh Food - Delicious Food Items",
-      description: Product.description || "Find the best food at Arksh Food",
+      metadataBase: new URL(BASEURL),
+      title: metaTitle,
+      description: metaDesc,
+      keywords: metaKeywords,
       openGraph: {
-        title: Product.name || "Arksh Food - Delicious Food Items",
-        description: Product.description || "Best food delivery options",
-        images: Product.imageUrl ? [Product.imageUrl] : ["default-image-url.jpg"], // Default image if none is available
-        url: `https://arkshfood.com/product/${params.Slug}`, // Add the URL for Open Graph
-        type: "website",  // Type for Open Graph
-        locale: "en_US", // Locale
+        title: metaTitle,
+        description: metaDesc,
+        images: [imageUrl],
+        url: pageUrl,
+        type: "website",
+        locale: "en_US",
       },
       twitter: {
-        card: 'summary_large_image', // Type of Twitter Card
-        title: Product.name || "Arksh Food - Delicious Food Items",
-        description: Product.description || "Best food delivery options",
-        image: Product.imageUrl || "default-image-url.jpg", // Fallback image for Twitter
+        card: 'summary_large_image',
+        title: metaTitle,
+        description: metaDesc,
+        images: [imageUrl],
       },
-      canonical: `https://arkshfood.com/product/${params.Slug}`, // Canonical link to avoid duplicate content
-      robots: 'index, follow',  // Indexing and following of links
-      structuredData: {
-        '@context': 'https://schema.org',
-        '@type': 'Product',
-        name: Product.name || "Arksh Food - Delicious Food Items",
-        description: Product.description || "Find the best food at Arksh Food",
-        image: Product.imageUrl || "default-image-url.jpg",
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'USD',
-          price: Product.price || 0, // Ensure the price is available
-          availability: 'https://schema.org/InStock',
-        },
+      alternates: {
+        canonical: pageUrl,
       },
+      robots: 'index, follow',
     };
   } catch (error) {
-    console.error('Error fetching product data:', error);
     return {
-      title: "Arksh Food - Delicious Food Items",  // Fallback title
-      description: "Find the best food at Arksh Food",  // Fallback description
+      metadataBase: new URL(BASEURL),
+      title: DEFAULT_META.title,
+      description: DEFAULT_META.description,
+      keywords: DEFAULT_META.keywords,
       openGraph: {
-        title: "Arksh Food - Delicious Food Items",
-        description: "Best food delivery options",
-        images: ["default-image-url.jpg"],  // Fallback image
-        url: "https://arkshfood.com",
-        type: "website",  // Type for Open Graph
+        title: DEFAULT_META.title,
+        description: DEFAULT_META.description,
+        images: [FALLBACK_IMAGE],
+        url: `${BASEURL}/product/${params.Slug}`,
+        type: "website",
+        locale: "en_US",
       },
       twitter: {
-        card: 'summary_large_image', 
-        title: "Arksh Food - Delicious Food Items",
-        description: "Best food delivery options",
-        image: "default-image-url.jpg",  // Fallback image
+        card: 'summary_large_image',
+        title: DEFAULT_META.title,
+        description: DEFAULT_META.description,
+        images: [FALLBACK_IMAGE],
       },
-      canonical: "https://arkshfood.com",
-      robots: 'index, follow',  // Indexing and following of links
-      structuredData: {
-        '@context': 'https://schema.org',
-        '@type': 'Website',
-        name: "Arksh Food",
-        description: "Best food delivery options",
-        image: "default-image-url.jpg",
+      alternates: {
+        canonical: `${BASEURL}/product/${params.Slug}`,
       },
+      robots: 'index, follow',
     };
   }
 }
 
-// Main page component
 const page = () => {
   return (
     <div>
-      <ProductDetails /> {/* Render your product details here */}
+      <ProductDetails />
     </div>
   );
 };
