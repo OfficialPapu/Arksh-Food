@@ -11,6 +11,7 @@ export async function GET(request, { params }) {
       path: "Category",
       model: "Categories",
     })
+    Product[0].Quantity = Product[0].Quantity ? 1 : 0;
     if (!Product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }

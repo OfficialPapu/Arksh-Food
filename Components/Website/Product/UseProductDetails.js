@@ -82,7 +82,10 @@ const UseProductDetails = () => {
   };
 
   useEffect(() => {
-    Product.Quantity = quantity;
+    setProduct((prev) => ({
+      ...prev,
+      Quantity: quantity,
+    }));
   }, [quantity]);
 
 

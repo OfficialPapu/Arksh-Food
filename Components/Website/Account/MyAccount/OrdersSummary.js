@@ -50,7 +50,7 @@ const OrdersSummary = ({ userDetails }) => {
                                                     </span>
                                                     {order?.Discount > 0 && (
                                                         <span className="ml-2 bg-red-100 text-red-700 text-xs px-1.5 py-0.5 rounded-full font-medium">
-                                                            Save {order?.Discount}%
+                                                            Save Rs. {order?.Discount}
                                                         </span>
                                                     )}
                                                 </>

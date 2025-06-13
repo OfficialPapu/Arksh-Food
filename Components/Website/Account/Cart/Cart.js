@@ -148,7 +148,11 @@ export default function Cart() {
                                                             </button>
                                                         </div>
                                                         <div className="font-semibold text-[#0055a4]">
-                                                            Rs. {Total.toFixed(2)}
+                                                            {item.Discount ? (
+                                                                <span className="text-red-500">Rs. {item.PriceAfterDiscount.toFixed(2)}</span>
+                                                            ) : (
+                                                                <span>Rs. {item.Price.toFixed(2)}</span>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>

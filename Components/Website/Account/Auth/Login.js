@@ -42,7 +42,7 @@ export function LoginForm() {
             if (response.status === 200) {
                 UserDetails = { ...response.data };
                 dispatch(Login(UserDetails));
-                router.push(Path || "/");
+                window.location.href = Path || "/";
             }
         } catch (err) {
             setError(err.response.data.message || "Something went wrong")

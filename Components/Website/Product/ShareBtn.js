@@ -2,12 +2,12 @@
 
 import { useState, useRef, useEffect } from "react"
 import { Linkedin, Link, X, MessageCircle, Share2 } from "lucide-react"
+import toast from "react-hot-toast"
 
 
 export default function ShareButton({ url = window.location.href, title = "Check this out!" }) {
     const [isOpen, setIsOpen] = useState(false)
     const menuRef = useRef(null)
-    // Brand colors extracted from the ARKSH logo
     const brandPrimary = "#0057A8" // Dark blue
     const brandSecondary = "#29ABE2" // Light blue
 

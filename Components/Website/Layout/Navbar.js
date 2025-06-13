@@ -64,15 +64,15 @@ const CategoryButton = memo(({ active, onClick, children, icon, color, descripti
       className={cn(
         "w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium flex items-center gap-3",
         active
-          ? "bg-gradient-to-r from-[#0056b3]/90 to-[#0077cc] text-white shadow-md"
-          : "text-gray-700 hover:bg-gray-50 hover:text-[#0056b3]",
+          ? "bg-gradient-to-r from-[#0956a4]/90 to-[#29abe2] text-white shadow-md"
+          : "text-gray-700 hover:bg-gray-50 hover:text-[#0956a4]",
       )}
       onClick={onClick}
     >
       <span
         className={cn(
           "flex items-center justify-center w-10 h-10 rounded-full text-lg shadow-sm transition-all duration-300",
-          active ? "bg-white/20 text-white" : `text-[#0056b3]`,
+          active ? "bg-white/20 text-white" : `text-[#0956a4]`,
         )}
         style={{
           background: active
@@ -100,13 +100,13 @@ const FeaturedItem = memo(({ title, image, href, badge, description, price, disc
     <Link href={href} className="block">
       <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 mb-3 group-hover:ring-2 ring-[#39b9ef] transition-all duration-300 shadow-sm group-hover:shadow-lg">
         <Image src={image} alt={title} width={200} height={200} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-        {badge && <div className="absolute top-2 left-2 bg-[#0056b3] text-white text-xs font-medium px-3 py-1 rounded-full shadow-md">{badge}</div>}
+        {badge && <div className="absolute top-2 left-2 bg-[#0956a4] text-white text-xs font-medium px-3 py-1 rounded-full shadow-md">{badge}</div>}
         {discount && <div className="absolute top-2 right-2 bg-[#e53e3e] text-white text-xs font-medium px-3 py-1 rounded-full shadow-md">{discount}</div>}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
           <span className="text-white font-medium text-sm">View Details</span>
           <div className="flex items-center justify-between mt-2">
             <span className="text-white/90 text-xs">{description}</span>
-            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="bg-white text-[#0056b3] rounded-full p-1.5 shadow-md">
+            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="bg-white text-[#0956a4] rounded-full p-1.5 shadow-md">
               <ShoppingBag className="h-3 w-3" />
             </motion.button>
           </div>
@@ -114,10 +114,10 @@ const FeaturedItem = memo(({ title, image, href, badge, description, price, disc
       </div>
       <div className="flex justify-between items-start">
         <div>
-          <h4 className="text-sm font-medium text-gray-800 group-hover:text-[#0056b3] transition-colors">{title}</h4>
+          <h4 className="text-sm font-medium text-gray-800 group-hover:text-[#0956a4] transition-colors">{title}</h4>
           <p className="text-xs text-gray-500">{description}</p>
         </div>
-        <span className="text-sm font-semibold text-[#0056b3]">{price}</span>
+        <span className="text-sm font-semibold text-[#0956a4]">{price}</span>
       </div>
     </Link>
   </motion.div>
@@ -125,8 +125,8 @@ const FeaturedItem = memo(({ title, image, href, badge, description, price, disc
 
 const QuickLink = memo(({ href, children, Click  }) => (
   <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.98 }}>
-    <Link href={href} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-[#0056b3] hover:bg-[#f0f7ff] rounded-xl transition-all duration-200" onClick={Click}>
-      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#e6f4ff] to-[#cce7ff] text-[#0056b3]">
+    <Link href={href} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-[#0956a4] hover:bg-[#f0f7ff] rounded-xl transition-all duration-200" onClick={Click}>
+      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[#e6f4ff] to-[#cce7ff] text-[#0956a4]">
         <Star className="h-4 w-4" />
       </span>
       <span className="font-medium">{children}</span>
@@ -137,7 +137,7 @@ const QuickLink = memo(({ href, children, Click  }) => (
 const NavIconButton = memo(({ Icon, onClick, badgeCount }) => (
   <motion.div className="relative">
     <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={onClick} className="p-2 rounded-full relative transition-all duration-200 bg-white hover:bg-[#f0f7ff] shadow-sm hover:shadow-md">
-      <Icon className="h-5 w-5 text-[#0056b3]" />
+      <Icon className="h-5 w-5 text-[#0956a4]" />
       {badgeCount > 0 && (
         <motion.span initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: [1, 1.2, 1], opacity: 1, transition: { scale: { repeat: Infinity, repeatType: "reverse", duration: 1.5 }, opacity: { duration: 0.2 } } }} className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center bg-[#e53e3e] text-white text-xs rounded-full shadow-sm">
           {badgeCount}
@@ -216,7 +216,7 @@ export default function Navbar() {
               <Image src="/Media/Images/Logo/Arksh Food.png" alt="ARKSH Logo" fill className="object-contain" />
             </motion.div>
             <div className="flex flex-col">
-              <span className="font-bold text-md text-[#0056b3] hidden sm:block group-hover:text-[#39b9ef] transition-colors duration-300">ARKSH FOOD</span>
+              <span className="font-bold text-md text-[#0956a4] hidden sm:block group-hover:text-[#39b9ef] transition-colors duration-300">ARKSH FOOD</span>
               <span className="text-xs text-gray-500 hidden sm:block">Delicious Delights</span>
             </div>
           </Link>
@@ -229,7 +229,7 @@ export default function Navbar() {
             <Link href="/account/cart" passHref>
               <NavIconButton Icon={ShoppingBag} badgeCount={CartItemCount} />
             </Link>
-            <motion.button onClick={toggleMenu} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center space-x-1 py-2 px-3 rounded-full bg-gradient-to-r from-[#0056b3] to-[#0077cc] text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <motion.button onClick={toggleMenu} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center space-x-1 py-2 px-3 rounded-full bg-gradient-to-r from-[#0956a4] to-[#29abe2] text-white shadow-md hover:shadow-lg transition-all duration-300">
               <Menu className={`${!isOpen ? 'block' : 'hidden'} sm:hidden h-5 w-5`} />
               <X className={`${isOpen ? 'block' : 'hidden'} sm:hidden h-5 w-5`} />
               <span className="hidden sm:inline font-medium">Menu</span>
@@ -245,7 +245,7 @@ export default function Navbar() {
           <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit" className="pb-16 fixed top-16 left-0 w-full bg-white shadow-lg z-40 overflow-hidden border-t">
             <div className="container mx-auto px-4 py-6 grid md:grid-cols-12 gap-8">
               <motion.div variants={itemVariants} className="md:col-span-3">
-                <h3 className="font-semibold text-[#0056b3] !my-4">Categories</h3>
+                <h3 className="font-semibold text-[#0956a4] !my-4">Categories</h3>
                 <nav className="space-y-3">
                   {Categories.slice(0, 4).map(cat => (
                     <Link href={`/category/${cat.Slug}`} onClick={closeMenu}>
@@ -254,12 +254,12 @@ export default function Navbar() {
                         whileHover={{ x: 10 }}
                         whileTap={{ scale: 0.98 }}
                         className={cn(
-                          "w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium flex items-center gap-3 text-gray-700 hover:bg-gray-50 hover:text-[#0056b3]",
+                          "w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium flex items-center gap-3 text-gray-700 hover:bg-gray-50 hover:text-[#0956a4]",
                         )}
                       >
                         <span
                           className={cn(
-                            "flex items-center justify-center w-10 h-10 rounded-full text-lg shadow-sm transition-all duration-300 text-[#0056b3]",
+                            "flex items-center justify-center w-10 h-10 rounded-full text-lg shadow-sm transition-all duration-300 text-[#0956a4]",
                           )}
                           style={{
                             background: "rgba(255, 255, 255, 0.2)",
@@ -294,13 +294,13 @@ export default function Navbar() {
                 </nav>
               </motion.div>
               {/* <motion.div variants={itemVariants} className="md:col-span-6 border-l border-r px-6">
-                <h3 className="font-semibold text-[#0056b3] !my-4">Featured Products</h3>
+                <h3 className="font-semibold text-[#0956a4] !my-4">Featured Products</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
                   {FEATURED_ITEMS.map((it, i) => <FeaturedItem key={i} {...it} />)}
                 </div>
               </motion.div> */}
               <motion.div variants={itemVariants} className="md:col-span-3">
-                <h3 className="font-semibold text-[#0056b3] !my-4">Quick Links</h3>
+                <h3 className="font-semibold text-[#0956a4] !my-4">Quick Links</h3>
                 <nav className="space-y-2">
                   {QUICK_LINKS.map(link => <QuickLink key={link.href} href={link.href} Click={closeMenu}>{link.name}</QuickLink>)}
                 </nav>
@@ -321,17 +321,17 @@ export default function Navbar() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center pt-20 px-4" onClick={() => setIsSearchOpen(false)}>
             <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -50, opacity: 0 }} className="w-full max-w-2xl bg-white rounded-xl p-6 shadow-xl" onClick={e => e.stopPropagation()}>
               <form onSubmit={onSearchSubmit} className="relative">
-                <input ref={searchInputRef} type="text" placeholder="Search for products..." className="w-full px-6 py-4 pr-14 rounded-full border focus:outline-none focus:ring-2 focus:ring-[#0056b3]/50 transition-all duration-300" />
-                <button type="submit" className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full text-gray-500 hover:text-[#0056b3] hover:bg-gray-100 transition-all duration-200">
+                <input ref={searchInputRef} type="text" placeholder="Search for products..." className="w-full px-6 py-4 pr-14 rounded-full border focus:outline-none focus:ring-2 focus:ring-[#0956a4]/50 transition-all duration-300" />
+                <button type="submit" className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full text-gray-500 hover:text-[#0956a4] hover:bg-gray-100 transition-all duration-200">
                   <Search className="h-6 w-6" />
                 </button>
               </form>
               <div className="pt-4">
-                <h4 className="text-lg font-medium text-[#0056b3] !mb-4">Popular Searches</h4>
+                <h4 className="text-lg font-medium text-[#0956a4] !mb-4">Popular Searches</h4>
                 <ul className="space-y-2">
                   {RECENT_SEARCHES.map((term, i) => (
                     <li key={i} className="flex items-center justify-between bg-gray-50 hover:bg-[#f0f7ff] rounded-lg px-3 py-2 transition-colors duration-200">
-                      <button onClick={() => { searchInputRef.current.value = term; onSearchSubmit({ preventDefault: () => { } }) }} className="flex items-center text-gray-700 hover:text-[#0056b3]">
+                      <button onClick={() => { searchInputRef.current.value = term; onSearchSubmit({ preventDefault: () => { } }) }} className="flex items-center text-gray-700 hover:text-[#0956a4]">
                         <Search className="h-4 w-4 mr-2 text-gray-400" />{term}
                       </button>
                       <button className="p-1 hover:rotate-90 transition-transform"><X className="h-4 w-4 text-gray-400 hover:text-gray-600" /></button>
